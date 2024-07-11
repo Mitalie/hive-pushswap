@@ -1,0 +1,48 @@
+merge passes
+
+first pass to make pairs and balance:
+    output left on bottom, right on top (or bottom with rr)
+    pb-pb-s?-ra-ra (1n..1.25n, avg 1.1875n)
+
+merge methods (insns for output to a):
+A:  output on top
+    current on bottom (rra, same order)
+    other on top (pb, reverse order)
+    1 move per item
+B:  output on top
+    current on bottom (rra, same order)
+    other on bottom (rrb+pb, same order)
+    <1.5 move per item (opportunistic rrr, avg 1.25), -complexorder
+C:  output on bottom
+    current on top (ra, same order)
+    other on top (pb+ra, reverse order)
+    1.5 move per item
+D:  output on top
+    other on bottom (rrb + pb, same order)
+    other on top (pb, reverse order)
+    1.5 move per item, +rebalancing, -complexorder
+
+strategy 1
+    11111111 11111111
+    -------- --------
+    first pass: d/d d/d d/a a/d
+    22222222 22222222
+    >>>>>><< >><<>>>>
+    left A asc desc
+    444444442222 2222
+    >>>><<<<>>>> >>>>
+    right B desc desc
+    44444444 44444444
+    >>>><<<< >>>>>>>>
+    left A asc
+    888888884444 4444
+    <<<<<<<<>>>> >>>>
+    right B desc
+    88888888 88888888
+    <<<<<<<< >>>>>>>>
+    left A asc
+    ssssssssssssssss
+    <<<<<<<<<<<<<<<<
+    done
+* Need a way to calculate when asc/desc runs are needed
+* Can use 11/16*n s-rr-rr for initial round instead of (16..24)/16*n merge
