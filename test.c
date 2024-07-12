@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:50:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/12 18:08:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:21:13 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,13 +225,26 @@ static void	printstacks(const t_circular *a, const t_circular *b, const char *ms
 	bb = *b;
 	if (msg)
 		printf("%s:\n", msg);
-	while (aa.count > bb.count)
-		printf(" %2d\n", circ_pop(&aa));
-	while (bb.count > aa.count)
-		printf("    %2d\n", circ_pop(&bb));
-	while (aa.count)
-		printf(" %2d %2d\n", circ_pop(&aa), circ_pop(&bb));
-	printf("========\n  a  b\n\n");
+	if (false) // vertical
+	{
+		while (aa.count > bb.count)
+			printf(" %2d\n", circ_pop(&aa));
+		while (bb.count > aa.count)
+			printf("    %2d\n", circ_pop(&bb));
+		while (aa.count)
+			printf(" %2d %2d\n", circ_pop(&aa), circ_pop(&bb));
+		printf("========\n  a  b\n\n");
+	}
+	else
+	{
+		printf("a | ");
+		while (aa.count)
+			printf(" %2d", circ_pop(&aa));
+		printf("\nb | ");
+		while (bb.count)
+			printf(" %2d", circ_pop(&bb));
+		printf("\n");
+	}
 }
 
 static bool	g_flip = false;
@@ -274,7 +287,6 @@ static void	segment(t_stacks *s, t_circular *a, t_circular *b, int n_items)
 	split_one_run(a, b);
 	//printstacks(a, b, "first split");
 	segment_rec(&s->a, &s->b, a, b, (n_items + 2) / 3);
-	merge_level(&s->b, &s->a, b, a);
 	merge_one_run(&s->a, &s->b, n_items);
 }
 
@@ -296,6 +308,7 @@ static bool	cmp(int dir, int a, int b)
 
 static void	merge_one_run(t_circular *target, t_circular *other, int run)
 {
+	printf("merge run %d\n", run);
 	int	dir;
 	int	n_tb;
 	int	n_ot;
@@ -344,8 +357,8 @@ static void	merge_level(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 		merge_one_run(c_stack, o_stack, circ_peek_top(c_segs));
 	}
 	i = group_size;
-	printstacks_flipped(c_segs, o_segs, "runs after merge current");
-	printstacks_flipped(c_stack, o_stack, "data after merge current");
+	//printstacks_flipped(c_segs, o_segs, "runs after merge current");
+	//printstacks_flipped(c_stack, o_stack, "data after merge current");
 	while (i--)
 	{
 		circ_push(c_segs, -circ_pop(o_segs));
@@ -355,16 +368,18 @@ static void	merge_level(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 		while (j--)
 			circ_push(c_stack, circ_pop(o_stack));
 	}
-	printstacks_flipped(c_segs, o_segs, "runs after move");
-	printstacks_flipped(c_stack, o_stack, "data after move");
+	//printstacks_flipped(c_segs, o_segs, "runs after move");
+	//printstacks_flipped(c_stack, o_stack, "data after move");
 	i = group_size;
 	while (i--)
 	{
 		circ_push(o_segs, circ_shift(o_segs) - circ_pop(c_segs) + circ_shift(c_segs));
 		merge_one_run(o_stack, c_stack, circ_peek_top(o_segs));
 	}
-	printstacks_flipped(c_segs, o_segs, "runs after merge other");
-	printstacks_flipped(c_stack, o_stack, "data after merge other");
+	//printstacks_flipped(c_segs, o_segs, "runs after merge other");
+	//printstacks_flipped(c_stack, o_stack, "data after merge other");
+	//printstacks_flipped(c_segs, o_segs, "runs after merge other");
+	//printstacks_flipped(c_stack, o_stack, "data after merge other");
 }
 
 /*
@@ -419,11 +434,15 @@ static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 	split_level(c_segs, o_segs);
 	g_flip = !g_flip;
 	if (max_len > 3)
-		return (segment_rec(o_stack, c_stack, o_segs, c_segs, (max_len + 2) / 3));
+		segment_rec(o_stack, c_stack, o_segs, c_segs, (max_len + 2) / 3);
+	else
+		merge_level(o_stack, c_stack, o_segs, c_segs);
 	g_flip = !g_flip;
 	printstacks_flipped(c_segs, o_segs, "runs before");
 	printstacks_flipped(c_stack, o_stack, "data before");
-	merge_level(o_stack, c_stack, o_segs, c_segs);
+	merge_level(c_stack, o_stack, c_segs, o_segs);
+	printstacks_flipped(c_segs, o_segs, "runs after merge");
+	printstacks_flipped(c_stack, o_stack, "data after merge");
 }
 
 #include <stdlib.h>
@@ -433,28 +452,28 @@ int	main()
 	t_stacks	s;
 	t_circular	a;
 	t_circular	b;
-	int			arr[27];
+	int			arr[81];
 	int			j;
 	int			t;
 
 	circ_reset(&s.a);
 	circ_reset(&s.b);
-	for (int i = 0; i < 27; i++)
+	for (int i = 0; i < 81; i++)
 		arr[i] = i;
-	for (int i = 0; i < 26; i++)
+	for (int i = 0; i + 1 < 81; i++)
 	{
-		j = i + rand() / (RAND_MAX / (27 - i) + 1);
+		j = i + rand() / (RAND_MAX / (81 - i) + 1);
 		t = arr[i];
 		arr[i] = arr[j];
 		arr[j] = t;
 	}
-	for (int i = 0; i < 27; i++)
+	for (int i = 0; i < 81; i++)
 	{
-		if (i < 9)
-			circ_push(&s.a, arr[i]);
-		else	
+		if (i < 27)
 			circ_push(&s.b, arr[i]);
+		else	
+			circ_push(&s.a, arr[i]);
 	}
-	segment(&s, &a, &b, 27);
+	segment(&s, &a, &b, 81);
 	printstacks(&s.a, &s.b, "data after");
 }
