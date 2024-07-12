@@ -1,0 +1,144 @@
+threewayradix
+    input on top
+    current bottom (ra)
+    other top (pa)
+    other bottom (pa + rb)
+    <1.3333 moves per item (opportunistic rrr, avg ~1.2)
+    +0.1111 moves per item rebalancing
+
+Minimal moves:
+| 000000000000000000000000000 |  |
+* left             n it, 4n/3 op *
+| aaaaaaaaa | bbbbbbbbbccccccccc |
+| 111111111 | 111111111111111111 |
+
+* left           n/3 it, 4n/3 op *
+| aaa | aaabbbbbbbbbcccccccccaaa |
+| aaa | bbb                  ccc |
+| 222 | 222111111111111111111222 |
+* shift right    n/9 it,  n/9 op *
+| aaaaaa | bbbbbbbbbcccccccccaaa |
+| aaabbb |                   ccc |
+| 222222 | 111111111111111111222 |
+* right          n/3 it, 4n/3 op *
+| bbbaaaaaabbb | cccccccccaaabbb |
+| cccaaabbbbbb |          cccaaa |
+| 222222222222 | 111111111222222 |
+* right          n/3 it, 4n/3 op *
+| cccbbbaaaaaabbbccc | aaabbbccc |
+| ccccccaaabbbbbbbbb | cccaaaaaa |
+| 222222222222222222 | 222222222 |
+
+* right x3       n/3 it, 4n/3 op *
+| cbacccbbbaaaaaabbbcccabc | abc |
+| aacccccccaaabbbbbbbbbcaa | caa |
+| ccc                  bbb | aaa |
+| 333222222222222222222333 | 333 |
+* shift right    n/9 it,  n/9 op |
+| cbacccbbbaaaaaabbbccc | abcabc |
+| aacccccccaaabbbbbbbbb | caacaa |
+| ccc                   | bbbaaa |
+| 333222222222222222222 | 333333 |
+* left x3        n/3 it, 4n/3 op *
+| abccbacccbbbaaa | abcabcabccba |
+| bbbaacccccccaaa | bbbcaacaaccc |
+| aaaccc          | bbbbbbaaaccc |
+| 333333222222222 | 333333333333 |
+* left x3        n/3 it, 4n/3 op *
+| cbaabccba | cbaabcabcabccbaabc |
+| ccabbbaac | ccabbbcaacaacccacc |
+| aaaaaaccc | bbbbbbbbbaaacccccc |
+| 333333333 | 333333333333333333 |
+
+Every level of radix split gets spread all over the place!
+
+Shift to same side:
+| 000000000000000000000000000 |  |
+* left             n it, 4n/3 op *
+| aaaaaaaaa | bbbbbbbbbccccccccc |
+| 111111111 | 111111111111111111 |
+* shift right    n/3 it,  n/3 op *
+|  | aaaaaaaaabbbbbbbbbccccccccc |
+|  | 111111111111111111111111111 |
+
+* right            n it, 4n/3 op *
+| cccbbbaaaaaabbbccc | aaabbbccc |
+| cccccccccbbbbbbbbb | aaaaaaaaa |
+| 222222222222222222 | 222222222 |
+* shift left     n/3 it,  n/3 op *
+| cccbbbaaaaaabbbcccaaabbbccc |  |
+| cccccccccbbbbbbbbbaaaaaaaaa |  |
+| 222222222222222222222222222 |  |
+
+* left             n it, 4n/3 op *
+| cbaabcabc | cbaabcabccbacbaabc |
+| cccbbbaaa | cccbbbaaaaaabbbccc |
+| aaaaaaaaa | bbbbbbbbbccccccccc |
+| 333333333 | 333333333333333333 |
+* shift right    n/3 it,  n/3 op *
+|  | cbaabcabccbaabcabccbacbaabc |
+|  | cccbbbaaacccbbbaaaaaabbbccc |
+|  | aaaaaaaaabbbbbbbbbccccccccc |
+|  | 333333333333333333333333333 |
+
+Minimal moves with inversions:
+| 000000000000000000000000000 |  |
+* left             n it, 4n/3 op *
+| aaaaaaaaa | bbbbbbbbbccccccccc |
+| 111111111 | 111111111111111111 |
+
+* left           n/3 it, 4n/3 op *
+| aaa | aaabbbbbbbbbcccccccccaaa |
+| aaa | bbb                  ccc |
+| 222 | 222111111111111111111222 |
+* shift right    n/9 it,  n/9 op *
+| aaaaaa | bbbbbbbbbcccccccccaaa |
+| aaabbb |                   ccc |
+| 222222 | 111111111111111111222 |
+* right          n/3 it, 4n/3 op * inverse
+| bbbaaaaaabbb | cccccccccaaabbb |
+| aaaaaabbbbbb |          cccccc |
+| 222222222222 | 111111111222222 |
+* right          n/3 it, 4n/3 op * inverse
+| cccbbbaaaaaabbbccc | aaabbbccc |
+| aaaaaaaaabbbbbbbbb | ccccccccc |
+| 222222222222222222 | 222222222 |
+
+* right x3       n/3 it, 4n/3 op *
+| cbacccbbbaaaaaabbbcccabc | abc |
+| cccaaaaaaaaabbbbbbbbbccc | ccc |
+| ccc                  bbb | aaa |
+| 333222222222222222222333 | 333 |
+# fix below
+* shift right    n/9 it,  n/9 op |
+| cbacccbbbaaaaaabbbccc | abcabc |
+| aacccccccaaabbbbbbbbb | caacaa |
+| ccc                   | bbbaaa |
+| 333222222222222222222 | 333333 |
+* left x3        n/3 it, 4n/3 op *
+| abccbacccbbbaaa | abcabcabccba |
+| bbbaacccccccaaa | bbbcaacaaccc |
+| aaaccc          | bbbbbbaaaccc |
+| 333333222222222 | 333333333333 |
+* left x3        n/3 it, 4n/3 op *
+| cbaabccba | cbaabcabcabccbaabc |
+| ccabbbaac | ccabbbcaacaacccacc |
+| aaaaaaccc | bbbbbbbbbaaacccccc |
+| 333333333 | 333333333333333333 |
+
+| 1-------9 |  |
+| 147 | 258369 |
+|  | 147258369 |
+| 987456 | 123 |
+
+| 1-------9 |  |
+| 369 | 258147 |
+|  | 369258147 |
+| 789654 | 321 |
+| 789 | 654321 |
+
+| 1-------9 |  |
+| 369 | 258147 |
+|  | 369258147 |
+| 789321 | 654 |
+| 789 | 654321 |

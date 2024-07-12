@@ -1,0 +1,47 @@
+three way merge
+    output on top
+    current bottom (rra, same order)
+    other top (pb, reverse order)
+    other bottom (rrb+pb, same order)
+    <1.3333 moves per item (opportunistic rrr, avg 1.25)
+    +0.1111 moves per item rebalancing
+
+
+| cbaabccba | cbaabcabcabccbaabc |
+| 333333333 | 333333333333333333 |
+| ><>>><><> | ><>>><<><<><><<<>< |
+* left a/d/a     n/3 it,  n/9 op *
+| abccbacccbbbaaa | abcabcabccba |
+| 333333222222222 | 333333333333 |
+| >><><>>>><<<>>> | >><<><<><><< |
+* left a/a/d     n/3 it,  n/9 op *
+| cbacccbbbaaaaaabbbccc | abcabc |
+| 333222222222222222222 | 333333 |
+| ><>>>><<<>>>>>>>>><<< | <><<>< |
+* push left      n/9 it,  n/9 op *
+| cbacccbbbaaaaaabbbcccabc | abc |
+| 333222222222222222222333 | 333 |
+| ><>>>><<<>>>>>>>>><<<<>< | <>< |
+* right a/d/a    n/3 it, 4n/9 op *
+| cccbbbaaaaaabbbccc | aaabbbccc |
+| 222222222222222222 | 222222222 |
+| >>><<<>>>>>>>>><<< | <<<>>><<< |
+* right desc     n/3 it, 4n/9 op *
+| bbbaaaaaabbb | cccccccccaaabbb |
+| 222222222222 | 111111111222222 |
+| <<<>>>>>>>>> | <<<<<<<<<<<<>>> |
+* right asc      n/3 it, 4n/9 op *
+| aaaaaa | bbbbbbbbbcccccccccaaa |
+| 222222 | 111111111111111111222 |
+| >>>>>> | >>>>>>>>><<<<<<<<<<<< |
+* push right     n/9 it,  n/9 op *
+| aaa | aaabbbbbbbbbcccccccccaaa |
+| 222 | 222111111111111111111222 |
+| >>> | >>>>>>>>>>>><<<<<<<<<<<< |
+* left desc      n/3 it, 4n/9 op *
+| aaaaaaaaa | bbbbbbbbbccccccccc |
+| 111111111 | 111111111111111111 |
+| >>>>>>>>> | >>>>>>>>><<<<<<<<< |
+* left desc        n it, 4n/3 op *
+| 000000000000000000000000000 |  |
+| >>>>>>>>>>>>>>>>>>>>>>>>>>> |  |
