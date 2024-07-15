@@ -1,0 +1,76 @@
+  -                                             <sorted>[81-1] | [unsorted]
+108 split 81 from top left                      [81-55]<sorted> | [27-1][unsorted][54-28]
+ 54     split 27 from bottom left               <sorted>[81-73] | [63-55][27-1][unsorted][54-28][72-64]
+ 12         split 9 from top left               [81-79]<sorted> | [75-73][63-55][27-1][unsorted][54-28][72-64][78-76]
+  9             sort 3 from bottom left         <sorted><81-79> | [75-73][63-55][27-1][unsorted][54-28][72-64][78-76]
+  8             sort 3 from bottom right        <sorted><81-76> | [75-73][63-55][27-1][unsorted][54-28][72-64]
+  6             sort 3 from top right           <sorted><81-73> | [63-55][27-1][unsorted][54-28][72-64]
+ 18         split 9 from bottom right           [69-67]<sorted><81-73>[72-70] | [66-64][63-55][27-1][unsorted][54-28]
+  7             sort 3 from top left            [69-67]<sorted><81-70> | [66-64][63-55][27-1][unsorted][54-28]
+  9             sort 3 from bottom left         <sorted><81-67> | [66-64][63-55][27-1][unsorted][54-28]
+  6             sort 3 from top right           <sorted><81-64> | [63-55][27-1][unsorted][54-28]
+ 12         split 9 from top right              [60-58]<sorted><81-64>[63-61] | [27-1][unsorted][54-28][57-55]
+  7             sort 3 from top left            [60-58]<sorted><81-61> | [27-1][unsorted][54-28][57-55]
+  9             sort 3 from bottom left         <sorted><81-58> | [27-1][unsorted][54-28][57-55]
+  8             sort 3 from bottom right        <sorted><81-55> | [27-1][unsorted][54-28]
+ 54     split 27 from bottom right              [45-37]<sorted><81-55>[54-46] | [36-28][27-1][unsorted]
+ 12         split 9 from top left               [54-52][45-37]<sorted><81-55> | [48-46][36-28][27-1][unsorted][51-49]
+  9             sort 3 from bottom left         [45-37]<sorted><81-52> | [48-46][36-28][27-1][unsorted][51-49]
+  8             sort 3 from bottom right        [45-37]<sorted><81-49> | [48-46][36-28][27-1][unsorted]
+  6             sort 3 from top right           [45-37]<sorted><81-46> | [36-28][27-1][unsorted]
+ 18         split 9 from bottom left            <sorted><81-46>[45-43] | [42-40][36-28][27-1][unsorted][39-37]
+  7             sort 3 from top left            <sorted><81-43> | [42-40][36-28][27-1][unsorted][39-37]
+  6             sort 3 from top right           <sorted><81-40> | [36-28][27-1][unsorted][39-37]
+  8             sort 3 from bottom right        <sorted><81-37> | [36-28][27-1][unsorted]
+ 12         split 9 from top right              [33-31]<sorted><81-37>[36-34] | [27-1][unsorted][30-28]
+  7             sort 3 from top left            [33-31]<sorted><81-34> | [27-1][unsorted][30-28]
+  9             sort 3 from bottom left         <sorted><81-31> | [27-1][unsorted][30-28]
+  8             sort 3 from bottom right        <sorted><81-28> | [27-1][unsorted]
+ 36     split 27 from top right                 [18-10]<sorted><81-28>[27-19] | [unsorted][9-1]
+ 12         split 9 from top left               [27-25][18-10]<sorted><81-28> | [21-19][unsorted][9-1][24-22]
+  9             sort 3 from bottom left         [18-10]<sorted><81-25> | [21-19][unsorted][9-1][24-22]
+  8             sort 3 from bottom right        [18-10]<sorted><81-22> | [21-19][unsorted][9-1]
+  6             sort 3 from top right           [18-10]<sorted><81-19> | [unsorted][9-1]
+ 18         split 9 from bottom left            <sorted><81-19>[18-16] | [12-10][unsorted][9-1][15-13]
+  7             sort 3 from top left            <sorted><81-16> | [12-10][unsorted][9-1][15-13]
+  8             sort 3 from bottom right        <sorted><81-13> | [12-10][unsorted][9-1]
+  6             sort 3 from top right           <sorted><81-10> | [unsorted][9-1]
+ 18         split 9 from bottom right           [6-4]<sorted><81-10>[9-7] | [3-1][unsorted]
+  7             sort 3 from top left            [6-4]<sorted><81-7> | [3-1][unsorted]
+  9             sort 3 from bottom left         <sorted><81-4> | [3-1][unsorted]
+  6             sort 3 from top right           <sorted><81-1> | [unsorted]
+
+sort 3 from
+    top left        7
+    top right       6
+    bottom left     6
+    bottom right    7
+sort 9 from
+    top left        31  (12+6+6+7)
+    top right       32  (12+7+6+7)
+    bottom left     38  (18+7+6+7)
+    bottom right    37  (18+7+6+6)
+sort 27 from
+    top left        143 (36+32+38+37)
+    top right       142 (36+31+38+37)
+    bottom left     154 (54+31+32+37)
+    bottom right    155 (54+31+32+38)
+sort 81 from
+    top left        559 (108+142+154+155)
+    top right       560 (108+143+154+155)
+    bottom left     616 (162+143+142+155)
+    bottom right    615 (162+143+142+154)
+sort 243 from
+    top left        2195 2125 (324+560+616+615)
+    top right       2194 2124 (324+559+616+615)
+    bottom left     2303 2240 (486+559+560+615)
+    bottom right    2302 2241 (486+559+560+616)
+
+sort 500 from top left?
+    split to 243 bottom left, 243 top right, 14 bottom left
+        514
+    sort 243 from left
+        2125
+    sort 243 from top right
+        2124
+    sort 14 from top right

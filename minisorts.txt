@@ -1,0 +1,35 @@
+1 from
+    topleft     0
+    topright    1   pa
+    bottomleft  1   rra
+    bottomright 2   rrb pa 
+2 from
+    topleft     1   sa?
+    topright    3   sb? pa pa
+    bottomleft  3   rra rra sa?
+    bottomright 4   rrb (pa rrb) pa
+3 from
+    topleft     7   split3 (4), rrr pa pa
+    topright    6   split3 (4), rra pa
+    bottomleft  6   split2 (4), sa? pa
+    bottomright 7   split2 (5), s? pa
+4 from
+    topleft     9   split2 (4), rra rra s? pa pa
+    topright    8   split3 (5), sa? rrr pa
+    bottomleft  9   split2 (6), s? pa pa
+    bottomright 9   split2 (6), s? pa pa
+5 from
+    topleft     
+    topright    
+    bottomleft  
+    bottomright 
+6 from
+    topleft     
+    topright    
+    bottomleft  
+    bottomright 
+7 from
+    topleft     
+    topright    
+    bottomleft  
+    bottomright 

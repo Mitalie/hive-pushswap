@@ -1,119 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   test-merge.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:50:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/12 18:21:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/15 12:31:07 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
-
-#define N 256
-/*
-	circular array
-	start points at non-empty slot unless empty
-	end points at empty slot unless full
-*/
-typedef struct s_circular {
-	size_t	start;
-	size_t	end;
-	size_t	count;
-	int		arr[N];
-}	t_circular;
-
-static void	circ_reset(t_circular *c)
-{
-	*c = (t_circular){0};
-}
-
-static void	circ_push(t_circular *c, int v)
-{
-	assert(c->count < N);
-	c->arr[c->end] = v;
-	c->end = (c->end + 1) % N;
-	c->count++;
-}
-
-static int	circ_pop(t_circular *c)
-{
-	assert(c->count > 0);
-	c->end = (c->end - 1 + N) % N;
-	c->count--;
-	return (c->arr[c->end]);
-}
-
-static void	circ_unshift(t_circular *c, int v)
-{
-	assert(c->count < N);
-	c->start = (c->start - 1 + N) % N;
-	c->arr[c->start] = v;
-	c->count++;
-}
-
-static int	circ_shift(t_circular *c)
-{
-	int	tmp;
-
-	assert(c->count > 0);
-	tmp = c->arr[c->start];
-	c->start = (c->start + 1) % N;
-	c->count--;
-	return (tmp);
-}
-
-static void	circ_swap_top(t_circular *c)
-{
-	size_t	last;
-	size_t	second;
-	int		tmp;
-
-	assert(c->count >= 2);
-	last = (c->end - 1 + N) % N;
-	second = (c->end - 2 + N) % N;
-	tmp = c->arr[last];
-	c->arr[last] = c->arr[second];
-	c->arr[second] = tmp;
-}
-
-static int	circ_peek_top(t_circular *c)
-{
-	assert(c->count > 0);
-	return (c->arr[(c->end - 1 + N) % N]);
-}
-
-static int	circ_peek_bottom(t_circular *c)
-{
-	assert(c->count > 0);
-	return (c->arr[c->start]);
-}
-
-/* pop + unshift */
-static void	circ_rotate(t_circular *c)
-{
-	c->start = (c->start - 1 + N) % N;
-	c->end = (c->end - 1 + N) % N;
-	c->arr[c->start] = c->arr[c->end];
-}
-
-/* shift + push */
-static void	circ_revrotate(t_circular *c)
-{
-	c->arr[c->end] = c->arr[c->start];
-	c->start = (c->start + 1) % N;
-	c->end = (c->end + 1) % N;
-}
+#include "util/circ.h"
 
 typedef struct s_stacks {
 	t_circular	a;
 	t_circular	b;
 }	t_stacks;
 
+/*
 static void	op_sa(t_stacks *s)
 {
 	circ_swap_top(&s->a);
@@ -213,8 +120,11 @@ static void	op(t_stacks *s, t_op op)
 	else
 		assert(!"Invalid op");
 }
+*/
 
 #include <stdio.h>
+
+#define VERTICAL 0
 
 static void	printstacks(const t_circular *a, const t_circular *b, const char *msg)
 {
@@ -225,7 +135,7 @@ static void	printstacks(const t_circular *a, const t_circular *b, const char *ms
 	bb = *b;
 	if (msg)
 		printf("%s:\n", msg);
-	if (false) // vertical
+	if (VERTICAL)
 	{
 		while (aa.count > bb.count)
 			printf(" %2d\n", circ_pop(&aa));
@@ -278,10 +188,11 @@ static void	split_one_run(t_circular *from, t_circular *other);
 static void	merge_one_run(t_circular *target, t_circular *other, int run);
 static void	merge_level(t_circular *c_stack, t_circular *o_stack, t_circular *c_segs, t_circular *o_segs);
 static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *current, t_circular *other, int max_len);
+
 static void	segment(t_stacks *s, t_circular *a, t_circular *b, int n_items)
 {
-	circ_reset(a);
-	circ_reset(b);
+	circ_init(a, n_items);
+	circ_init(b, n_items);
 	circ_push(a, n_items);
 	//printstacks(a, b, "init");
 	split_one_run(a, b);
@@ -308,12 +219,12 @@ static bool	cmp(int dir, int a, int b)
 
 static void	merge_one_run(t_circular *target, t_circular *other, int run)
 {
-	printf("merge run %d\n", run);
 	int	dir;
 	int	n_tb;
 	int	n_ot;
 	int	n_ob;
 
+	printf("merge run %d\n", run);
 	dir = 1;
 	if (run < 0)
 		dir = -1;
@@ -447,33 +358,30 @@ static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 
 #include <stdlib.h>
 
-int	main()
+#define N 50
+
+int	main(void)
 {
 	t_stacks	s;
 	t_circular	a;
 	t_circular	b;
-	int			arr[81];
+	int			arr[N];
 	int			j;
 	int			t;
 
-	circ_reset(&s.a);
-	circ_reset(&s.b);
-	for (int i = 0; i < 81; i++)
+	circ_init(&s.a, N);
+	circ_init(&s.b, N);
+	for (int i = 0; i < N; i++)
 		arr[i] = i;
-	for (int i = 0; i + 1 < 81; i++)
+	for (int i = 0; i + 1 < N; i++)
 	{
-		j = i + rand() / (RAND_MAX / (81 - i) + 1);
+		j = i + rand() / (RAND_MAX / (N - i) + 1);
 		t = arr[i];
 		arr[i] = arr[j];
 		arr[j] = t;
 	}
-	for (int i = 0; i < 81; i++)
-	{
-		if (i < 27)
-			circ_push(&s.b, arr[i]);
-		else	
-			circ_push(&s.a, arr[i]);
-	}
-	segment(&s, &a, &b, 81);
+	for (int i = 0; i < N; i++)
+		circ_push(&s.a, arr[i]);
+	segment(&s, &a, &b, N);
 	printstacks(&s.a, &s.b, "data after");
 }

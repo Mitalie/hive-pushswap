@@ -1,0 +1,38 @@
+find minimal moves to sort N input digits from any starting position to top of stack A (for radix) or to any position (for merge)
+stacks may have additional digits that we're not handling
+    * consider them immutable blocks that can't be moved or split by s/p/r/rr
+    * ignore cases where they don't exist as those happen only a few times in start and end, negligibe for large overall input
+represent state with permutation of N digits plus 3 special values representing the stack configuration:
+    * A: number of digits not on top of stack A (0..N)
+    * B: number of digits on stack B (0..A)
+    * C: number of digits on bottom stack B (0..B)
+    * From those, we can deduce:
+        top of A    : N - A
+        bottom of A : A - B
+        top of B    : B - C
+    total states: N!*Te(N+1) = N!*(N+1)*(N+2)*(N+3)/6 = (N+3)!/6
+        N=4,            840
+        N=5,          6'720
+        N=6,         60'480
+        N=7,        604'800
+        N=8,      6'652'800
+        N=9,     79'833'600
+        N=10, 1'037'836'800
+        N=11     > UINT_MAX
+    numbering stack states:
+        encode: S(A,B,C) = Te(A) + T(B) + C = A(A+1)(A+2)/6 + B(B+1)/2 + C
+        decode: A = max where Te(A) <= S
+                B = max where T(B) <= S - Te(A)
+                C = S - Te(a) - T(B)
+operations transform from one state to another:
+    * move digits and identify resulting permutation
+    * additionally:
+        ra increments A
+        rra decrements A
+        rb increments C
+        rrb decrements C
+        pb increments A and B
+        pa decrements A and B
+    * disallow operations that would put A/B/C out of range
+consider states and operations to be nodes and edges on a graph
+find shortest path from input state(s) to target state
