@@ -1,5 +1,5 @@
 
-TESTS = test-merge cost-radix
+TESTS = test-merge cost-radix optimals
 
 $(TESTS): %: %.c
 	$(CC) -Wall -Wextra -Werror $(CFLAGS) $^ -o $@

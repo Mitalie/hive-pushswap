@@ -6,19 +6,20 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 16:13:36 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/15 17:25:18 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:32:09 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
+#include <stdio.h>
 
 #define N 9
 
 typedef struct s_state {
-	char	a;
-	char	b;
-	char	c;
-	char	num[N];
+	unsigned char	a;
+	unsigned char	b;
+	unsigned char	c;
+	unsigned char	num[N];
 }	t_state;
 
 const int	g_t[10] = {
@@ -53,6 +54,7 @@ int	encode(t_state *s)
 			v--;
 		}
 		perm += v * g_fact[i];
+		i++;
 	}
 	stack = g_te[s->a] + g_t[s->b] + s->c;
 	return (stack * g_fact[N] + perm);
@@ -61,28 +63,65 @@ int	encode(t_state *s)
 t_state	decode(int v)
 {
 	t_state	s;
-	int		perm;
+	int		vi;
 	int		stack;
 	int		i;
 	int		nums[N];
 
 	s = (t_state){0};
 	stack = v / g_fact[N];
-	perm = v % g_fact[N];
-	while (s.a < N && stack > g_te[s.a + 1])
+	while (s.a < N && stack >= g_te[s.a + 1])
 		s.a++;
-	while (s.b < s.a && (stack - g_t[s.a]) > g_t[s.b + 1])
+	while (s.b < s.a && (stack - g_te[s.a]) >= g_t[s.b + 1])
 		s.b++;
 	s.c = stack - g_te[s.a] - g_t[s.b];
-	i = 0;
+	i = N + 1;
+	while (--i)
+		nums[i - 1] = i;
 	while (i < N)
-		nums[i] = i + 1;
-	while (i--)
 	{
-		v = perm / g_fact[i];
-		perm = perm % g_fact[i];
-		s.num[N - i - 1] = nums[v];
-		while (++v < N)
-			nums[v - 1] = nums[v];
+		v %= g_fact[N - i];
+		vi = v / g_fact[N - i - 1];
+		s.num[i++] = nums[vi];
+		while (++vi < N)
+			nums[vi - 1] = nums[vi];
 	}
+	return (s);
+}
+
+void	printstate(t_state *s)
+{
+	int	i;
+
+	i = 0;
+	while (i < N - s->a)
+		printf("%d ", s->num[i++]);
+	printf("[others] ");
+	while (i < N - s->b)
+		printf("%d ", s->num[i++]);
+	printf("| ");
+	while (i < N - s->c)
+		printf("%d ", s->num[i++]);
+	printf("[others] ");
+	while (i < N)
+		printf("%d ", s->num[i++]);
+	printf("\n");
+}
+
+int	main(void)
+{
+	t_state	s;
+
+	s = decode(0);
+	printstate(&s);
+	s = decode(362880);
+	printstate(&s);
+	s = decode(362880 * 2);
+	printstate(&s);
+	s = decode(362880 * 3);
+	printstate(&s);
+	s = decode(362880 * 4);
+	printstate(&s);
+	s = decode(362880 * 5);
+	printstate(&s);
 }
