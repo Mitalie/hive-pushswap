@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:38:47 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/17 16:04:56 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/17 18:05:07 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,7 @@
 
 # include <stdbool.h>
 
-# ifndef N
-#  define N 9
-# endif
-
-# if N > 9
-#  error N > 9 not supported
-# endif
+# include "const.h"
 
 typedef struct s_state
 {
@@ -35,9 +29,27 @@ int		encode(t_state *s);
 t_state	decode(int v);
 void	printstate(t_state *s);
 
-void	sop_r(t_state *s, bool a, bool b);
-void	sop_rr(t_state *s, bool a, bool b);
-void	sop_s(t_state *s, bool a, bool b);
-void	sop_p(t_state *s, bool a, bool b);
+bool	sop_r(t_state *s, bool a, bool b);
+bool	sop_rr(t_state *s, bool a, bool b);
+bool	sop_s(t_state *s, bool a, bool b);
+bool	sop_p(t_state *s, bool a, bool b);
+
+typedef enum e_sop
+{
+	SOP_SS,
+	SOP_SA,
+	SOP_SB,
+	SOP_RR,
+	SOP_RA,
+	SOP_RB,
+	SOP_RRR,
+	SOP_RRA,
+	SOP_RRB,
+	SOP_PA,
+	SOP_PB,
+	NUM_SOP,
+}	t_sop;
+
+bool	sop(t_state *s, t_sop op);
 
 #endif

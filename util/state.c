@@ -6,47 +6,36 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:40:13 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/17 16:11:52 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/17 18:02:12 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "state.h"
 #include <stdio.h>
 #include "arr_rot.h"
-
-const int	g_t[10] = {
-	0, 1, 3, 6, 10, 15, 21, 28, 36, 45
-};
-
-const int	g_te[10] = {
-	0, 1, 4, 10, 20, 35, 56, 84, 120, 165
-};
-
-const int	g_fact[10] = {
-	1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880
-};
+#include "const.h"
 
 int	encode(t_state *s)
 {
 	int	stack;
 	int	perm;
 	int	i;
-	int	v;
-	int	nums[9];
+	int	digit;
+	int	tmp;
 
-	i = 0;
+	i = N - 1;
 	perm = 0;
-	while (i < N)
+	while (i--)
 	{
-		v = i;
-		nums[i] = s->num[i];
-		while (v > 0 && nums[v] < nums[v - 1])
+		digit = 0;
+		tmp = s->num[i];
+		while (digit < N - i - 1 && tmp > s->num[i + digit + 1])
 		{
-			nums[v] = nums[v - 1];
-			v--;
+			s->num[i + digit] = s->num[i + digit + 1];
+			digit++;
 		}
-		perm += v * g_fact[i];
-		i++;
+		s->num[i + digit] = tmp;
+		perm += digit * g_fact[N - i - 1];
 	}
 	stack = g_te[s->a] + g_t[s->b] + s->c;
 	return (stack * g_fact[N] + perm);

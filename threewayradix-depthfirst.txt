@@ -41,36 +41,36 @@
   6             sort 3 from top right           <sorted><81-1> | [unsorted]
 
 sort 3 from
-    top left        7
+    top left        5
     top right       6
     bottom left     6
     bottom right    7
 sort 9 from
-    top left        31  (12+6+6+7)
-    top right       32  (12+7+6+7)
-    bottom left     38  (18+7+6+7)
-    bottom right    37  (18+7+6+6)
+    top left        31 (12+6+6+7)
+    top right       30 (12+5+6+7)
+    bottom left     36 (18+5+6+7)
+    bottom right    35 (18+5+6+6)
 sort 27 from
-    top left        143 (36+32+38+37)
-    top right       142 (36+31+38+37)
-    bottom left     154 (54+31+32+37)
-    bottom right    155 (54+31+32+38)
+    top left        137 (36+30+36+35)
+    top right       138 (36+31+36+35)
+    bottom left     150 (54+31+30+35)
+    bottom right    151 (54+31+30+36)
 sort 81 from
-    top left        559 (108+142+154+155)
-    top right       560 (108+143+154+155)
-    bottom left     616 (162+143+142+155)
-    bottom right    615 (162+143+142+154)
+    top left        547 (108+138+150+151)
+    top right       546 (108+137+150+151)
+    bottom left     588 (162+137+138+151)
+    bottom right    587 (162+137+138+150)
 sort 243 from
-    top left        2195 2125 (324+560+616+615)
-    top right       2194 2124 (324+559+616+615)
-    bottom left     2303 2240 (486+559+560+615)
-    bottom right    2302 2241 (486+559+560+616)
+    top left        2045 (324+546+588+587)
+    top right       2046 (324+547+588+587)
+    bottom left     2166 (486+547+546+587)
+    bottom right    2167 (486+547+546+588)
 
 sort 500 from top left?
     split to 243 bottom left, 243 top right, 14 bottom left
         514
     sort 243 from left
-        2125
+        2045
     sort 243 from top right
-        2124
+        2046
     sort 14 from top right
