@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:38:47 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/16 15:29:06 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:04:56 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 
 # ifndef N
 #  define N 9
+# endif
+
+# if N > 9
+#  error N > 9 not supported
 # endif
 
 typedef struct s_state

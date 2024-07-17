@@ -6,12 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:40:13 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/16 15:39:16 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:11:52 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "state.h"
 #include <stdio.h>
+#include "arr_rot.h"
 
 const int	g_t[10] = {
 	0, 1, 3, 6, 10, 15, 21, 28, 36, 45
@@ -54,10 +55,9 @@ int	encode(t_state *s)
 t_state	decode(int v)
 {
 	t_state	s;
-	int		vi;
+	int		lehmer_digit;
 	int		stack;
 	int		i;
-	int		nums[N];
 
 	s = (t_state){0};
 	stack = v / g_fact[N];
@@ -68,14 +68,11 @@ t_state	decode(int v)
 	s.c = stack - g_te[s.a] - g_t[s.b];
 	i = N + 1;
 	while (--i)
-		nums[i - 1] = i;
+		s.num[i - 1] = i;
 	while (i < N)
 	{
-		v %= g_fact[N - i];
-		vi = v / g_fact[N - i - 1];
-		s.num[i++] = nums[vi];
-		while (++vi < N)
-			nums[vi - 1] = nums[vi];
+		lehmer_digit = v / g_fact[N - i - 1] % (N - i);
+		byte_arr_rot(s.num + i++, lehmer_digit + 1, true);
 	}
 	return (s);
 }
@@ -88,13 +85,13 @@ void	printstate(t_state *s)
 	printf("(t) ");
 	while (i < N - s->a)
 		printf("%d ", s->num[i++]);
-	printf("[others] ");
+	printf("... ");
 	while (i < N - s->b)
 		printf("%d ", s->num[i++]);
 	printf("(b) | (b) ");
 	while (i < N - s->b + s->c)
 		printf("%d ", s->num[i++]);
-	printf("[others] ");
+	printf("... ");
 	while (i < N)
 		printf("%d ", s->num[i++]);
 	printf("(t)\n");
