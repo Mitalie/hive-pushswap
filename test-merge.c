@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:50:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/18 16:00:42 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:04:19 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,23 +149,23 @@ static void	printstacks(const t_circular *a, const t_circular *b, const char *ms
 	{
 		printf("a | ");
 		while (aa.count)
-			printf(" %2d", circ_pop(&aa));
+			printf(" %2d", circ_shift(&aa));
 		printf("\nb | ");
 		while (bb.count)
-			printf(" %2d", circ_pop(&bb));
+			printf(" %2d", circ_shift(&bb));
 		printf("\n");
 	}
 }
 
 static bool	g_flip = false;
 
-static void	printstacks_flipped(t_circular *current, t_circular *other, const char *msg)
+/*static void	printstacks_flipped(t_circular *current, t_circular *other, const char *msg)
 {
 	if (g_flip)
 		printstacks(other, current, msg);
 	else
 		printstacks(current, other, msg);
-}
+}*/
 
 /*
 	Due to the double stack layout, the higher level three-way merges need both
@@ -219,6 +219,8 @@ static bool	cmp(int dir, int a, int b)
 	return (a > b);
 }
 
+static size_t	g_op_count = 0;
+
 static void	merge_one_run(t_circular *target, t_circular *other, int run)
 {
 	int	dir;
@@ -226,7 +228,7 @@ static void	merge_one_run(t_circular *target, t_circular *other, int run)
 	int	n_ot;
 	int	n_ob;
 
-	printf("merge run %d\n", run);
+	//printf("merge run %d\n", run);
 	dir = 1;
 	if (run < 0)
 		dir = -1;
@@ -240,18 +242,25 @@ static void	merge_one_run(t_circular *target, t_circular *other, int run)
 			&& (!n_ot || cmp(dir, circ_peek_bottom(target), circ_peek_top(other)))
 			&& (!n_ob || cmp(dir, circ_peek_bottom(target), circ_peek_bottom(other))))
 		{
+			// rra
 			circ_push(target, circ_shift(target));
 			n_tb--;
+			g_op_count++;
 		}
 		else if (n_ot && (!n_ob || cmp(dir, circ_peek_top(other), circ_peek_bottom(other))))
 		{
+			// pa
 			circ_push(target, circ_pop(other));
 			n_ot--;
+			g_op_count++;
 		}
 		else
 		{
+			// rrb pa
 			circ_push(target, circ_shift(other));
 			n_ob--;
+			g_op_count++;
+			g_op_count++;
 		}
 	}
 }
@@ -268,6 +277,7 @@ static void	merge_level(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 	size_t	i;
 	int		j;
 
+	printf("ops before level: %zu\n", g_op_count);
 	group_size = c_segs->count / 3;
 	i = 2 * group_size;
 	while (i--)
@@ -285,7 +295,11 @@ static void	merge_level(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 		if (j < 0)
 			j *= -1;
 		while (j--)
+		{
+			// pa
 			circ_push(c_stack, circ_pop(o_stack));
+			g_op_count++;
+		}
 	}
 	//printstacks_flipped(c_segs, o_segs, "runs after move");
 	//printstacks_flipped(c_stack, o_stack, "data after move");
@@ -361,10 +375,19 @@ static void	balance_stacks(t_circular *c_stack, t_circular *o_stack, t_circular 
 			segs_sum += seg_size;
 		circ_push(c_segs, seg_size);
 	}
+	printf("balance delta: %ld\n", (long)c_stack->count - (long)segs_sum);
 	while (c_stack->count > segs_sum)
+	{
+		// pb
 		circ_push(o_stack, circ_pop(c_stack));
+		g_op_count++;
+	}
 	while (c_stack->count < segs_sum)
+	{
+		// pa
 		circ_push(c_stack, circ_pop(o_stack));
+		g_op_count++;
+	}
 }
 
 /*
@@ -373,7 +396,7 @@ static void	balance_stacks(t_circular *c_stack, t_circular *o_stack, t_circular 
 */
 static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *c_segs, t_circular *o_segs, int max_len)
 {
-	printstacks_flipped(c_segs, o_segs, "runs before split");
+	//printstacks_flipped(c_segs, o_segs, "runs before split");
 	split_level(c_segs, o_segs);
 	g_flip = !g_flip;
 	if (max_len > 3)
@@ -384,16 +407,16 @@ static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 		merge_level(o_stack, c_stack, o_segs, c_segs);
 	}
 	g_flip = !g_flip;
-	printstacks_flipped(c_segs, o_segs, "runs before");
-	printstacks_flipped(c_stack, o_stack, "data before");
+	//printstacks_flipped(c_segs, o_segs, "runs before");
+	//printstacks_flipped(c_stack, o_stack, "data before");
 	merge_level(c_stack, o_stack, c_segs, o_segs);
-	printstacks_flipped(c_segs, o_segs, "runs after merge");
-	printstacks_flipped(c_stack, o_stack, "data after merge");
+	//printstacks_flipped(c_segs, o_segs, "runs after merge");
+	//printstacks_flipped(c_stack, o_stack, "data after merge");
 }
 
 #include <stdlib.h>
 
-#define N 50
+#define N 500
 
 int	main(void)
 {
@@ -418,6 +441,7 @@ int	main(void)
 	for (int i = 0; i < N; i++)
 		circ_push(&s.a, arr[i]);
 	segment(&s, &a, &b, N);
+	printf("total ops: %zu\n", g_op_count);
 	printstacks(&s.a, &s.b, "data after");
 	circ_deinit(&s.a);
 	circ_deinit(&s.b);
