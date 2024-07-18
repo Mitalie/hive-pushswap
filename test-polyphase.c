@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 15:40:04 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/18 18:28:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/18 19:12:13 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ static void	merge_level_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state)
 	t_ppm_curr	prev;
 	size_t		i;
 
+	printf("ops before level: %zu\n", g_op_count);
 	state->curr = (state->curr + N_PPM_TARGETS - 1) % N_PPM_TARGETS;
 	prev = (state->curr + N_PPM_TARGETS - 1) % N_PPM_TARGETS;
 	state->runs[state->curr] = state->runs[prev];
@@ -163,6 +164,7 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 	size_t	delta;
 	size_t	i;
 
+	printf("balance delta: %ld\n", (long)data->a.count - (long)seg->a.count);
 	while (data->a.count > seg->a.count)
 	{
 		// pb
@@ -176,6 +178,7 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 		g_op_count++;
 	}
 	delta = seg->b.count - data->b.count;
+	printf("dummy segments: %zu\n", delta);
 	i = delta;
 	while (i--)
 		circ_shift(&seg->b);
@@ -191,12 +194,7 @@ static void	segment_rec_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state, s
 	if (state->total_runs < n_items)
 		segment_rec_ppm(data, seg, state, n_items);
 	else
-	{
 		balance_stacks_ppm(data, seg);
-		//printstacks(seg, "runs before merge");
-		//printstacks(data, "data before merge");
-		merge_level_ppm(data, seg, state);
-	}
 	//printstacks(seg, "runs before merge");
 	//printstacks(data, "data before merge");
 	merge_level_ppm(data, seg, state);
@@ -219,7 +217,7 @@ static void	segment(t_stacks *data, int n_items)
 	circ_deinit(&seg.b);
 }
 
-#define N 100
+#define N 500
 
 int	main(void)
 {
@@ -242,8 +240,8 @@ int	main(void)
 	for (int i = 0; i < N; i++)
 		circ_push(&s.a, arr[i]);
 	segment(&s, N);
+	printf("total ops: %zu\n", g_op_count);
 	printstacks(&s, "data after");
-	printf("%zu ops", g_op_count);
 	circ_deinit(&s.a);
 	circ_deinit(&s.b);
 }
