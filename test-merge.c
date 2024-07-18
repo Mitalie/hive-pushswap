@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:50:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/15 12:31:07 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:00:42 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,14 +191,16 @@ static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *cu
 
 static void	segment(t_stacks *s, t_circular *a, t_circular *b, int n_items)
 {
-	circ_init(a, n_items);
-	circ_init(b, n_items);
+	circ_init(a, n_items * 3);
+	circ_init(b, n_items * 3);
 	circ_push(a, n_items);
 	//printstacks(a, b, "init");
 	split_one_run(a, b);
 	//printstacks(a, b, "first split");
 	segment_rec(&s->a, &s->b, a, b, (n_items + 2) / 3);
 	merge_one_run(&s->a, &s->b, n_items);
+	circ_deinit(a);
+	circ_deinit(b);
 }
 
 /*
@@ -254,6 +256,12 @@ static void	merge_one_run(t_circular *target, t_circular *other, int run)
 	}
 }
 
+/*
+	current has three groups of runs, other has 6 (a b c <|> d e f g h i )
+	merge two groups to current (adi beh c <|> f g)
+	move one group to current (g adi beh c <|> f)
+	merge one group to other (adi beh <|> cfg)
+*/
 static void	merge_level(t_circular *c_stack, t_circular *o_stack, t_circular *c_segs, t_circular *o_segs)
 {
 	size_t	group_size;
@@ -336,18 +344,45 @@ static void	split_level(t_circular *current, t_circular *other)
 	//printstacks_flipped(current, other, "split other");
 }
 
+static void	balance_stacks(t_circular *c_stack, t_circular *o_stack, t_circular *c_segs)
+{
+	size_t	segs_sum;
+	int		seg_size;
+	size_t	i;
+
+	i = 0;
+	segs_sum = 0;
+	while (i++ < c_segs->count)
+	{
+		seg_size = circ_shift(c_segs);
+		if (seg_size < 0)
+			segs_sum -= seg_size;
+		else
+			segs_sum += seg_size;
+		circ_push(c_segs, seg_size);
+	}
+	while (c_stack->count > segs_sum)
+		circ_push(o_stack, circ_pop(c_stack));
+	while (c_stack->count < segs_sum)
+		circ_push(c_stack, circ_pop(o_stack));
+}
+
 /*
 	At max_len <= 3 the next split would produce 1-length runs for which
 	direction doesn't matter and no merging needs to be done.
 */
 static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *c_segs, t_circular *o_segs, int max_len)
 {
+	printstacks_flipped(c_segs, o_segs, "runs before split");
 	split_level(c_segs, o_segs);
 	g_flip = !g_flip;
 	if (max_len > 3)
 		segment_rec(o_stack, c_stack, o_segs, c_segs, (max_len + 2) / 3);
 	else
+	{
+		balance_stacks(c_stack, o_stack, c_segs);
 		merge_level(o_stack, c_stack, o_segs, c_segs);
+	}
 	g_flip = !g_flip;
 	printstacks_flipped(c_segs, o_segs, "runs before");
 	printstacks_flipped(c_stack, o_stack, "data before");
@@ -384,4 +419,6 @@ int	main(void)
 		circ_push(&s.a, arr[i]);
 	segment(&s, &a, &b, N);
 	printstacks(&s.a, &s.b, "data after");
+	circ_deinit(&s.a);
+	circ_deinit(&s.b);
 }
