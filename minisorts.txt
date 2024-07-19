@@ -29,10 +29,10 @@
     bottomleft  16? 17: split2(9: 3 tl, 3 tr) s? rr s? rrr s? pa pa pa
     bottomright 16? 17: split2(9: 3 tl, 3 tr) s? rr s? rrr s? pa pa pa
 7 from
-    topleft     18  20: split3(9: 2 bl, 2 br, 3 tr) sort(6: 3 tr) rrr rrr s? pa pa
+    topleft     18? 20: split3(9: 2 bl, 2 br, 3 tr) sort(6: 3 tr) rrr rrr s? pa pa
     topright    16? 19: split3(9: 3 tl, 2 bl, 2 br) sort(5: 3 tl) rrr rrr s? pa pa
     bottomleft  20? 24: split2(12: 2 tl, 5 tr) sort(1: 2 tl) sort(11: 5 tr)
-    bottomright 19? 23: split2(11: 2 tl, 5 tr) sort(1: 2 tl) sort(11: 5 tr)
+    bottomright 19? 21: split2(9: 2 tl, 5 tr) sort(1: 2 tl) sort(11: 5 tr)
 8 from
     topleft     21?
     topright    19?
@@ -43,3 +43,12 @@
     topright    21?
     bottomleft  27?
     bottomright 26?
+
+sort(k0,abc) = split(k1,a) + split(k2,b) + split(k3,c) + sort(k1,a) + sort(k2,b) + sort(k3,c) where c=abc-a-b
+select a, b that minimize cost? (n+1)(n+2)/2 choices
+
+sort2(k0,ab) = split(k1,a) + split(k2,b)               + sort(k1,a) + sort(k2,b)              where b=ab-a
+select a that minimizes cost? n+1 choices
+
+sort(k0,abc) = sort2(k0,ab)              + split(k3,c)                           + sort(k3,c) where c=abc-ab
+select ab that minimizes cost? n+1 choices
