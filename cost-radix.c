@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 13:44:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/19 19:09:42 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:40:16 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,14 @@ static void	calc(t_costs *arr, int max_n)
 	int	n;
 	int	loc;
 
-	n = NUM_FIXED;
+	n = 0;
 	while (n < max_n)
 	{
 		loc = 0;
 		while (loc < NUM_LOC)
 		{
-			arr[n].costs[loc].ops = INT_MAX / 3;
+			if (n >= NUM_FIXED)
+				arr[n].costs[loc].ops = INT_MAX / 3;
 			arr[n].costs[loc].ops_2way = INT_MAX / 3;
 			loc++;
 		}
@@ -189,7 +190,6 @@ int	main(int argc, char **argv)
 	while (i < NUM_FIXED * NUM_LOC && i < n * NUM_LOC)
 	{
 		arr[i / NUM_LOC].costs[i % NUM_LOC].ops = g_fixed_costs[i];
-		arr[i / NUM_LOC].costs[i % NUM_LOC].ops_2way = g_fixed_costs[i];
 		i++;
 	}
 	calc(arr, n);
