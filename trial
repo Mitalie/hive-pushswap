@@ -1,0 +1,12 @@
+#!/bin/bash
+printf "size\tbalanced\tpp-auto\tpp-fill\tpp-opt-0\tpp-opt-1\tpp-opt-2\tpp-opt-3\n"
+for ((i=1; i<=1000; i++)); do
+    printf "%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" $i \
+        "$(bin/test-merge $i)" \
+        "$(bin/test-polyphase-auto $i)" \
+        "$(bin/test-polyphase-fill $i)" \
+        "$(bin/test-polyphase-opt $i)" \
+        "$(bin/test-polyphase-opt $i 1)" \
+        "$(bin/test-polyphase-opt $i 2)" \
+        "$(bin/test-polyphase-opt $i 3)"
+done

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 15:40:04 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/24 15:31:52 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:49:57 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_stacks {
 	t_circular	b;
 }	t_stacks;
 
-static void	printstacks(const t_stacks *s, const char *msg)
+/*static void	printstacks(const t_stacks *s, const char *msg)
 {
 	t_stacks	copy;
 
@@ -36,7 +36,7 @@ static void	printstacks(const t_stacks *s, const char *msg)
 	while (copy.b.count)
 		printf(" %2d", circ_shift(&copy.b));
 	printf("\n");
-}
+}*/
 
 typedef enum e_ppm_next
 {
@@ -112,7 +112,7 @@ static void	merge_level_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state)
 	t_ppm_curr	prev;
 	size_t		i;
 
-	printf("ops before level: %zu\n", g_op_count);
+	//printf("ops before level: %zu\n", g_op_count);
 	state->curr = (state->curr + N_PPM_TARGETS - 1) % N_PPM_TARGETS;
 	prev = (state->curr + N_PPM_TARGETS - 1) % N_PPM_TARGETS;
 	state->runs[state->curr] = state->runs[prev];
@@ -164,7 +164,7 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 	size_t	delta;
 	size_t	i;
 
-	printf("balance delta: %ld\n", (long)data->a.count - (long)seg->a.count);
+	//printf("balance delta: %ld\n", (long)data->a.count - (long)seg->a.count);
 	while (data->a.count > seg->a.count)
 	{
 		// pb
@@ -172,7 +172,7 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 		g_op_count++;
 	}
 	delta = seg->a.count - data->a.count;
-	printf("dummy segments to a: %zu\n", delta);
+	//printf("dummy segments to a: %zu\n", delta);
 	i = delta;
 	while (i--)
 		circ_shift(&seg->a);
@@ -180,7 +180,7 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 	while (i--)
 		circ_unshift(&seg->a, 0);
 	delta = seg->b.count - data->b.count;
-	printf("dummy segments to b: %zu\n", delta);
+	//printf("dummy segments to b: %zu\n", delta);
 	i = delta;
 	while (i--)
 		circ_shift(&seg->b);
@@ -219,10 +219,12 @@ static void	segment(t_stacks *data, int n_items)
 	circ_deinit(&seg.b);
 }
 
-#define N 500
+//#define N 5000
 
-int	main(void)
+int	main(int argc, char **argv)
 {
+	(void) argc;
+	int			N = atoi(argv[1]);
 	t_stacks	s;
 	int			arr[N];
 	int			j;
@@ -242,8 +244,8 @@ int	main(void)
 	for (int i = 0; i < N; i++)
 		circ_push(&s.a, arr[i]);
 	segment(&s, N);
-	printf("total ops: %zu\n", g_op_count);
-	printstacks(&s, "data after");
+	printf("%zu\n", g_op_count);
+	//printstacks(&s, "data after");
 	circ_deinit(&s.a);
 	circ_deinit(&s.b);
 }

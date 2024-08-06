@@ -126,7 +126,7 @@ static void	op(t_stacks *s, t_op op)
 
 #define VERTICAL 0
 
-static void	printstacks(const t_circular *a, const t_circular *b, const char *msg)
+/*static void	printstacks(const t_circular *a, const t_circular *b, const char *msg)
 {
 	t_circular	aa;
 	t_circular	bb;
@@ -155,7 +155,7 @@ static void	printstacks(const t_circular *a, const t_circular *b, const char *ms
 			printf(" %2d", circ_shift(&bb));
 		printf("\n");
 	}
-}
+}*/
 
 static bool	g_flip = false;
 
@@ -277,7 +277,7 @@ static void	merge_level(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 	size_t	i;
 	int		j;
 
-	printf("ops before level: %zu\n", g_op_count);
+	//printf("ops before level: %zu\n", g_op_count);
 	group_size = c_segs->count / 3;
 	i = 2 * group_size;
 	while (i--)
@@ -375,7 +375,7 @@ static void	balance_stacks(t_circular *c_stack, t_circular *o_stack, t_circular 
 			segs_sum += seg_size;
 		circ_push(c_segs, seg_size);
 	}
-	printf("balance delta: %ld\n", (long)c_stack->count - (long)segs_sum);
+	//printf("balance delta: %ld\n", (long)c_stack->count - (long)segs_sum);
 	while (c_stack->count > segs_sum)
 	{
 		// pb
@@ -415,10 +415,12 @@ static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *c_
 
 #include <stdlib.h>
 
-#define N 500
+//#define N 5000
 
-int	main(void)
+int	main(int argc, char **argv)
 {
+	(void) argc;
+	int			N = atoi(argv[1]);
 	t_stacks	s;
 	t_circular	a;
 	t_circular	b;
@@ -440,8 +442,8 @@ int	main(void)
 	for (int i = 0; i < N; i++)
 		circ_push(&s.a, arr[i]);
 	segment(&s, &a, &b, N);
-	printf("total ops: %zu\n", g_op_count);
-	printstacks(&s.a, &s.b, "data after");
+	printf("%zu\n", g_op_count);
+	//printstacks(&s.a, &s.b, "data after");
 	circ_deinit(&s.a);
 	circ_deinit(&s.b);
 }
