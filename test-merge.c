@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:50:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/18 20:04:19 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:31:35 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,16 +396,15 @@ static void	balance_stacks(t_circular *c_stack, t_circular *o_stack, t_circular 
 */
 static void	segment_rec(t_circular *c_stack, t_circular *o_stack, t_circular *c_segs, t_circular *o_segs, int max_len)
 {
-	//printstacks_flipped(c_segs, o_segs, "runs before split");
-	split_level(c_segs, o_segs);
-	g_flip = !g_flip;
-	if (max_len > 3)
-		segment_rec(o_stack, c_stack, o_segs, c_segs, (max_len + 2) / 3);
-	else
+	if (max_len > 1)
 	{
-		balance_stacks(c_stack, o_stack, c_segs);
-		merge_level(o_stack, c_stack, o_segs, c_segs);
+		//printstacks_flipped(c_segs, o_segs, "runs before split");
+		split_level(c_segs, o_segs);
+		g_flip = !g_flip;
+		segment_rec(o_stack, c_stack, o_segs, c_segs, (max_len + 2) / 3);
 	}
+	else
+		balance_stacks(c_stack, o_stack, c_segs);
 	g_flip = !g_flip;
 	//printstacks_flipped(c_segs, o_segs, "runs before");
 	//printstacks_flipped(c_stack, o_stack, "data before");
