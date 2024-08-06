@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 15:40:04 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/18 19:12:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:14:21 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,34 @@ static bool	cmp(int dir, int a, int b)
 
 static size_t	g_op_count = 0;
 
-static void	merge_one_run_ppm(t_circular *c_data, t_circular *o_data, t_circular *c_seg, t_circular *o_seg)
+static void	merge_one_run_ppm(t_circular *c_data, t_circular *o_data, t_circular *c_seg, t_circular *o_seg, int tb_tot)
 {
 	int	n_tb;
 	int	n_ot;
 	int	n_ob;
 	int	dir;
+	int tot;
 
 	n_tb = circ_shift(c_seg);
 	n_ot = circ_pop(o_seg);
 	n_ob = circ_shift(o_seg);
-	circ_push(c_seg, n_tb - n_ot + n_ob);
-	//printf("merge run %d\n", circ_peek_top(c_seg));
+	tot = n_tb - n_ot + n_ob;
 	dir = 1;
-	if (circ_peek_top(c_seg) < 0)
+	if (tot < 0)
 		dir = -1;
+	if (n_tb * dir > tb_tot)
+		n_tb = dir * tb_tot;
+	if (n_ot * -dir > (long)o_data->count)
+		n_ot = -dir * o_data->count;
+	if ((n_ob - n_ot) * dir > (long)o_data->count)
+		n_ob = dir * o_data->count + n_ot;
+	tot = n_tb - n_ot + n_ob;
+	circ_push(c_seg, tot);
+	//printf("merge run %d\n", circ_peek_top(c_seg));
 	while (n_tb || n_ot || n_ob)
 	{
+		if (!o_data->count)
+			n_ot = n_ob = 0;
 		if (n_tb
 			&& (!n_ot || cmp(dir, circ_peek_bottom(c_data), circ_peek_top(o_data)))
 			&& (!n_ob || cmp(dir, circ_peek_bottom(c_data), circ_peek_bottom(o_data))))
@@ -111,6 +122,7 @@ static void	merge_level_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state)
 {
 	t_ppm_curr	prev;
 	size_t		i;
+	int			tb_tot;
 
 	printf("ops before level: %zu\n", g_op_count);
 	state->curr = (state->curr + N_PPM_TARGETS - 1) % N_PPM_TARGETS;
@@ -121,12 +133,15 @@ static void	merge_level_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state)
 		if (i++ != state->curr)
 			state->runs[i - 1] -= state->runs[state->curr];
 	i = state->runs[state->curr];
+	tb_tot = data->b.count;
+	if (state->curr == A1 || state->curr == A2)
+		tb_tot = data->a.count;
 	if (state->curr == A1 || state->curr == A2)
 		while (i--)
-			merge_one_run_ppm(&data->a, &data->b, &seg->a, &seg->b);
+			merge_one_run_ppm(&data->a, &data->b, &seg->a, &seg->b, tb_tot);
 	else
 		while (i--)
-			merge_one_run_ppm(&data->b, &data->a, &seg->b, &seg->a);
+			merge_one_run_ppm(&data->b, &data->a, &seg->b, &seg->a, tb_tot);
 }
 
 static void	split_one_run_ppm(t_circular *from, t_circular *other)
@@ -161,8 +176,8 @@ static void	split_level_ppm(t_stacks *seg, t_ppm_state *state)
 
 static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 {
-	size_t	delta;
-	size_t	i;
+	//size_t	delta;
+	//size_t	i;
 
 	printf("balance delta: %ld\n", (long)data->a.count - (long)seg->a.count);
 	while (data->a.count > seg->a.count)
@@ -171,6 +186,7 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 		circ_push(&data->b, circ_pop(&data->a));
 		g_op_count++;
 	}
+	/*
 	while (data->a.count < seg->a.count)
 	{
 		// pa
@@ -185,6 +201,7 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 	i = delta;
 	while (i--)
 		circ_unshift(&seg->b, 0);
+	*/
 }
 
 static void	segment_rec_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state, size_t n_items)
