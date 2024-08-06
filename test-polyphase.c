@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 15:40:04 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/18 19:12:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:57:45 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,14 +171,16 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 		circ_push(&data->b, circ_pop(&data->a));
 		g_op_count++;
 	}
-	while (data->a.count < seg->a.count)
-	{
-		// pa
-		circ_push(&data->a, circ_pop(&data->b));
-		g_op_count++;
-	}
+	delta = seg->a.count - data->a.count;
+	printf("dummy segments to a: %zu\n", delta);
+	i = delta;
+	while (i--)
+		circ_shift(&seg->a);
+	i = delta;
+	while (i--)
+		circ_unshift(&seg->a, 0);
 	delta = seg->b.count - data->b.count;
-	printf("dummy segments: %zu\n", delta);
+	printf("dummy segments to b: %zu\n", delta);
 	i = delta;
 	while (i--)
 		circ_shift(&seg->b);
