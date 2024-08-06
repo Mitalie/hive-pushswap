@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 15:40:04 by amakinen          #+#    #+#             */
-/*   Updated: 2024/07/18 19:12:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:12:34 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,16 @@ static void	split_one_run_ppm(t_circular *from, t_circular *other)
 	int		dir;
 
 	dir = circ_pop(from);
+	if (dir < 0)
+		dir--;
+	else
+		dir++;
 	circ_unshift(from, dir);
 	circ_push(other, -dir);
+	if (dir < 0)
+		dir--;
+	else
+		dir++;
 	circ_unshift(other, dir);
 }
 
@@ -159,8 +167,115 @@ static void	split_level_ppm(t_stacks *seg, t_ppm_state *state)
 	state->curr = (state->curr + 1) % N_PPM_TARGETS;
 }
 
-static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
+static int	get_cost(t_stacks *seg, int key)
 {
+	int cost;
+
+	if (key < 0)
+	{
+		key = -1 - key;
+		key = (key + seg->a.start) % seg->a.size;
+		cost = seg->a.arr[key];
+	}
+	else
+	{
+		key = (key + seg->b.start) % seg->b.size;
+		cost = seg->b.arr[key];
+	}
+	if (cost < 0)
+		cost *= -1;
+	return (cost);
+}
+
+static void	set_dummy(t_stacks *seg, int key, bool dummy)
+{
+	if (key < 0)
+	{
+		key = -1 - key;
+		key = (key + seg->a.start) % seg->a.size;
+		if (dummy)
+			seg->a.arr[key] = 0;
+		else if (seg->a.arr[key] < 0)
+			seg->a.arr[key] = -1;
+		else
+			seg->a.arr[key] = 1;
+	}
+	else
+	{
+		key = (key + seg->b.start) % seg->b.size;
+		if (dummy)
+			seg->b.arr[key] = 0;
+		else if (seg->b.arr[key] < 0)
+			seg->b.arr[key] = -1;
+		else
+			seg->b.arr[key] = 1;
+	}
+}
+
+
+static void	create_dummies(t_stacks *seg, size_t n_items)
+{
+	int	*keys;
+	int	i;
+	int	j;
+	int mi;
+	int mcost;
+	int tmp;
+
+	i = seg->a.count + seg->b.count;
+	keys = malloc(i * sizeof *keys);
+	while (i--)
+		keys[i] = i - seg->a.count;
+	i = seg->a.count + seg->b.count;
+	while (i--)
+	{
+		mi = i;
+		mcost = get_cost(seg, keys[mi]);
+		j = 0;
+		while (j < i)
+		{
+			tmp = get_cost(seg, keys[j]);
+			if (tmp > mcost)
+			{
+				mi = j;
+				mcost = tmp;
+			}
+			j++;
+		}
+		tmp = keys[i];
+		keys[i] = keys[mi];
+		keys[mi] = tmp;
+	}
+	i = seg->a.count + seg->b.count;
+	printstacks(seg, "run costs before dummying");
+	while (i--)
+		set_dummy(seg, keys[i], i >= (long)n_items);
+	printstacks(seg, "runs after dummying");
+}
+
+static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg, size_t n_items)
+{
+	size_t	i;
+	size_t	num_runs;
+	i = seg->b.count;
+	while (i--)
+		if (seg->b.arr[(seg->b.start + i) % seg->b.size] < 0)
+			seg->b.arr[(seg->b.start + i) % seg->b.size]--;
+		else
+			seg->b.arr[(seg->b.start + i) % seg->b.size]++;
+	create_dummies(seg, n_items);
+	i = seg->a.count;
+	num_runs = 0;
+	while (i--)
+		if (seg->a.arr[(seg->a.start + i) % seg->a.size])
+			num_runs++;
+	while (data->a.count > num_runs)
+	{
+		// pb
+		circ_push(&data->b, circ_pop(&data->a));
+		g_op_count++;
+	}
+	/*
 	size_t	delta;
 	size_t	i;
 
@@ -185,6 +300,7 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg)
 	i = delta;
 	while (i--)
 		circ_unshift(&seg->b, 0);
+	*/
 }
 
 static void	segment_rec_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state, size_t n_items)
@@ -194,7 +310,7 @@ static void	segment_rec_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state, s
 	if (state->total_runs < n_items)
 		segment_rec_ppm(data, seg, state, n_items);
 	else
-		balance_stacks_ppm(data, seg);
+		balance_stacks_ppm(data, seg, n_items);
 	//printstacks(seg, "runs before merge");
 	//printstacks(data, "data before merge");
 	merge_level_ppm(data, seg, state);
@@ -207,7 +323,7 @@ static void	segment(t_stacks *data, int n_items)
 
 	circ_init(&seg.a, n_items * 3);
 	circ_init(&seg.b, n_items * 3);
-	circ_push(&seg.a, 1);
+	circ_push(&seg.a, 0);
 	state = (t_ppm_state){0};
 	state.curr = A1;
 	state.runs[A1] = 1;
