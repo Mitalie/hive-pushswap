@@ -1,0 +1,5 @@
+/obj/
+/push_swap
+
+# Vim
+.*.sw?
