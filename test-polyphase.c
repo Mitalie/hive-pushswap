@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 15:40:04 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/06 15:12:34 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:44:47 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,45 +212,29 @@ static void	set_dummy(t_stacks *seg, int key, bool dummy)
 	}
 }
 
+static t_stacks *cmp_seg;
+static int	cmp_keys(const void *a, const void *b)
+{
+	return (get_cost(cmp_seg, *(int*)a) - get_cost(cmp_seg, *(int*)b));
+}
 
 static void	create_dummies(t_stacks *seg, size_t n_items)
 {
 	int	*keys;
 	int	i;
-	int	j;
-	int mi;
-	int mcost;
-	int tmp;
 
 	i = seg->a.count + seg->b.count;
 	keys = malloc(i * sizeof *keys);
 	while (i--)
 		keys[i] = i - seg->a.count;
+	cmp_seg = seg;
+	qsort(keys, seg->a.count + seg->b.count, sizeof *keys, cmp_keys);
 	i = seg->a.count + seg->b.count;
-	while (i--)
-	{
-		mi = i;
-		mcost = get_cost(seg, keys[mi]);
-		j = 0;
-		while (j < i)
-		{
-			tmp = get_cost(seg, keys[j]);
-			if (tmp > mcost)
-			{
-				mi = j;
-				mcost = tmp;
-			}
-			j++;
-		}
-		tmp = keys[i];
-		keys[i] = keys[mi];
-		keys[mi] = tmp;
-	}
-	i = seg->a.count + seg->b.count;
-	printstacks(seg, "run costs before dummying");
+	//printstacks(seg, "run costs before dummying");
 	while (i--)
 		set_dummy(seg, keys[i], i >= (long)n_items);
-	printstacks(seg, "runs after dummying");
+	//printstacks(seg, "runs after dummying");
+	free(keys);
 }
 
 static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg, size_t n_items)
@@ -310,7 +294,15 @@ static void	segment_rec_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state, s
 	if (state->total_runs < n_items)
 		segment_rec_ppm(data, seg, state, n_items);
 	else
+	{
+		split_level_ppm(seg, state);
+		split_level_ppm(seg, state);
+		split_level_ppm(seg, state);
 		balance_stacks_ppm(data, seg, n_items);
+		merge_level_ppm(data, seg, state);
+		merge_level_ppm(data, seg, state);
+		merge_level_ppm(data, seg, state);
+	}
 	//printstacks(seg, "runs before merge");
 	//printstacks(data, "data before merge");
 	merge_level_ppm(data, seg, state);
@@ -321,8 +313,8 @@ static void	segment(t_stacks *data, int n_items)
 	t_stacks	seg;
 	t_ppm_state	state;
 
-	circ_init(&seg.a, n_items * 3);
-	circ_init(&seg.b, n_items * 3);
+	circ_init(&seg.a, n_items * 9);
+	circ_init(&seg.b, n_items * 9);
 	circ_push(&seg.a, 0);
 	state = (t_ppm_state){0};
 	state.curr = A1;
