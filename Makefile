@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/08/07 16:14:29 by amakinen         ###   ########.fr        #
+#    Updated: 2024/08/07 18:56:25 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ SRCDIR := src
 # Project files and targets
 SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
+	circ/circ_basic.c \
+	circ/circ_ops.c \
 )
 
 OBJS += $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
