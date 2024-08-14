@@ -6,23 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/14 12:51:35 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:01:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "runs.h"
 #include "cost.h"
-
-static int	get_run_cost(t_circ *circ, size_t idx)
-{
-	int	run;
-
-	run = *circ_ptr(circ, idx);
-	if (run < 0)
-		return (-run);
-	return (run);
-}
 
 static t_run_cost	*init_costs(t_runs *runs)
 {
@@ -35,16 +25,15 @@ static t_run_cost	*init_costs(t_runs *runs)
 	if (!run_costs)
 		return (0);
 	i = 0;
-	while (i < a_runs)
-	{
-		run_costs[i].run = circ_ptr(runs->a, i);
-		run_costs[i].cost = get_run_cost(runs->a, i);
-		i++;
-	}
 	while (i < runs->total_runs)
 	{
-		run_costs[i].run = circ_ptr(runs->b, i - a_runs);
-		run_costs[i].cost = get_run_cost(runs->b, i - a_runs);
+		if (i < a_runs)
+			run_costs[i].run = circ_ptr(runs->a, i);
+		else
+			run_costs[i].run = circ_ptr(runs->b, i - a_runs);
+		run_costs[i].cost = *run_costs[i].run;
+		if (run_costs[i].cost < 0)
+			run_costs[i].cost = -run_costs[i].cost;
 		i++;
 	}
 	return (run_costs);
