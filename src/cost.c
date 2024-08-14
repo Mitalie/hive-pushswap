@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/14 14:08:48 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:23:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 #include "runs.h"
 #include "cost.h"
 
+/*
+	Allocate space for enough cost entries and initialize them based on the run
+	candidate buffers. Double space is allocated for merge sorting.
+*/
 static t_run_cost	*init_costs(t_runs *runs)
 {
 	t_run_cost	*run_costs;
@@ -39,6 +43,9 @@ static t_run_cost	*init_costs(t_runs *runs)
 	return (run_costs);
 }
 
+/*
+	Merge two consecutive sorted runs of cost entries into one, lowest cost first.
+*/
 static void	merge_run(t_run_cost *dst, t_run_cost *src, size_t n_a, size_t n_b)
 {
 	size_t	i_a;
@@ -61,20 +68,16 @@ static void	merge_run(t_run_cost *dst, t_run_cost *src, size_t n_a, size_t n_b)
 	}
 }
 
-static void	swap(t_run_cost **a, t_run_cost **b)
-{
-	t_run_cost	*tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
+/*
+	Sort an array of cost entries, lowest cost first, using merge sort and
+	utilizing the extra space allocated by init_costs.
+*/
 static t_run_cost	*sort_costs(t_run_cost *costs, size_t n)
 {
 	size_t		run_len;
 	size_t		start;
 	t_run_cost	*dest;
+	t_run_cost	*tmp;
 
 	dest = costs + n;
 	run_len = 1;
@@ -89,12 +92,19 @@ static t_run_cost	*sort_costs(t_run_cost *costs, size_t n)
 		if (start + run_len <= n)
 			merge_run(dest + start, costs + start,
 				run_len, n - start - run_len);
-		swap(&costs, &dest);
+		tmp = costs;
+		costs = dest;
+		dest = tmp;
 		run_len *= 2;
 	}
 	return (costs);
 }
 
+/*
+	Select cheapest runs from the run candidate buffers and replace directions
+	and costs with directions and run lengths. Returns false in case of malloc
+	failure.
+*/
 bool	select_cheapest(t_runs *runs, int num_items)
 {
 	t_run_cost	*costs;
