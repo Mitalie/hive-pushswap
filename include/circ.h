@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:46:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/07 18:48:06 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:46:28 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@
 typedef struct s_circ	t_circ;
 
 t_circ	*circ_alloc(size_t size);
-int		circ_get(t_circ *c, size_t idx);
-void	circ_set(t_circ *c, size_t idx, int v);
+int		*circ_ptr(t_circ *c, size_t idx);
 void	circ_push_back(t_circ *c, int v);
 void	circ_push_front(t_circ *c, int v);
 int		circ_pop_back(t_circ *c);

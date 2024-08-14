@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:59:06 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/12 17:33:33 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:42:44 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 typedef struct s_run_cost
 {
-	int	stack;
-	int	pos;
+	int	*run;
 	int	cost;
 }	t_run_cost;
 
