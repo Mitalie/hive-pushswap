@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/14 14:23:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:52:08 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static t_run_cost	*init_costs(t_runs *runs)
 		run_costs[i].cost = *run_costs[i].run;
 		if (run_costs[i].cost < 0)
 			run_costs[i].cost = -run_costs[i].cost;
+		if (i >= a_runs)
+			run_costs[i].cost++;
 		i++;
 	}
 	return (run_costs);
