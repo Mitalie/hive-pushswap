@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:33:37 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/14 12:48:30 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:31:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,16 @@ int	*circ_ptr(t_circ *c, size_t idx)
 {
 	assert(idx < c->count);
 	return (&c->arr[(c->start + idx) % c->size]);
+}
+
+int	circ_peek_back(t_circ *c)
+{
+	assert(c->count > 0);
+	return (c->arr[(c->end - 1 + c->size) % c->size]);
+}
+
+int	circ_peek_front(t_circ *c)
+{
+	assert(c->count > 0);
+	return (c->arr[c->start]);
 }

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:46:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/14 12:46:28 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:30:38 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@ void	circ_push_back(t_circ *c, int v);
 void	circ_push_front(t_circ *c, int v);
 int		circ_pop_back(t_circ *c);
 int		circ_pop_front(t_circ *c);
+int		circ_peek_back(t_circ *c);
+int		circ_peek_front(t_circ *c);
 
 #endif
