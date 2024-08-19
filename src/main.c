@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:06:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 14:50:37 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:13:57 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,7 @@
 #include "runs.h"
 #include "cost.h"
 #include "merge.h"
-#include <stdio.h>
 #include <stdlib.h>
-
-static void	printruns(t_runs *runs)
-{
-	int	i;
-
-	printf("A :");
-	i = 0;
-	while (i < runs->num_runs[A1] + runs->num_runs[A2])
-		printf(" %d", *circ_ptr(runs->a, i++));
-	printf("\nB :");
-	i = 0;
-	while (i < runs->num_runs[B1] + runs->num_runs[B2])
-		printf(" %d", *circ_ptr(runs->b, i++));
-	printf("\n");
-}
 
 int	main(int argc, char **argv)
 {
@@ -43,10 +27,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!init_runs(&runs, num_inputs))
 		return (2);
-	printruns(&runs);
 	if (!select_cheapest(&runs, num_inputs))
 		return (3);
-	printruns(&runs);
 	pushswap_merge(&data, &runs);
 	free(data.a);
 	free(data.b);
