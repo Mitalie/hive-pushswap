@@ -13,6 +13,7 @@
 #include "stacks.h"
 #include "runs.h"
 #include "cost.h"
+#include "merge.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -46,6 +47,7 @@ int	main(int argc, char **argv)
 	if (!select_cheapest(&runs, num_inputs))
 		return (3);
 	printruns(&runs);
+	pushswap_merge(&data, &runs);
 	free(data.a);
 	free(data.b);
 	free(runs.a);

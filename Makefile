@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/08/19 14:12:05 by amakinen         ###   ########.fr        #
+#    Updated: 2024/08/19 15:29:49 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,8 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	stacks.c \
 	runs.c \
 	cost.c \
+	merge/merge.c \
+	merge/merge_run.c \
 )
 
 OBJS += $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
