@@ -6,10 +6,11 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:06:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/14 12:52:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/19 14:50:37 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "stacks.h"
 #include "runs.h"
 #include "cost.h"
 #include <stdio.h>
@@ -32,17 +33,21 @@ static void	printruns(t_runs *runs)
 
 int	main(int argc, char **argv)
 {
-	int		num_inputs;
-	t_runs	runs;
+	int			num_inputs;
+	t_stacks	data;
+	t_runs		runs;
 
-	(void)argv;
 	num_inputs = argc - 1;
-	if (!init_runs(&runs, num_inputs))
+	if (!input_to_stacks(&data, num_inputs, argv + 1))
 		return (1);
-	printruns(&runs);
-	if (!select_cheapest(&runs, num_inputs))
+	if (!init_runs(&runs, num_inputs))
 		return (2);
 	printruns(&runs);
+	if (!select_cheapest(&runs, num_inputs))
+		return (3);
+	printruns(&runs);
+	free(data.a);
+	free(data.b);
 	free(runs.a);
 	free(runs.b);
 }

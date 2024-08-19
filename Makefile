@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/08/12 16:58:07 by amakinen         ###   ########.fr        #
+#    Updated: 2024/08/19 14:12:05 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
 	circ/circ_basic.c \
 	circ/circ_ops.c \
+	util/parse_int.c \
+	stacks.c \
 	runs.c \
 	cost.c \
 )
