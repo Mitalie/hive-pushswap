@@ -6,12 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:59:06 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/14 12:42:44 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:46:07 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COST_H
 # define COST_H
+
+# include "status.h"
 
 typedef struct s_run_cost
 {
@@ -19,6 +21,6 @@ typedef struct s_run_cost
 	int	cost;
 }	t_run_cost;
 
-bool	select_cheapest(t_runs *runs, int num_items);
+t_ps_status	select_cheapest(t_runs *runs, int num_items);
 
 #endif

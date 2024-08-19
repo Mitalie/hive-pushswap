@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/15 16:52:08 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:45:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,9 @@ static t_run_cost	*sort_costs(t_run_cost *costs, size_t n)
 
 /*
 	Select cheapest runs from the run candidate buffers and replace directions
-	and costs with directions and run lengths. Returns false in case of malloc
-	failure.
+	and costs with directions and run lengths.
 */
-bool	select_cheapest(t_runs *runs, int num_items)
+t_ps_status	select_cheapest(t_runs *runs, int num_items)
 {
 	t_run_cost	*costs;
 	t_run_cost	*sorted;
@@ -116,7 +115,7 @@ bool	select_cheapest(t_runs *runs, int num_items)
 
 	costs = init_costs(runs);
 	if (!costs)
-		return (false);
+		return (PS_ERR_ALLOC_FAILURE);
 	sorted = sort_costs(costs, runs->total_runs);
 	i = 0;
 	while (i < runs->total_runs)
@@ -130,5 +129,5 @@ bool	select_cheapest(t_runs *runs, int num_items)
 		i++;
 	}
 	free(costs);
-	return (true);
+	return (PS_SUCCESS);
 }

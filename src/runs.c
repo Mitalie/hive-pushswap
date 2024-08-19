@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:02:21 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/12 17:45:16 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:45:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,15 @@ static void	split_pass(t_runs *runs)
 	}
 }
 
-bool	init_runs(t_runs *runs, int num_items)
+t_ps_status	init_runs(t_runs *runs, int num_items)
 {
 	reset_runs(runs);
 	while (runs->total_runs < num_items)
 		count_pass(runs);
 	runs->a = circ_alloc(runs->num_runs[A1] + runs->num_runs[A2]);
-	if (!runs->a)
-		return (false);
 	runs->b = circ_alloc(runs->num_runs[B1] + runs->num_runs[B2]);
-	if (!runs->b)
-		return (false);
+	if (!runs->a || !runs->b)
+		return (PS_ERR_ALLOC_FAILURE);
 	reset_runs(runs);
 	circ_push_back(runs->a, 0);
 	while (runs->total_runs < num_items)
@@ -86,5 +84,5 @@ bool	init_runs(t_runs *runs, int num_items)
 		split_pass(runs);
 		count_pass(runs);
 	}
-	return (true);
+	return (PS_SUCCESS);
 }
