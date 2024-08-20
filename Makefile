@@ -6,32 +6,44 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/08/20 15:32:52 by amakinen         ###   ########.fr        #
+#    Updated: 2024/08/20 15:40:04 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := push_swap
+BONUS := checker
 
 # Directories
 OBJDIR := obj
 SRCDIR := src
 
 # Project files and targets
-SRCS := $(addprefix $(SRCDIR)/,\
-	push_swap_main.c \
+SRCS_S := $(addprefix $(SRCDIR)/,\
 	circ/circ_basic.c \
 	circ/circ_ops.c \
 	util/parse_int.c \
 	stacks/stacks.c \
+)
+
+SRCS_M := $(addprefix $(SRCDIR)/,\
+	push_swap_main.c \
 	runs/runs.c \
 	runs/runs_select.c \
 	merge/merge.c \
 	merge/merge_run.c \
 )
 
-OBJS += $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-BINS += $(NAME)
-$(NAME): $(OBJS)
+SRCS_B := $(addprefix $(SRCDIR)/,\
+	checker_main_bonus.c \
+)
+
+OBJS_S := $(SRCS_S:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+OBJS_M := $(SRCS_M:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+OBJS_B := $(SRCS_B:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+OBJS += $(OBJS_S) $(OBJS_M) $(OBJS_B)
+BINS += $(NAME) $(BONUS)
+$(NAME): $(OBJS_S) $(OBJS_M)
+$(BONUS): $(OBJS_S) $(OBJS_B)
 
 # Generic utility targets
 .DEFAULT_GOAL := all
@@ -47,6 +59,8 @@ fclean: clean
 	rm -f $(BINS)
 
 re: fclean all
+
+bonus: $(BONUS)
 
 # Default compiler flags that apply to all targets
 def_CFLAGS := -Wall -Wextra -Werror

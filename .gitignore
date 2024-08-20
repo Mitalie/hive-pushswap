@@ -1,5 +1,6 @@
 /obj/
 /push_swap
+/checker
 
 # Provided in the assignment
 /checker_linux
