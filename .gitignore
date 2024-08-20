@@ -1,5 +1,8 @@
 /obj/
 /push_swap
 
+# Provided in the assignment
+/checker_linux
+
 # Vim
 .*.sw?
