@@ -6,12 +6,18 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:21:00 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 16:47:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:59:07 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 #include "util.h"
+
+/*
+	The assignment specifies that the first argument should be at the top of the
+	stack. We consider the front of the circular buffer to be the bottom of the
+	stack, so we put each argument under the previous ones with circ_push_front.
+*/
 
 t_ps_status	input_to_stacks(t_stacks *s, size_t num_items, char **item_strs)
 {
@@ -32,7 +38,7 @@ t_ps_status	input_to_stacks(t_stacks *s, size_t num_items, char **item_strs)
 		while (scan_idx < item_idx)
 			if (value == *circ_ptr(s->a, scan_idx++))
 				return (PS_ERR_DUPLICATE_INPUT);
-		circ_push_back(s->a, value);
+		circ_push_front(s->a, value);
 		item_idx++;
 	}
 	return (PS_SUCCESS);
