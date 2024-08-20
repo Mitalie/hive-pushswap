@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cost.c                                             :+:      :+:    :+:   */
+/*   runs_select.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 16:45:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:23:09 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "runs.h"
-#include "cost.h"
+#include "runs_internal.h"
 
 /*
 	Allocate space for enough cost entries and initialize them based on the run
@@ -106,7 +106,7 @@ static t_run_cost	*sort_costs(t_run_cost *costs, size_t n)
 	Select cheapest runs from the run candidate buffers and replace directions
 	and costs with directions and run lengths.
 */
-t_ps_status	select_cheapest(t_runs *runs, int num_items)
+t_ps_status	runs_select_cheapest(t_runs *runs, int num_items)
 {
 	t_run_cost	*costs;
 	t_run_cost	*sorted;

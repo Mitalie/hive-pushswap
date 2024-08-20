@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cost.h                                             :+:      :+:    :+:   */
+/*   runs_internal.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:59:06 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 16:46:07 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:23:09 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COST_H
-# define COST_H
+#ifndef RUNS_INTERNAL_H
+# define RUNS_INTERNAL_H
 
 # include "status.h"
+# include "runs.h"
 
 typedef struct s_run_cost
 {
@@ -21,6 +22,6 @@ typedef struct s_run_cost
 	int	cost;
 }	t_run_cost;
 
-t_ps_status	select_cheapest(t_runs *runs, int num_items);
+t_ps_status	runs_select_cheapest(t_runs *runs, int num_items);
 
 #endif

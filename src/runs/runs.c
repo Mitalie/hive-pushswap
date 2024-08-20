@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:02:21 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 16:45:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:23:09 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "runs.h"
+#include "runs_internal.h"
 #include <stdlib.h>
 
 static void	reset_runs(t_runs *runs)
@@ -68,7 +69,7 @@ static void	split_pass(t_runs *runs)
 	}
 }
 
-t_ps_status	init_runs(t_runs *runs, int num_items)
+static t_ps_status	init_runs(t_runs *runs, int num_items)
 {
 	reset_runs(runs);
 	while (runs->total_runs < num_items)
@@ -85,4 +86,14 @@ t_ps_status	init_runs(t_runs *runs, int num_items)
 		count_pass(runs);
 	}
 	return (PS_SUCCESS);
+}
+
+t_ps_status	calculate_runs(t_runs *runs, int num_items)
+{
+	t_ps_status	status;
+
+	status = init_runs(runs, num_items);
+	if (status == PS_SUCCESS)
+		status = runs_select_cheapest(runs, num_items);
+	return (status);
 }

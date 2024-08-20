@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:47:35 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 16:46:22 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:22:41 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ typedef struct s_runs
 	t_circ	*b;
 }	t_runs;
 
-t_ps_status	init_runs(t_runs *runs, int num_items);
+t_ps_status	calculate_runs(t_runs *runs, int num_items);
 
 #endif

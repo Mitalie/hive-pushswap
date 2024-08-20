@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/08/19 15:29:49 by amakinen         ###   ########.fr        #
+#    Updated: 2024/08/20 15:32:52 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,13 @@ SRCDIR := src
 
 # Project files and targets
 SRCS := $(addprefix $(SRCDIR)/,\
-	main.c \
+	push_swap_main.c \
 	circ/circ_basic.c \
 	circ/circ_ops.c \
 	util/parse_int.c \
-	stacks.c \
-	runs.c \
-	cost.c \
+	stacks/stacks.c \
+	runs/runs.c \
+	runs/runs_select.c \
 	merge/merge.c \
 	merge/merge_run.c \
 )

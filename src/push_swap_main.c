@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   push_swap_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:06:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 16:46:53 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:32:59 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "status.h"
 #include "stacks.h"
 #include "runs.h"
-#include "cost.h"
 #include "merge.h"
 #include <stdlib.h>
 #include <unistd.h>
@@ -30,9 +29,7 @@ int	main(int argc, char **argv)
 	runs.b = 0;
 	status = input_to_stacks(&data, num_inputs, argv + 1);
 	if (status == PS_SUCCESS)
-		status = init_runs(&runs, num_inputs);
-	if (status == PS_SUCCESS)
-		status = select_cheapest(&runs, num_inputs);
+		status = calculate_runs(&runs, num_inputs);
 	if (status == PS_SUCCESS)
 		pushswap_merge(&data, &runs);
 	free(data.a);
