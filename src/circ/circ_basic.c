@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:33:37 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/15 14:31:36 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:17:43 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ t_circ	*circ_alloc(size_t size)
 		c->size = size;
 	}
 	return (c);
+}
+
+size_t	circ_len(t_circ *c)
+{
+	return (c->count);
 }
 
 int	*circ_ptr(t_circ *c, size_t idx)
