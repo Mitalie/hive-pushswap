@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:39:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/21 15:23:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:46:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,15 @@ typedef enum e_ps_op
 	OP_RRA,
 	OP_RRB,
 	OP_RRR,
+	NUM_OPS,
+	OP_INVALID = -1,
 }	t_ps_op;
 
-void	perform_op(t_stacks *stacks, t_ps_op op);
+// Longest ops are 3 characters
+# define MAX_OP_LEN 3
+
+void		perform_op(t_stacks *stacks, t_ps_op op);
+const char	*op_to_string(t_ps_op op);
+t_ps_op		op_from_string(const char *str);
 
 #endif
