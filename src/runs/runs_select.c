@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/20 15:23:09 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:58:34 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static t_run_cost	*init_costs(t_runs *runs)
 }
 
 /*
-	Merge two consecutive sorted runs of cost entries into one, lowest cost first.
+	Merge two consecutive ascending sequences of cost entries into one.
 */
 static void	merge_run(t_run_cost *dst, t_run_cost *src, size_t n_a, size_t n_b)
 {
