@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:02:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/26 13:54:28 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:24:43 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,23 @@ static t_ps_status	perform_ops_from_stdin(t_stacks *data)
 	}
 }
 
+/*
+	Valid result has empty stack B and sorted stack A, i.e. every item on A is
+	smaller than the one below it (or equal, but rules exclude duplicates).
+*/
+static bool	check_stacks_sorted(t_stacks *data)
+{
+	size_t	i;
+
+	if (circ_len(data->b) > 0)
+		return (false);
+	i = circ_len(data->a);
+	while (i-- > 1)
+		if (*circ_ptr(data->a, i) > *circ_ptr(data->a, i - 1))
+			return (false);
+	return (true);
+}
+
 int	main(int argc, char **argv)
 {
 	int			num_inputs;
@@ -49,7 +66,10 @@ int	main(int argc, char **argv)
 		status = perform_ops_from_stdin(&data);
 	if (status == PS_SUCCESS)
 	{
-		// TODO: check whether stacks are properly sorted
+		if (check_stacks_sorted(&data))
+			write(STDOUT_FILENO, "OK\n", 3);
+		else
+			write(STDOUT_FILENO, "KO\n", 3);
 	}
 	free(data.a);
 	free(data.b);
