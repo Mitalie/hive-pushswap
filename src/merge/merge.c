@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 15:13:12 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:10:56 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,19 @@ static void	prepare_merge(t_stacks *stacks, t_runs *runs)
 	}
 }
 
-static const char	*g_ops_to_a[NUM_SOURCES] = {"rra", "pa", "rrb\npa"};
-static const char	*g_ops_to_b[NUM_SOURCES] = {"rrb", "pb", "rra\npb"};
+/*
+	OP_INVALID serves as end-of-array marker
+*/
+static const t_ps_op *const	g_ops_to_a[NUM_SOURCES] = {
+	(const t_ps_op[]){OP_RRA, OP_INVALID},
+	(const t_ps_op[]){OP_PA, OP_INVALID},
+	(const t_ps_op[]){OP_RRB, OP_PA, OP_INVALID},
+};
+static const t_ps_op *const	g_ops_to_b[NUM_SOURCES] = {
+	(const t_ps_op[]){OP_RRB, OP_INVALID},
+	(const t_ps_op[]){OP_PB, OP_INVALID},
+	(const t_ps_op[]){OP_RRA, OP_PB, OP_INVALID},
+};
 
 static void
 	select_merge_stacks(t_merge_state *s, t_stacks *stacks, t_runs *runs)

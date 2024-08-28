@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 17:39:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:09:22 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,12 @@ static bool	cmp(t_merge_state *s, t_merge_source a, t_merge_source b)
 
 static void	perform_merge_ops(t_merge_state *s, t_merge_source src)
 {
+	const t_ps_op	*ops;
+
+	ops = s->pushswap_ops[src];
 	circ_push_back(s->data_curr, pop(s, src));
-	printf("%s\n", s->pushswap_ops[src]);
+	while (*ops != OP_INVALID)
+		printf("%s\n", op_to_string(*ops++));
 }
 
 void	merge_run(t_merge_state *s)
