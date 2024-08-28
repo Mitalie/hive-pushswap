@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 15:13:36 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:51:54 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static t_run_cost	*init_costs(t_runs *runs)
 /*
 	Merge two consecutive ascending sequences of cost entries into one.
 */
-static void	merge_run(t_run_cost *dst, t_run_cost *src, size_t n_a, size_t n_b)
+static void	merge_cost_seq(
+	t_run_cost *dst, t_run_cost *src, size_t n_a, size_t n_b)
 {
 	size_t	i_a;
 	size_t	i_b;
@@ -90,11 +91,11 @@ static t_run_cost	*sort_costs(t_run_cost *costs, size_t n)
 		start = 0;
 		while (start + run_len * 2 <= n)
 		{
-			merge_run(dest + start, costs + start, run_len, run_len);
+			merge_cost_seq(dest + start, costs + start, run_len, run_len);
 			start += run_len * 2;
 		}
 		if (start + run_len <= n)
-			merge_run(dest + start, costs + start,
+			merge_cost_seq(dest + start, costs + start,
 				run_len, n - start - run_len);
 		tmp = costs;
 		costs = dest;
