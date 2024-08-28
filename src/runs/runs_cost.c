@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   runs_select.c                                      :+:      :+:    :+:   */
+/*   runs_cost.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/26 14:58:34 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:13:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ static void	merge_run(t_run_cost *dst, t_run_cost *src, size_t n_a, size_t n_b)
 
 /*
 	Sort an array of cost entries, lowest cost first, using merge sort and
-	utilizing the extra space allocated by init_costs.
+	utilizing the extra space allocated by init_costs. Returns a pointer to the
+	sorted entries, which can be located in either first or second half of the
+	buffer depending on how many merge passes were needed.
 */
 static t_run_cost	*sort_costs(t_run_cost *costs, size_t n)
 {
@@ -100,6 +102,28 @@ static t_run_cost	*sort_costs(t_run_cost *costs, size_t n)
 		run_len *= 2;
 	}
 	return (costs);
+}
+
+/*
+	Generate and sort cost entries for the given run candidates, and calculate
+	the total cost for the requested number of cheapest entries.
+*/
+t_ps_status	runs_get_cost(t_runs *runs, int num_items, size_t *cost)
+{
+	t_run_cost	*costs;
+	t_run_cost	*sorted;
+	int			i;
+
+	costs = init_costs(runs);
+	if (!costs)
+		return (PS_ERR_ALLOC_FAILURE);
+	sorted = sort_costs(costs, runs->total_runs);
+	i = 0;
+	*cost = 0;
+	while (i < num_items)
+		*cost += sorted[i++].cost;
+	free(costs);
+	return (PS_SUCCESS);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:02:21 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/20 15:23:09 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:49:11 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,86 +14,86 @@
 #include "runs_internal.h"
 #include <stdlib.h>
 
-static void	reset_runs(t_runs *runs)
+/*
+	The number of runs A used by N passes of polyphase mergesort is
+	A(N)=A(N-1)+A(N-2)+A(N-3), with A(0)=1, A(-1)=1, A(-2)=1. As a baseline
+	estimate, we need at least one run per item to start with runs of length 1.
+	Excess runs are simply considered to be of length zero.
+*/
+static size_t	calc_num_passes(size_t num_items)
 {
-	int	i;
+	size_t	sum;
+	size_t	prev1;
+	size_t	prev2;
+	size_t	newsum;
+	size_t	passes;
 
-	i = 0;
-	while (i < NUM_LOCS)
-		runs->num_runs[i++] = 0;
-	runs->current_loc = A1;
-	runs->num_runs[A1] = 1;
-	runs->total_runs = 1;
-}
-
-static void	count_pass(t_runs *runs)
-{
-	int		current_pass_size;
-	t_loc	loc;
-
-	current_pass_size = runs->num_runs[runs->current_loc];
-	loc = 0;
-	while (loc < NUM_LOCS)
-		runs->num_runs[loc++] += current_pass_size;
-	runs->num_runs[runs->current_loc] = 0;
-	runs->total_runs += 2 * current_pass_size;
-	runs->current_loc = (runs->current_loc + 1) % NUM_LOCS;
-}
-
-static void	split_pass(t_runs *runs)
-{
-	int		i;
-	int		dir;
-	int		run;
-	t_circ	*curr;
-	t_circ	*other;
-
-	i = runs->num_runs[runs->current_loc];
-	curr = runs->a;
-	if (runs->current_loc >= B1)
-		curr = runs->b;
-	other = runs->b;
-	if (runs->current_loc >= B1)
-		other = runs->a;
-	while (i--)
+	sum = 1;
+	prev1 = 1;
+	prev2 = 1;
+	passes = 0;
+	while (sum < num_items)
 	{
-		run = circ_pop_back(curr);
-		dir = 1;
-		if (run < 0)
-			dir = -1;
-		run += dir;
-		circ_push_front(curr, run);
-		circ_push_back(other, -run);
-		run += dir;
-		circ_push_front(other, run);
+		newsum = sum + prev1 + prev2;
+		prev2 = prev1;
+		prev1 = sum;
+		sum = newsum;
+		passes++;
 	}
+	return (passes);
 }
 
-static t_ps_status	init_runs(t_runs *runs, int num_items)
+/*
+	Merging from the bottom of opposite stack requires two moves instead of one.
+	Additional split passes often reduce total sorting cost by creating larger
+	number of cheap runs and eliminating use of more expensive ones. Calculate
+	total cost for sorting N items after each split pass to determine which
+	number of passes is cheapest.
+*/
+static t_ps_status	check_cost_callback(
+	t_runs *runs, size_t pass, t_pass_cb *cb)
 {
-	reset_runs(runs);
-	while (runs->total_runs < num_items)
-		count_pass(runs);
-	runs->a = circ_alloc(runs->num_runs[A1] + runs->num_runs[A2]);
-	runs->b = circ_alloc(runs->num_runs[B1] + runs->num_runs[B2]);
-	if (!runs->a || !runs->b)
-		return (PS_ERR_ALLOC_FAILURE);
-	reset_runs(runs);
-	circ_push_back(runs->a, 0);
-	while (runs->total_runs < num_items)
+	t_ps_status	status;
+	size_t		cost;
+
+	if (runs->total_runs >= cb->num_items)
 	{
-		split_pass(runs);
-		count_pass(runs);
+		status = runs_get_cost(runs, cb->num_items, &cost);
+		if (status != PS_SUCCESS)
+			return (status);
+		if (cost < cb->best_cost)
+		{
+			cb->best_pass = pass;
+			cb->best_cost = cost;
+		}
 	}
 	return (PS_SUCCESS);
 }
 
+/*
+	Each pass increases memory usage and calculation time. 4th extra pass first
+	becomes optimal at 21332 items, so 3 extra passes is sufficient for now.
+*/
+#define EXTRA_PASSES 3
+
 t_ps_status	calculate_runs(t_runs *runs, int num_items)
 {
+	size_t		passes;
 	t_ps_status	status;
+	t_pass_cb	cb;
 
-	status = init_runs(runs, num_items);
-	if (status == PS_SUCCESS)
-		status = runs_select_cheapest(runs, num_items);
-	return (status);
+	passes = calc_num_passes(num_items) + EXTRA_PASSES;
+	cb.func = check_cost_callback;
+	cb.best_pass = 0;
+	cb.best_cost = -1;
+	cb.num_items = num_items;
+	status = runs_populate(runs, passes, &cb);
+	if (status != PS_SUCCESS)
+		return (status);
+	free(runs->a);
+	free(runs->b);
+	status = runs_populate(runs, cb.best_pass, 0);
+	if (status != PS_SUCCESS)
+		return (status);
+	return (runs_select_cheapest(runs, num_items));
 }

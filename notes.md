@@ -33,6 +33,32 @@ entry
     balance stacks according to run distribution (and presort according to lengths+directions)
     merge runs based on data, output operations
 
+### Extra passes
+
+* 2nd extra pass first useful at size 250
+* 3rd extra pass first useful at size 2698
+* 4th extra pass first useful at size 21332
+
+### Polyphase merge passes
+
+|   A1 |   A2 |   B1 |   B2 | total runs | pass size |
+|-----:|-----:|-----:|-----:|-----------:|----------:|
+|    1 |    0 |    0 |    0 |          1 |         1 |
+|    0 |    1 |    1 |    1 |          3 |         1 |
+|    1 |    0 |    2 |    2 |          5 |         2 |
+|    3 |    2 |    0 |    4 |          9 |         4 |
+|    7 |    6 |    4 |    0 |         17 |         7 |
+|    0 |   13 |   11 |    7 |         31 |        13 |
+|   13 |    0 |   24 |   20 |         57 |        24 |
+|   37 |   24 |    0 |   44 |        105 |        44 |
+|   81 |   68 |   44 |    0 |        193 |        81 |
+|    0 |  149 |  125 |   81 |        355 |       149 |
+|  149 |    0 |  274 |  230 |        653 |       274 |
+|  423 |  274 |    0 |  504 |       1201 |       504 |
+|  927 |  778 |  504 |    0 |       2209 |       927 |
+|    0 | 1705 | 1431 |  927 |       4063 |      1705 |
+| 1705 |    0 | 3136 | 2632 |       7473 |      3136 |
+
 ### Presort triplet to B
 
 123  pb pb pb           +0/3

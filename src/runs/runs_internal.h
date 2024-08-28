@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:59:06 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/20 15:23:09 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:17:37 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,22 @@ typedef struct s_run_cost
 	int	cost;
 }	t_run_cost;
 
+typedef struct t_pass_cb	t_pass_cb;
+
+typedef						t_ps_status (t_pass_cb_func)(
+	t_runs *runs, size_t pass, t_pass_cb *data);
+
+typedef struct t_pass_cb
+{
+	t_pass_cb_func	*func;
+	int				num_items;
+	size_t			best_pass;
+	size_t			best_cost;
+}	t_pass_cb;
+
+t_ps_status	runs_get_cost(t_runs *runs, int num_items, size_t *cost);
 t_ps_status	runs_select_cheapest(t_runs *runs, int num_items);
+t_ps_status	runs_populate(
+				t_runs *runs, size_t passes, t_pass_cb *callback);
 
 #endif
