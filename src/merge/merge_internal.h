@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:31 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 18:09:26 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:23:34 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ typedef struct s_merge_state
 }	t_merge_state;
 
 void	merge_run(t_merge_state *s);
+void	merge_output_op(t_ps_op op);
 
 #endif

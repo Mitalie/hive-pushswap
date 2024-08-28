@@ -6,13 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 18:09:22 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:24:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "merge_internal.h"
 #include <stdbool.h>
-#include <stdio.h>
 
 static int	peek(t_merge_state *s, t_merge_source src)
 {
@@ -55,7 +54,7 @@ static void	perform_merge_ops(t_merge_state *s, t_merge_source src)
 	ops = s->pushswap_ops[src];
 	circ_push_back(s->data_curr, pop(s, src));
 	while (*ops != OP_INVALID)
-		printf("%s\n", op_to_string(*ops++));
+		merge_output_op(*ops++);
 }
 
 void	merge_run(t_merge_state *s)

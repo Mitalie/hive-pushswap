@@ -6,14 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 18:10:56 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:24:39 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "circ.h"
 #include "merge.h"
 #include "merge_internal.h"
-#include <stdio.h>
 
 static void	prepare_merge(t_stacks *stacks, t_runs *runs)
 {
@@ -34,7 +33,7 @@ static void	prepare_merge(t_stacks *stacks, t_runs *runs)
 	while (items_b--)
 	{
 		circ_push_back(stacks->b, circ_pop_back(stacks->a));
-		printf("pb\n");
+		merge_output_op(OP_PB);
 	}
 }
 

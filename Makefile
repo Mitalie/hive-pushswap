@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/08/28 18:08:37 by amakinen         ###   ########.fr        #
+#    Updated: 2024/08/28 18:24:59 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS_M := $(addprefix $(SRCDIR)/,\
 	runs/runs_cost.c \
 	merge/merge.c \
 	merge/merge_run.c \
+	merge/merge_output_op.c \
 )
 
 SRCS_B := $(addprefix $(SRCDIR)/,\
