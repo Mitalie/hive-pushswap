@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 16:00:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:39:29 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,13 @@ static bool	cmp(t_merge_state *s, t_merge_source a, t_merge_source b)
 	return (peek(s, a) > peek(s, b));
 }
 
-static void	init_merge_run(t_merge_state *s)
+static void	perform_merge_ops(t_merge_state *s, t_merge_source src)
+{
+	circ_push_back(s->data_curr, pop(s, src));
+	printf("%s\n", s->pushswap_ops[src]);
+}
+
+void	merge_run(t_merge_state *s)
 {
 	int	combined;
 	int	dir;
@@ -62,29 +68,15 @@ static void	init_merge_run(t_merge_state *s)
 	s->run_items[OTHER_TOP] = -dir * circ_pop_back(s->runs_other);
 	s->run_items[OTHER_BOT] = dir * circ_pop_front(s->runs_other);
 	circ_push_back(s->runs_curr, combined);
-	s->total_run_items = dir * combined;
 	s->run_dir = dir;
-}
-
-void	merge_run(t_merge_state *s)
-{
-	init_merge_run(s);
-	while (s->total_run_items--)
+	combined *= dir;
+	while (combined--)
 	{
 		if (cmp(s, CURR_BOT, OTHER_TOP) && cmp(s, CURR_BOT, OTHER_BOT))
-		{
-			circ_push_back(s->data_curr, pop(s, CURR_BOT));
-			printf("%s\n", s->pushswap_ops[CURR_BOT]);
-		}
+			perform_merge_ops(s, CURR_BOT);
 		else if (cmp(s, OTHER_TOP, OTHER_BOT))
-		{
-			circ_push_back(s->data_curr, pop(s, OTHER_TOP));
-			printf("%s\n", s->pushswap_ops[OTHER_TOP]);
-		}
+			perform_merge_ops(s, OTHER_TOP);
 		else
-		{
-			circ_push_back(s->data_curr, pop(s, OTHER_BOT));
-			printf("%s\n", s->pushswap_ops[OTHER_BOT]);
-		}
+			perform_merge_ops(s, OTHER_BOT);
 	}
 }
