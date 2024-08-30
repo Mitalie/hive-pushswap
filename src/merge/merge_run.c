@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 18:24:36 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:05:08 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ static void	perform_merge_ops(t_merge_state *s, t_merge_source src)
 	const t_ps_op	*ops;
 
 	ops = s->pushswap_ops[src];
-	circ_push_back(s->data_curr, pop(s, src));
 	while (*ops != OP_INVALID)
-		merge_output_op(*ops++);
+		merge_output_op(s, *ops++);
+	circ_push_back(s->data_curr, pop(s, src));
 }
 
 void	merge_run(t_merge_state *s)
