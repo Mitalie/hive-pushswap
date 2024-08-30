@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:59:06 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 14:17:37 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:15:58 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 
 # include "status.h"
 # include "runs.h"
+# include <stdbool.h>
 
 typedef struct s_run_cost
 {
-	int	*run;
-	int	cost;
+	int		*run;
+	float	cost;
+	int		run_size;
 }	t_run_cost;
 
 typedef struct t_pass_cb	t_pass_cb;

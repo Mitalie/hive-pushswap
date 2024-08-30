@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 18:24:39 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:11:22 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,40 @@
 
 static void	prepare_merge(t_stacks *stacks, t_runs *runs)
 {
+	int	i;
 	int	runs_b;
-	int	items_b;
 	int	run;
+	int	first;
+	int	second;
 
 	runs_b = runs->num_runs[B1] + runs->num_runs[B2];
-	items_b = 0;
-	while (runs_b--)
+	i = 0;
+	while (i < runs_b)
 	{
-		run = *circ_ptr(runs->b, runs_b);
-		if (run < 0)
-			items_b -= run;
-		else
-			items_b += run;
-	}
-	while (items_b--)
-	{
-		circ_push_back(stacks->b, circ_pop_back(stacks->a));
-		merge_output_op(OP_PB);
+		run = *circ_ptr(runs->b, i++);
+		if (run == 1 || run == -1)
+		{
+			circ_push_back(stacks->b, circ_pop_back(stacks->a));
+			merge_output_op(OP_PB);
+		}
+		else if (run == 2 || run == -2)
+		{
+			first = circ_pop_back(stacks->a);
+			second = circ_pop_back(stacks->a);
+			merge_output_op(OP_PB);
+			merge_output_op(OP_PB);
+			if ((run < 0 && second < first) || (run >= 0 && first < second))
+			{
+				merge_output_op(OP_SB);
+				circ_push_back(stacks->b, second);
+				circ_push_back(stacks->b, first);
+			}
+			else
+			{
+				circ_push_back(stacks->b, first);
+				circ_push_back(stacks->b, second);
+			}
+		}
 	}
 }
 

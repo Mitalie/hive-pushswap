@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 15:51:54 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:30:18 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ static t_run_cost	*init_costs(t_runs *runs)
 {
 	t_run_cost	*run_costs;
 	int			a_runs;
+	size_t		b_runs;
 	int			i;
 
 	a_runs = runs->num_runs[A1] + runs->num_runs[A2];
-	run_costs = malloc(runs->total_runs * sizeof(*run_costs) * 2);
+	b_runs = runs->num_runs[B1] + runs->num_runs[B2];
+	run_costs = malloc((runs->total_runs + b_runs) * sizeof(*run_costs) * 2);
 	if (!run_costs)
 		return (0);
 	i = 0;
@@ -40,6 +42,13 @@ static t_run_cost	*init_costs(t_runs *runs)
 			run_costs[i].cost = -run_costs[i].cost;
 		if (i >= a_runs)
 			run_costs[i].cost++;
+		run_costs[i].run_size = 1;
+		if (i >= a_runs)
+		{
+			run_costs[i + b_runs].run = run_costs[i].run;
+			run_costs[i + b_runs].cost = run_costs[i].cost + 0.5f;
+			run_costs[i + b_runs].run_size = 2;
+		}
 		i++;
 	}
 	return (run_costs);
@@ -118,7 +127,7 @@ t_ps_status	runs_get_cost(t_runs *runs, int num_items, size_t *cost)
 	costs = init_costs(runs);
 	if (!costs)
 		return (PS_ERR_ALLOC_FAILURE);
-	sorted = sort_costs(costs, runs->total_runs);
+	sorted = sort_costs(costs, runs->total_runs + runs->num_runs[B1] + runs->num_runs[B2]);
 	i = 0;
 	*cost = 0;
 	while (i < num_items)
@@ -135,22 +144,23 @@ t_ps_status	runs_select_cheapest(t_runs *runs, int num_items)
 {
 	t_run_cost	*costs;
 	t_run_cost	*sorted;
-	int			i;
+	int			i;	
 	int			run;
 
 	costs = init_costs(runs);
 	if (!costs)
 		return (PS_ERR_ALLOC_FAILURE);
-	sorted = sort_costs(costs, runs->total_runs);
+	sorted = sort_costs(costs, runs->total_runs + runs->num_runs[B1] + runs->num_runs[B2]);
 	i = 0;
-	while (i < runs->total_runs)
+	while (i < runs->total_runs + runs->num_runs[B1] + runs->num_runs[B2])
 	{
-		run = 1;
-		if (i >= num_items)
-			run = 0;
-		else if (*sorted[i].run < 0)
-			run = -1;
-		*sorted[i].run = run;
+		run = sorted[i].run_size;
+		if (*sorted[i].run < 0)
+			run = -run;
+		if (i < num_items)
+			*sorted[i].run = run;
+		else if (sorted[i].run_size == 1)
+			*sorted[i].run = 0;
 		i++;
 	}
 	free(costs);

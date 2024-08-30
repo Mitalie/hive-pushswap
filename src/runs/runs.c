@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:02:21 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 14:49:11 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:14:03 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static t_ps_status	check_cost_callback(
 	t_ps_status	status;
 	size_t		cost;
 
-	if (runs->total_runs >= cb->num_items)
+	if (runs->total_runs + runs->num_runs[B1] + runs->num_runs[B2] >= cb->num_items)
 	{
 		status = runs_get_cost(runs, cb->num_items, &cost);
 		if (status != PS_SUCCESS)
