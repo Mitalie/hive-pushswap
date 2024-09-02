@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/02 17:24:10 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:52:30 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ static void	stacks_to_state(t_stacks *stacks, t_optimal_state *s, int num_items)
 /*
 	Bidirectional breadth-first search: starting with the initial input state
 	and the desired sorted state, determine each state's neighbours reachable
-	with a single operation. If a neighbour has already been reached from the
-	opposite starting state, merge the paths and terminate the search. If a
-	neighbour has already been reached from same starting state, ignore it.
-	Otherwise, mark the neighbour as reached, record the path towards the
-	starting state, and add it to queue to be investigated.
+	with a single operation. If a neighbour is unvisited, mark it visited,
+	record the node and operation it was reached from/by, and add it to queue to
+	be analyzed. If a neighbour has already been visited from the opposite
+	starting state, merge the paths and terminate the search.
 */
 static bool	update_node(
 	t_state_graph_node *graph, int current_enc, int next_enc, t_ps_op op)
@@ -54,10 +53,10 @@ static bool	update_node(
 	{
 		graph[next_enc].reached_from_node = current_enc;
 		graph[next_enc].reached_from_op = op;
-		if (graph[current_enc].state == SG_REACHED_FROM_START)
-			graph[next_enc].state = SG_REACHED_FROM_START;
-		else
+		if (graph[current_enc].state == SG_REACHED_FROM_END)
 			graph[next_enc].state = SG_REACHED_FROM_END;
+		else
+			graph[next_enc].state = SG_REACHED_FROM_START;
 		return (true);
 	}
 	return (false);
@@ -82,11 +81,23 @@ static bool	finish_search(
 {
 	t_state_graph_node	*current;
 	t_state_graph_node	*next;
+	int					prev_enc;
 
 	current = &graph[current_enc];
 	next = &graph[next_enc];
-	// TODO
-	return (false);
+	if (next->state != SG_REACHED_FROM_END
+		&& current->state != SG_REACHED_FROM_END)
+		return (false);
+	if (next->state == SG_REACHED_FROM_END)
+	{
+		current = &graph[next_enc];
+		next = &graph[current_enc];
+	}
+	while (next->state != SG_START)
+	{
+		// TODO
+	}
+	return (true);
 }
 
 static void	search_node(t_state_graph_node *graph, t_circ *queue, int num_items)

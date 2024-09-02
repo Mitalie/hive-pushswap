@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:04:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/02 16:48:17 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:57:04 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 typedef enum e_node_state
 {
 	SG_UNVISITED,
-	SG_END,
+	SG_START,
 	SG_REACHED_FROM_START,
 	SG_REACHED_FROM_END,
 }	t_node_state;
