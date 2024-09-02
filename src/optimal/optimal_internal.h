@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:04:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/30 18:03:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:48:17 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,17 @@
 # define OPTIMAL_INTERNAL_H
 
 # include "ops.h"
+# include <stdbool.h>
 
 # define OPTIMAL_MAX_ITEMS 9
+
+typedef enum e_node_state
+{
+	SG_UNVISITED,
+	SG_END,
+	SG_REACHED_FROM_START,
+	SG_REACHED_FROM_END,
+}	t_node_state;
 
 /*
 	We can fully represent the state of push_swap stacks with `n` items by
@@ -28,23 +37,32 @@
 */
 typedef struct s_state_graph_node
 {
-	int		distance;
-	t_ps_op	best_op;
-	int		best_op_node;
+	t_node_state	state;
+	t_ps_op			reached_from_op;
+	int				reached_from_node;
 }	t_state_graph_node;
 
 /*
 	Compact fixed size representation of push_swap stacks, enabling push_swap
 	operations on it while being easy to convert to and from state numbers.
+	- items[0] is bottom of B
+	- items[num_b - 1] is top of B
+	- items[num_b] is top of A
+	- items[num_b + num_a - 1] is bottom of A
+
+	With this layout, pa/pb require no moving of elements, and the desired
+	sorted state has items in order [1, 2, ..., n-1, n] regardless of n. By
+	using Lehmer code, this permutation encodes to value 0.
 */
 typedef struct s_optimal_state
 {
-	unsigned char	num_on_b;
-	unsigned char	digits[OPTIMAL_MAX_ITEMS];
+	int	num_a;
+	int	num_b;
+	int	items[OPTIMAL_MAX_ITEMS];
 }	t_optimal_state;
 
-int		optimal_state_enc(t_optimal_state *state);
-void	optimal_state_dec(t_optimal_state *state, int state_num);
-int		optimal_state_op(int state_num, t_ps_op	op);
+int		optimal_state_enc(t_optimal_state *s, int num_items);
+void	optimal_state_dec(t_optimal_state *s, int state_num, int num_items);
+bool	optimal_state_op(t_optimal_state *s, t_ps_op op);
 
 #endif
