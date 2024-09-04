@@ -6,21 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:03:12 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/02 16:03:48 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:10:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "optimal_internal.h"
 #include "util.h"
-
-static int	fact(int n)
-{
-	if (n == 0)
-		return (1);
-	if (n == 1)
-		return (1);
-	return (n * fact(n - 1));
-}
 
 /*
 	First separate num_b and permutation number with division and remainder,
@@ -36,22 +27,23 @@ static int	fact(int n)
 */
 void	optimal_state_dec(t_optimal_state *s, int state_num, int num_items)
 {
-	int				i;
-	int				lehmer_digit;
-	unsigned char	*next_item;
+	int	i;
+	int	lehmer_digit;
+	int	*next_item;
 
 	s->num_b = state_num % (num_items + 1);
 	s->num_a = num_items - s->num_b;
 	state_num = state_num / (num_items + 1);
 	i = 0;
-	while (++i <= num_items)
+	while (i++ < num_items)
 		s->items[i - 1] = i;
 	next_item = s->items;
+	i = num_items;
 	while (--i)
 	{
-		lehmer_digit = state_num / fact(i);
-		state_num = state_num % fact(i);
-		byte_arr_rot(next_item++, lehmer_digit + 1, true);
+		lehmer_digit = state_num / factorial(i);
+		state_num = state_num % factorial(i);
+		int_arr_rot(next_item++, lehmer_digit + 1, true);
 	}
 }
 
@@ -83,7 +75,8 @@ int	optimal_state_enc(t_optimal_state *s, int num_items)
 			s->items[i + lehmer_digit] = s->items[i + lehmer_digit + 1];
 			lehmer_digit++;
 		}
-		lehmer_fact += lehmer_digit * fact(num_items - i - 1);
+		s->items[i + lehmer_digit] = item;
+		lehmer_fact += lehmer_digit * factorial(num_items - i - 1);
 	}
 	return (lehmer_fact * (num_items + 1) + s->num_b);
 }

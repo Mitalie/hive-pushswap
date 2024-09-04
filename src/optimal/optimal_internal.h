@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:04:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/02 17:57:04 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:32:56 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 # include "ops.h"
 # include <stdbool.h>
 
-# define OPTIMAL_MAX_ITEMS 9
+# define OPTIMAL_MAX_ITEMS 12
 
 typedef enum e_node_state
 {
 	SG_UNVISITED,
 	SG_START,
+	SG_END,
 	SG_REACHED_FROM_START,
 	SG_REACHED_FROM_END,
 }	t_node_state;
@@ -61,8 +62,10 @@ typedef struct s_optimal_state
 	int	items[OPTIMAL_MAX_ITEMS];
 }	t_optimal_state;
 
-int		optimal_state_enc(t_optimal_state *s, int num_items);
-void	optimal_state_dec(t_optimal_state *s, int state_num, int num_items);
-bool	optimal_state_op(t_optimal_state *s, t_ps_op op);
+int			optimal_state_enc(t_optimal_state *s, int num_items);
+void		optimal_state_dec(t_optimal_state *s, int state_num, int num_items);
+bool		optimal_state_op(t_optimal_state *s, t_ps_op op);
+t_ps_status	optimal_graph_search(
+				t_state_graph_node *graph, int start, int end, int num_items);
 
 #endif

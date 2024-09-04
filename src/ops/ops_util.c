@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ops_string.c                                       :+:      :+:    :+:   */
+/*   ops_util.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:28:18 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/22 18:28:38 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:48:01 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ops.h"
 #include <stdbool.h>
 
-static const char	*g_op_strings[NUM_OPS] = {
+static const char		*g_op_strings[NUM_OPS] = {
 	"sa",
 	"sb",
 	"ss",
@@ -25,6 +25,20 @@ static const char	*g_op_strings[NUM_OPS] = {
 	"rra",
 	"rrb",
 	"rrr",
+};
+
+static const t_ps_op	g_op_reverse[NUM_OPS] = {
+	OP_SA,
+	OP_SB,
+	OP_SS,
+	OP_PB,
+	OP_PA,
+	OP_RRA,
+	OP_RRB,
+	OP_RRR,
+	OP_RA,
+	OP_RB,
+	OP_RR,
 };
 
 const char	*op_to_string(t_ps_op op)
@@ -53,5 +67,12 @@ t_ps_op	op_from_string(const char *str)
 			return (op);
 		op++;
 	}
+	return (OP_INVALID);
+}
+
+t_ps_op	op_reverse(t_ps_op op)
+{
+	if (op >= 0 && op < NUM_OPS)
+		return (g_op_reverse[op]);
 	return (OP_INVALID);
 }

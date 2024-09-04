@@ -6,12 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:06:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/20 15:32:59 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:29:26 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "status.h"
 #include "stacks.h"
+#include "optimal.h"
 #include "runs.h"
 #include "merge.h"
 #include <stdlib.h>
@@ -28,10 +29,14 @@ int	main(int argc, char **argv)
 	runs.a = 0;
 	runs.b = 0;
 	status = input_to_stacks(&data, num_inputs, argv + 1);
-	if (status == PS_SUCCESS)
+	if (num_inputs >= 2 && num_inputs <= 12 && status == PS_SUCCESS)
+		status = optimal_sort(&data, num_inputs);
+	else if (status == PS_SUCCESS)
+	{
 		status = calculate_runs(&runs, num_inputs);
-	if (status == PS_SUCCESS)
-		pushswap_merge(&data, &runs);
+		if (status == PS_SUCCESS)
+			pushswap_merge(&data, &runs);
+	}
 	free(data.a);
 	free(data.b);
 	free(runs.a);

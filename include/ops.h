@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:39:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/22 18:46:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:44:45 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ typedef enum e_ps_op
 void		perform_op(t_stacks *stacks, t_ps_op op);
 const char	*op_to_string(t_ps_op op);
 t_ps_op		op_from_string(const char *str);
+t_ps_op		op_reverse(t_ps_op op);
 
 #endif
