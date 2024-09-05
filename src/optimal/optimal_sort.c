@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/04 19:23:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:11:49 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_opt_state_num	stacks_to_state(t_stacks *stacks, int num_items)
 
 t_ps_status	optimal_sort(t_stacks *stacks, int num_items)
 {
-	t_opt_node		*graph;
+	t_opt_graph		graph;
 	t_ps_status		status;
 	t_opt_state_num	start;
 	t_opt_state_num	end;
@@ -44,18 +44,22 @@ t_ps_status	optimal_sort(t_stacks *stacks, int num_items)
 	start = stacks_to_state(stacks, num_items);
 	if (start == end)
 		return (PS_SUCCESS);
-	graph = malloc(factorial(num_items + 1) * sizeof(*graph));
-	if (!graph)
-		return (PS_ERR_ALLOC_FAILURE);
-	status = optimal_graph_search(graph, start, end, num_items);
+	graph.reached_from_node = malloc(factorial(num_items + 1) * sizeof(*graph.reached_from_node));
+	graph.states = malloc(factorial(num_items + 1) * sizeof(*graph.states));
+	status = PS_SUCCESS;
+	if (!graph.reached_from_node || ! graph.states)
+		status = PS_ERR_ALLOC_FAILURE;
+	if (status == PS_SUCCESS)
+		status = optimal_graph_search(&graph, start, end, num_items);
 	if (status == PS_SUCCESS)
 	{
 		while (start != end)
 		{
-			start = graph[start].reached_from_node;
-			printf("%s\n", op_to_string(graph[start].reached_from_op));
+			start = graph.reached_from_node[start];
+			printf("%s\n", op_to_string(graph.states[start].reached_from_op));
 		}
 	}
-	free(graph);
+	free(graph.reached_from_node);
+	free(graph.states);
 	return (status);
 }

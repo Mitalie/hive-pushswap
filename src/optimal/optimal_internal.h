@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:04:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/05 16:04:34 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:14:14 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,20 @@ typedef enum e_node_state
 
 typedef struct s_opt_node
 {
-	t_node_state	state;
-	t_ps_op			reached_from_op;
-	t_opt_state_num	reached_from_node;
+	unsigned char	state : 3;
+	char			reached_from_op : 5;
 }	t_opt_node;
+typedef struct s_opt_graph
+{
+	t_opt_node		*states;
+	t_opt_state_num	*reached_from_node;
+}	t_opt_graph;
 
 t_opt_state_num	optimal_state_enc(t_opt_state_arr *s, int num_items);
 void			optimal_state_dec(t_opt_state_arr *s,
 					t_opt_state_num state_num, int num_items);
 bool			optimal_state_op(t_opt_state_arr *s, t_ps_op op);
-t_ps_status		optimal_graph_search(t_opt_node *graph,
+t_ps_status		optimal_graph_search(t_opt_graph *graph,
 					t_opt_state_num start, t_opt_state_num end, int num_items);
 
 #endif

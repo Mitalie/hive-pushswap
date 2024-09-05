@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:17:32 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/04 19:23:25 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:09:19 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@
 	be analyzed. If a neighbour has already been visited from the opposite
 	starting state, merge the paths and terminate the search.
 */
-static bool	update_node(t_opt_node *graph,
+static bool	update_node(t_opt_graph *graph,
 	t_opt_state_num current, t_opt_state_num found, t_ps_op op)
 {
 	t_node_state	curr_state;
 	t_opt_node		*found_node;
 
-	found_node = &graph[found];
-	curr_state = graph[current].state;
+	found_node = &graph->states[found];
+	curr_state = graph->states[current].state;
 	if (found_node->state == NODE_UNVISITED)
 	{
-		found_node->reached_from_node = current;
+		graph->reached_from_node[found] = current;
 		found_node->reached_from_op = op;
 		if (curr_state == NODE_REACHED_FROM_END || curr_state == NODE_END)
 			found_node->state = NODE_REACHED_FROM_END;
@@ -51,7 +51,7 @@ static bool	update_node(t_opt_node *graph,
 	Reverse operations on the path from end so that they can be executed towards
 	the end node.
 */
-static void	join_paths(t_opt_node *graph,
+static void	join_paths(t_opt_graph *graph,
 	t_opt_state_num from_start, t_opt_state_num from_end, t_ps_op op)
 {
 	t_opt_state_num	from;
@@ -61,34 +61,34 @@ static void	join_paths(t_opt_node *graph,
 
 	next = from_start;
 	current = from_end;
-	while (graph[current].state != NODE_START)
+	while (graph->states[current].state != NODE_START)
 	{
 		from = current;
 		current = next;
-		next = graph[current].reached_from_node;
-		graph[current].reached_from_node = from;
+		next = graph->reached_from_node[current];
+		graph->reached_from_node[current] = from;
 	}
 	current = from_end;
-	while (graph[current].state != NODE_END)
+	while (graph->states[current].state != NODE_END)
 	{
-		nextop = op_reverse(graph[current].reached_from_op);
-		graph[current].reached_from_op = op;
+		nextop = op_reverse(graph->states[current].reached_from_op);
+		graph->states[current].reached_from_op = op;
 		op = nextop;
-		current = graph[current].reached_from_node;
+		current = graph->reached_from_node[current];
 	}
-	graph[current].reached_from_op = op;
+	graph->states[current].reached_from_op = op;
 }
 
-static bool	finish_search(t_opt_node *graph,
+static bool	finish_search(t_opt_graph *graph,
 	t_opt_state_num current, t_opt_state_num found, t_ps_op op)
 {
 	bool			current_end;
 	bool			found_end;
 	t_node_state	state;
 
-	state = graph[current].state;
+	state = graph->states[current].state;
 	current_end = state == NODE_END || state == NODE_REACHED_FROM_END;
-	state = graph[found].state;
+	state = graph->states[found].state;
 	found_end = state == NODE_END || state == NODE_REACHED_FROM_END;
 	if (current_end == found_end)
 		return (false);
@@ -99,7 +99,7 @@ static bool	finish_search(t_opt_node *graph,
 	return (true);
 }
 
-static bool	search_queued_node(t_opt_node *graph, t_circ *queue, int num_items)
+static bool	search_queued_node(t_opt_graph *graph, t_circ *queue, int num_items)
 {
 	t_opt_state_num	current_enc;
 	t_opt_state_arr	current;
@@ -126,7 +126,7 @@ static bool	search_queued_node(t_opt_node *graph, t_circ *queue, int num_items)
 	return (false);
 }
 
-t_ps_status	optimal_graph_search(t_opt_node *graph,
+t_ps_status	optimal_graph_search(t_opt_graph *graph,
 	t_opt_state_num start, t_opt_state_num end, int num_items)
 {
 	t_circ				*queue;
@@ -137,9 +137,9 @@ t_ps_status	optimal_graph_search(t_opt_node *graph,
 		return (PS_ERR_ALLOC_FAILURE);
 	i = factorial(num_items + 1);
 	while (i)
-		graph[--i].state = NODE_UNVISITED;
-	graph[start].state = NODE_START;
-	graph[end].state = NODE_END;
+		graph->states[--i].state = NODE_UNVISITED;
+	graph->states[start].state = NODE_START;
+	graph->states[end].state = NODE_END;
 	circ_push_back(queue, 0);
 	circ_push_back(queue, start);
 	while (circ_len(queue))
