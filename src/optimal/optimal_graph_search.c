@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:17:32 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/04 17:48:44 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:23:25 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,22 @@
 	be analyzed. If a neighbour has already been visited from the opposite
 	starting state, merge the paths and terminate the search.
 */
-static bool	update_node(
-	t_state_graph_node *graph, int current, int found, t_ps_op op)
+static bool	update_node(t_opt_node *graph,
+	t_opt_state_num current, t_opt_state_num found, t_ps_op op)
 {
-	t_node_state		curr_state;
-	t_state_graph_node	*found_node;
+	t_node_state	curr_state;
+	t_opt_node		*found_node;
 
 	found_node = &graph[found];
 	curr_state = graph[current].state;
-	if (found_node->state == SG_UNVISITED)
+	if (found_node->state == NODE_UNVISITED)
 	{
 		found_node->reached_from_node = current;
 		found_node->reached_from_op = op;
-		if (curr_state == SG_REACHED_FROM_END || curr_state == SG_END)
-			found_node->state = SG_REACHED_FROM_END;
+		if (curr_state == NODE_REACHED_FROM_END || curr_state == NODE_END)
+			found_node->state = NODE_REACHED_FROM_END;
 		else
-			found_node->state = SG_REACHED_FROM_START;
+			found_node->state = NODE_REACHED_FROM_START;
 		return (true);
 	}
 	return (false);
@@ -51,18 +51,17 @@ static bool	update_node(
 	Reverse operations on the path from end so that they can be executed towards
 	the end node.
 */
-static void	join_paths(
-	t_state_graph_node *graph, int from_start, int from_end, t_ps_op op
-)
+static void	join_paths(t_opt_node *graph,
+	t_opt_state_num from_start, t_opt_state_num from_end, t_ps_op op)
 {
-	int		from;
-	int		current;
-	int		next;
-	t_ps_op	nextop;
+	t_opt_state_num	from;
+	t_opt_state_num	current;
+	t_opt_state_num	next;
+	t_ps_op			nextop;
 
 	next = from_start;
 	current = from_end;
-	while (graph[current].state != SG_START)
+	while (graph[current].state != NODE_START)
 	{
 		from = current;
 		current = next;
@@ -70,7 +69,7 @@ static void	join_paths(
 		graph[current].reached_from_node = from;
 	}
 	current = from_end;
-	while (graph[current].state != SG_END)
+	while (graph[current].state != NODE_END)
 	{
 		nextop = op_reverse(graph[current].reached_from_op);
 		graph[current].reached_from_op = op;
@@ -80,17 +79,17 @@ static void	join_paths(
 	graph[current].reached_from_op = op;
 }
 
-static bool	finish_search(
-	t_state_graph_node *graph, int current, int found, t_ps_op op)
+static bool	finish_search(t_opt_node *graph,
+	t_opt_state_num current, t_opt_state_num found, t_ps_op op)
 {
 	bool			current_end;
 	bool			found_end;
 	t_node_state	state;
 
 	state = graph[current].state;
-	current_end = state == SG_END || state == SG_REACHED_FROM_END;
+	current_end = state == NODE_END || state == NODE_REACHED_FROM_END;
 	state = graph[found].state;
-	found_end = state == SG_END || state == SG_REACHED_FROM_END;
+	found_end = state == NODE_END || state == NODE_REACHED_FROM_END;
 	if (current_end == found_end)
 		return (false);
 	if (found_end)
@@ -100,12 +99,12 @@ static bool	finish_search(
 	return (true);
 }
 
-static bool	search_node(t_state_graph_node *graph, t_circ *queue, int num_items)
+static bool	search_queued_node(t_opt_node *graph, t_circ *queue, int num_items)
 {
-	int				current_enc;
-	t_optimal_state	current;
-	t_optimal_state	next;
-	int				next_enc;
+	t_opt_state_num	current_enc;
+	t_opt_state_arr	current;
+	t_opt_state_arr	next;
+	t_opt_state_num	next_enc;
 	t_ps_op			op;
 
 	current_enc = circ_pop_front(queue);
@@ -127,8 +126,8 @@ static bool	search_node(t_state_graph_node *graph, t_circ *queue, int num_items)
 	return (false);
 }
 
-t_ps_status	optimal_graph_search(
-	t_state_graph_node *graph, int start, int end, int num_items)
+t_ps_status	optimal_graph_search(t_opt_node *graph,
+	t_opt_state_num start, t_opt_state_num end, int num_items)
 {
 	t_circ				*queue;
 	int					i;
@@ -138,13 +137,13 @@ t_ps_status	optimal_graph_search(
 		return (PS_ERR_ALLOC_FAILURE);
 	i = factorial(num_items + 1);
 	while (i)
-		graph[--i].state = SG_UNVISITED;
-	graph[start].state = SG_START;
-	graph[end].state = SG_END;
+		graph[--i].state = NODE_UNVISITED;
+	graph[start].state = NODE_START;
+	graph[end].state = NODE_END;
 	circ_push_back(queue, 0);
 	circ_push_back(queue, start);
 	while (circ_len(queue))
-		if (search_node(graph, queue, num_items))
+		if (search_queued_node(graph, queue, num_items))
 			break ;
 	free(queue);
 	return (PS_SUCCESS);

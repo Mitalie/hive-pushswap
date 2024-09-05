@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:11:03 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/02 16:15:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:23:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include "util.h"
 
-static bool	state_op_s(t_optimal_state *s, bool a, bool b)
+static bool	state_op_s(t_opt_state_arr *s, bool a, bool b)
 {
 	bool	do_a;
 	bool	do_b;
@@ -28,7 +28,7 @@ static bool	state_op_s(t_optimal_state *s, bool a, bool b)
 	return (do_a || do_b);
 }
 
-static bool	state_op_p(t_optimal_state *s, bool a, bool b)
+static bool	state_op_p(t_opt_state_arr *s, bool a, bool b)
 {
 	if (a && s->num_b)
 	{
@@ -45,7 +45,7 @@ static bool	state_op_p(t_optimal_state *s, bool a, bool b)
 	return (true);
 }
 
-static bool	state_op_r(t_optimal_state *s, bool a, bool b)
+static bool	state_op_r(t_opt_state_arr *s, bool a, bool b)
 {
 	bool	do_a;
 	bool	do_b;
@@ -59,7 +59,7 @@ static bool	state_op_r(t_optimal_state *s, bool a, bool b)
 	return (do_a || do_b);
 }
 
-static bool	state_op_rr(t_optimal_state *s, bool a, bool b)
+static bool	state_op_rr(t_opt_state_arr *s, bool a, bool b)
 {
 	bool	do_a;
 	bool	do_b;
@@ -73,7 +73,7 @@ static bool	state_op_rr(t_optimal_state *s, bool a, bool b)
 	return (do_a || do_b);
 }
 
-bool	optimal_state_op(t_optimal_state *s, t_ps_op op)
+bool	optimal_state_op(t_opt_state_arr *s, t_ps_op op)
 {
 	if (op == OP_SA)
 		return (state_op_s(s, true, false));

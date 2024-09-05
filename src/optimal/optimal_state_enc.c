@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:03:12 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/04 17:10:24 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:23:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 	sorted on the right side of the array while appending the selected item to
 	the permutation on the left side.
 */
-void	optimal_state_dec(t_optimal_state *s, int state_num, int num_items)
+void	optimal_state_dec(t_opt_state_arr *s, int state_num, int num_items)
 {
 	int	i;
 	int	lehmer_digit;
@@ -56,7 +56,7 @@ void	optimal_state_dec(t_optimal_state *s, int state_num, int num_items)
 	Finally combine the resulting permutation number with num_b to arrive at the
 	state number.
 */
-int	optimal_state_enc(t_optimal_state *s, int num_items)
+int	optimal_state_enc(t_opt_state_arr *s, int num_items)
 {
 	unsigned char	item;
 	int				i;

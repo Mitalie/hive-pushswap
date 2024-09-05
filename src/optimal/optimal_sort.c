@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/04 15:58:18 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:23:29 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static int	stacks_to_state(t_stacks *stacks, int num_items)
+static t_opt_state_num	stacks_to_state(t_stacks *stacks, int num_items)
 {
-	t_optimal_state	s;
-	int				i;
+	t_opt_state_arr	s;
+	t_opt_state_num	i;
 
 	s.num_a = num_items;
 	s.num_b = 0;
@@ -35,12 +35,12 @@ static int	stacks_to_state(t_stacks *stacks, int num_items)
 
 t_ps_status	optimal_sort(t_stacks *stacks, int num_items)
 {
-	t_state_graph_node	*graph;
-	t_ps_status			status;
-	int					start;
-	int					end;
+	t_opt_node		*graph;
+	t_ps_status		status;
+	t_opt_state_num	start;
+	t_opt_state_num	end;
 
-	end = 0;
+	end = OPT_SORTED_STATE_NUM;
 	start = stacks_to_state(stacks, num_items);
 	if (start == end)
 		return (PS_SUCCESS);
