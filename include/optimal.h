@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:02:28 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 17:01:36 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/06 19:41:30 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 	almost 93 GiB, and the computation time likely becomes unreasonably long
 	even if enough memory is available.
 */
-# define OPT_MAX_ITEMS 11
+# define OPT_MAX_ITEMS 10
 
 /*
 	For a small number of items, use a graph search algorithm to find the
