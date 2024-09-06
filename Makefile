@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/08/28 15:13:44 by amakinen         ###   ########.fr        #
+#    Updated: 2024/09/06 20:01:40 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ SRCS_M := $(addprefix $(SRCDIR)/,\
 SRCS_B := $(addprefix $(SRCDIR)/,\
 	checker_main_bonus.c \
 	ops/ops.c \
-	ops/ops_string.c \
+	ops/ops_util.c \
 	read_ops/read_ops.c \
 )
 
