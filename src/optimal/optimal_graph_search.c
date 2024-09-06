@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:17:32 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 18:39:45 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/06 19:39:41 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,34 +140,35 @@ static bool	finish_search(t_opt_node *graph,
 }
 
 /*
-	Reverse links on the path from start so that they lead towards the end node.
 	Reverse operations on the path from end so that they can be executed towards
 	the end node.
+
+	Extract nodes from the path from start and attach them to the path from end,
+	again making sure the ops lead towards end.
 */
 static void	join_paths(t_opt_node *graph,
 	t_opt_state_num from_start, t_opt_state_num from_end, t_ps_op op)
 {
-	t_opt_state_num	from;
 	t_opt_state_num	current;
-	t_opt_state_num	next;
 	t_ps_op			nextop;
 
-	next = from_start;
-	current = from_end;
-	while (graph[current].type != NODE_START)
-	{
-		from = current;
-		current = next;
-		next = graph[current].reached_from;
-		graph[current].reached_from = from;
-	}
 	current = from_end;
 	while (graph[current].type != NODE_END)
 	{
-		nextop = op_reverse(graph[current].op);
-		graph[current].op = op;
-		op = nextop;
+		graph[current].op = op_reverse(graph[current].op);
 		current = graph[current].reached_from;
 	}
+	current = from_start;
+	while (graph[current].type != NODE_START)
+	{
+		from_start = graph[current].reached_from;
+		nextop = graph[current].op;
+		graph[current].reached_from = from_end;
+		graph[current].op = op;
+		op = nextop;
+		from_end = current;
+		current = from_start;
+	}
+	graph[current].reached_from = from_end;
 	graph[current].op = op;
 }
