@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:04:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 17:47:17 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:58:32 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,9 @@ typedef struct s_opt_node
 }	t_opt_node;
 
 bool			optimal_state_op(t_opt_state_arr *s, t_ps_op op);
+
+t_opt_state_num	optimal_state_enc(t_opt_state_arr *s, int num_items);
+void			optimal_state_dec(t_opt_state_arr *s,
+					t_opt_state_num state_num, int num_items);
 
 #endif
