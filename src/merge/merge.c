@@ -6,14 +6,16 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 15:13:12 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/06 20:13:06 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "circ.h"
 #include "merge.h"
 #include "merge_internal.h"
+#include <stdlib.h>
 #include <stdio.h>
+#include "runs.h"
+#include "circ.h"
 
 static void	prepare_merge(t_stacks *stacks, t_runs *runs)
 {
@@ -80,9 +82,19 @@ static void	merge_pass(t_stacks *stacks, t_runs *runs)
 		merge_run(&s);
 }
 
-void	pushswap_merge(t_stacks *stacks, t_runs *runs)
+t_ps_status	pushswap_merge(t_stacks *stacks, int num_items)
 {
-	prepare_merge(stacks, runs);
-	while (runs->total_runs > 1)
-		merge_pass(stacks, runs);
+	t_runs		runs;
+	t_ps_status	status;
+
+	status = calculate_runs(&runs, num_items);
+	if (status == PS_SUCCESS)
+	{
+		prepare_merge(stacks, &runs);
+		while (runs.total_runs > 1)
+			merge_pass(stacks, &runs);
+	}
+	free(runs.a);
+	free(runs.b);
+	return (status);
 }
