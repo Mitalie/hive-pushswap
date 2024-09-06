@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:04:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 16:58:14 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:47:17 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "optimal.h"
 # include "ops.h"
+# include <stdbool.h>
 
 /*
 	Very compact representation of push_swap stacks, encoding the state in a
@@ -81,5 +82,7 @@ typedef struct s_opt_node
 	t_ps_op			op;
 	t_opt_state_num	reached_from;
 }	t_opt_node;
+
+bool			optimal_state_op(t_opt_state_arr *s, t_ps_op op);
 
 #endif
