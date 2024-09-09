@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:31 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 17:34:07 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:54:37 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_merge_state
 	size_t					output_queue_size;
 	t_circ					*output_queue;
 	int						output_fd;
+	t_stacks				*stacks;
 }	t_merge_state;
 
 void	merge_run(t_merge_state *s);

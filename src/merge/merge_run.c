@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 17:26:58 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:41:39 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	merge_run(t_merge_state *s)
 			src = OTHER_TOP;
 		else
 			src = OTHER_BOT;
-		circ_push_back(s->data_curr, pop(s, src));
 		ops = s->pushswap_ops[src];
 		while (*ops != OP_INVALID)
 			merge_op_queue_add(s, *ops++);
+		circ_push_back(s->data_curr, pop(s, src));
 	}
 }

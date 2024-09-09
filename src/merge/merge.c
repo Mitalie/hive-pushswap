@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 17:36:18 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:42:19 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 	status = calculate_runs(&runs, num_items);
 	if (status == PS_SUCCESS)
 	{
+		s.stacks = stacks;
 		s.output_fd = output_fd;
 		s.output_queue_size = runs.total_runs;
 		s.output_queue = circ_alloc(s.output_queue_size);
