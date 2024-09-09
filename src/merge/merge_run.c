@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 18:41:39 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:56:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,6 @@ static int	peek(t_merge_state *s, t_merge_source src)
 	if (src == OTHER_TOP)
 		return (circ_peek_back(s->data_other));
 	return (circ_peek_front(s->data_other));
-}
-
-static int	pop(t_merge_state *s, t_merge_source src)
-{
-	s->run_items[src]--;
-	if (src == CURR_BOT)
-		return (circ_pop_front(s->data_curr));
-	if (src == OTHER_TOP)
-		return (circ_pop_back(s->data_other));
-	return (circ_pop_front(s->data_other));
 }
 
 static bool	cmp(t_merge_state *s, t_merge_source a, t_merge_source b)
@@ -77,7 +67,11 @@ void	merge_run(t_merge_state *s)
 			src = OTHER_BOT;
 		ops = s->pushswap_ops[src];
 		while (*ops != OP_INVALID)
-			merge_op_queue_add(s, *ops++);
-		circ_push_back(s->data_curr, pop(s, src));
+		{
+			merge_op_queue_add(s, *ops);
+			perform_op(s->stacks, *ops);
+			ops++;
+		}
+		s->run_items[src]--;
 	}
 }

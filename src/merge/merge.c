@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 18:42:19 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:56:21 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void	prepare_merge(t_merge_state *s, t_stacks *stacks, t_runs *runs)
 	}
 	while (items_b--)
 	{
-		circ_push_back(stacks->b, circ_pop_back(stacks->a));
 		merge_op_queue_add(s, OP_PB);
+		perform_op(stacks, OP_PB);
 	}
 }
 
