@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/19 16:00:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:25:29 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,9 @@ static int	pop(t_merge_state *s, t_merge_source src)
 
 static bool	cmp(t_merge_state *s, t_merge_source a, t_merge_source b)
 {
-	if ((a == CURR_BOT && !s->run_items[CURR_BOT])
-		|| (a == OTHER_TOP && !s->run_items[OTHER_TOP])
-		|| (a == OTHER_BOT && !s->run_items[OTHER_BOT]))
+	if (!s->run_items[a])
 		return (false);
-	if ((b == CURR_BOT && !s->run_items[CURR_BOT])
-		|| (b == OTHER_TOP && !s->run_items[OTHER_TOP])
-		|| (b == OTHER_BOT && !s->run_items[OTHER_BOT]))
+	if (!s->run_items[b])
 		return (true);
 	if (s->run_dir < 0)
 		return (peek(s, a) < peek(s, b));
@@ -68,23 +64,18 @@ static void	init_merge_run(t_merge_state *s)
 
 void	merge_run(t_merge_state *s)
 {
+	t_merge_source	src;
+
 	init_merge_run(s);
 	while (s->total_run_items--)
 	{
 		if (cmp(s, CURR_BOT, OTHER_TOP) && cmp(s, CURR_BOT, OTHER_BOT))
-		{
-			circ_push_back(s->data_curr, pop(s, CURR_BOT));
-			printf("%s\n", s->pushswap_ops[CURR_BOT]);
-		}
+			src = CURR_BOT;
 		else if (cmp(s, OTHER_TOP, OTHER_BOT))
-		{
-			circ_push_back(s->data_curr, pop(s, OTHER_TOP));
-			printf("%s\n", s->pushswap_ops[OTHER_TOP]);
-		}
+			src = OTHER_TOP;
 		else
-		{
-			circ_push_back(s->data_curr, pop(s, OTHER_BOT));
-			printf("%s\n", s->pushswap_ops[OTHER_BOT]);
-		}
+			src = OTHER_BOT;
+		circ_push_back(s->data_curr, pop(s, src));
+		printf("%s\n", s->pushswap_ops[src]);
 	}
 }
