@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:06:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 20:26:35 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:54:39 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	main(int argc, char **argv)
 	if (status == PS_SUCCESS)
 	{
 		if (num_inputs > OPT_MAX_ITEMS)
-			status = pushswap_merge(&data, num_inputs);
+			status = pushswap_merge(&data, num_inputs, STDOUT_FILENO);
 		else if (num_inputs > 1)
-			status = optimal_sort(&data, num_inputs);
+			status = optimal_sort(&data, num_inputs, STDOUT_FILENO);
 	}
 	free(data.a);
 	free(data.b);

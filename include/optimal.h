@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:02:28 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 19:41:30 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:54:25 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@
 	For a small number of items, use a graph search algorithm to find the
 	shortest sequence of moves from the input state to the sorted state.
 */
-t_ps_status	optimal_sort(t_stacks *stacks, int num_items);
+t_ps_status	optimal_sort(t_stacks *stacks, int num_items, int output_fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 19:40:30 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:57:04 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "optimal_internal.h"
 #include "circ.h"
 #include "util.h"
+#include "ops_io.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 static t_opt_state_num	stacks_to_state(t_stacks *stacks, int num_items)
 {
@@ -33,7 +33,7 @@ static t_opt_state_num	stacks_to_state(t_stacks *stacks, int num_items)
 	return (optimal_state_enc(&s, num_items));
 }
 
-t_ps_status	optimal_sort(t_stacks *stacks, int num_items)
+t_ps_status	optimal_sort(t_stacks *stacks, int num_items, int output_fd)
 {
 	t_opt_node		*graph;
 	t_ps_status		status;
@@ -52,7 +52,7 @@ t_ps_status	optimal_sort(t_stacks *stacks, int num_items)
 	{
 		while (start != end)
 		{
-			printf("%s\n", op_to_string(graph[start].op));
+			write_op(output_fd, graph[start].op);
 			start = graph[start].reached_from;
 		}
 	}

@@ -6,18 +6,18 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:50:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:57:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "merge.h"
 #include "merge_internal.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include "runs.h"
 #include "circ.h"
+#include "ops_io.h"
 
-static void	prepare_merge(t_stacks *stacks, t_runs *runs)
+static void	prepare_merge(t_stacks *stacks, t_runs *runs, int output_fd)
 {
 	int	runs_b;
 	int	items_b;
@@ -36,7 +36,7 @@ static void	prepare_merge(t_stacks *stacks, t_runs *runs)
 	while (items_b--)
 	{
 		circ_push_back(stacks->b, circ_pop_back(stacks->a));
-		printf("pb\n");
+		write_op(output_fd, OP_PB);
 	}
 }
 
@@ -75,7 +75,7 @@ static void
 	}
 }
 
-static void	merge_pass(t_stacks *stacks, t_runs *runs)
+static void	merge_pass(t_stacks *stacks, t_runs *runs, int output_fd)
 {
 	int				pass_size;
 	int				loc;
@@ -88,12 +88,13 @@ static void	merge_pass(t_stacks *stacks, t_runs *runs)
 		runs->num_runs[loc++] -= pass_size;
 	runs->num_runs[runs->current_loc] = pass_size;
 	runs->total_runs -= 2 * pass_size;
+	s.output_fd = output_fd;
 	select_merge_stacks(&s, stacks, runs);
 	while (pass_size--)
 		merge_run(&s);
 }
 
-t_ps_status	pushswap_merge(t_stacks *stacks, int num_items)
+t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 {
 	t_runs		runs;
 	t_ps_status	status;
@@ -101,9 +102,9 @@ t_ps_status	pushswap_merge(t_stacks *stacks, int num_items)
 	status = calculate_runs(&runs, num_items);
 	if (status == PS_SUCCESS)
 	{
-		prepare_merge(stacks, &runs);
+		prepare_merge(stacks, &runs, output_fd);
 		while (runs.total_runs > 1)
-			merge_pass(stacks, &runs);
+			merge_pass(stacks, &runs, output_fd);
 	}
 	free(runs.a);
 	free(runs.b);

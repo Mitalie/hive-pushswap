@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:41:35 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 20:09:56 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:54:26 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 # include "status.h"
 # include "stacks.h"
 
-t_ps_status	pushswap_merge(t_stacks *stacks, int num_items);
+t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd);
 
 #endif
