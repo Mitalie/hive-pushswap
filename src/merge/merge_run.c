@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:25:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:51:10 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static void	init_merge_run(t_merge_state *s)
 void	merge_run(t_merge_state *s)
 {
 	t_merge_source	src;
+	const t_ps_op	*ops;
 
 	init_merge_run(s);
 	while (s->total_run_items--)
@@ -76,6 +77,8 @@ void	merge_run(t_merge_state *s)
 		else
 			src = OTHER_BOT;
 		circ_push_back(s->data_curr, pop(s, src));
-		printf("%s\n", s->pushswap_ops[src]);
+		ops = s->pushswap_ops[src];
+		while (*ops != OP_INVALID)
+			printf("%s\n", op_to_string(*ops++));
 	}
 }
