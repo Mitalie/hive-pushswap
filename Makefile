@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/09/09 16:58:54 by amakinen         ###   ########.fr        #
+#    Updated: 2024/09/09 17:33:18 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS_M := $(addprefix $(SRCDIR)/,\
 	runs/runs_cost.c \
 	merge/merge.c \
 	merge/merge_run.c \
+	merge/merge_op_queue.c \
 	ops_io/write_op.c \
 )
 

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:57:36 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:36:18 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 #include <stdlib.h>
 #include "runs.h"
 #include "circ.h"
-#include "ops_io.h"
 
-static void	prepare_merge(t_stacks *stacks, t_runs *runs, int output_fd)
+static void	prepare_merge(t_merge_state *s, t_stacks *stacks, t_runs *runs)
 {
 	int	runs_b;
 	int	items_b;
@@ -36,7 +35,7 @@ static void	prepare_merge(t_stacks *stacks, t_runs *runs, int output_fd)
 	while (items_b--)
 	{
 		circ_push_back(stacks->b, circ_pop_back(stacks->a));
-		write_op(output_fd, OP_PB);
+		merge_op_queue_add(s, OP_PB);
 	}
 }
 
@@ -75,11 +74,10 @@ static void
 	}
 }
 
-static void	merge_pass(t_stacks *stacks, t_runs *runs, int output_fd)
+static void	merge_pass(t_merge_state *s, t_stacks *stacks, t_runs *runs)
 {
 	int				pass_size;
 	int				loc;
-	t_merge_state	s;
 
 	runs->current_loc = (runs->current_loc + NUM_LOCS - 1) % NUM_LOCS;
 	pass_size = runs->num_runs[(runs->current_loc + NUM_LOCS - 1) % NUM_LOCS];
@@ -88,23 +86,33 @@ static void	merge_pass(t_stacks *stacks, t_runs *runs, int output_fd)
 		runs->num_runs[loc++] -= pass_size;
 	runs->num_runs[runs->current_loc] = pass_size;
 	runs->total_runs -= 2 * pass_size;
-	s.output_fd = output_fd;
-	select_merge_stacks(&s, stacks, runs);
+	select_merge_stacks(s, stacks, runs);
 	while (pass_size--)
-		merge_run(&s);
+		merge_run(s);
 }
 
 t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 {
-	t_runs		runs;
-	t_ps_status	status;
+	t_runs			runs;
+	t_ps_status		status;
+	t_merge_state	s;
 
 	status = calculate_runs(&runs, num_items);
 	if (status == PS_SUCCESS)
 	{
-		prepare_merge(stacks, &runs, output_fd);
-		while (runs.total_runs > 1)
-			merge_pass(stacks, &runs, output_fd);
+		s.output_fd = output_fd;
+		s.output_queue_size = runs.total_runs;
+		s.output_queue = circ_alloc(s.output_queue_size);
+		if (!s.output_queue)
+			status = PS_ERR_ALLOC_FAILURE;
+		else
+		{
+			prepare_merge(&s, stacks, &runs);
+			while (runs.total_runs > 1)
+				merge_pass(&s, stacks, &runs);
+			merge_op_queue_flush(&s);
+			free(s.output_queue);
+		}
 	}
 	free(runs.a);
 	free(runs.b);

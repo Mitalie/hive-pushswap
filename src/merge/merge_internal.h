@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:31 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:57:16 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:34:07 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,14 @@ typedef struct s_merge_state
 	int						run_items[NUM_SOURCES];
 	int						total_run_items;
 	int						run_dir;
+	size_t					output_queue_size;
+	t_circ					*output_queue;
 	int						output_fd;
 }	t_merge_state;
 
 void	merge_run(t_merge_state *s);
+
+void	merge_op_queue_add(t_merge_state *s, t_ps_op op);
+void	merge_op_queue_flush(t_merge_state *s);
 
 #endif
