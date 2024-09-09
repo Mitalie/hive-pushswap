@@ -6,14 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:02:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/26 14:24:43 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:30:35 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "status.h"
 #include "stacks.h"
 #include "ops.h"
-#include "read_ops.h"
+#include "ops_io.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>

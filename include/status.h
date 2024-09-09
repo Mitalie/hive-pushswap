@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 16:17:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/22 16:08:37 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:39:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ typedef enum e_ps_status
 {
 	PS_SUCCESS = 0,
 	PS_ERR_ALLOC_FAILURE,
+	PS_ERR_WRITE_FAILURE,
 	PS_ERR_READ_FAILURE,
 	PS_ERR_INVALID_INPUT,
 	PS_ERR_DUPLICATE_INPUT,
