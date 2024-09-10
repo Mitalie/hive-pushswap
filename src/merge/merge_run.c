@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 18:56:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:54:44 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,28 @@ static bool	cmp(t_merge_state *s, t_merge_source a, t_merge_source b)
 	return (peek(s, a) > peek(s, b));
 }
 
-static void	init_merge_run(t_merge_state *s)
+static void	merge_one_item(t_merge_state *s)
+{
+	t_merge_source	src;
+	const t_ps_op	*ops;
+
+	if (cmp(s, CURR_BOT, OTHER_TOP) && cmp(s, CURR_BOT, OTHER_BOT))
+		src = CURR_BOT;
+	else if (cmp(s, OTHER_TOP, OTHER_BOT))
+		src = OTHER_TOP;
+	else
+		src = OTHER_BOT;
+	ops = s->pushswap_ops[src];
+	while (*ops != OP_INVALID)
+	{
+		merge_op_queue_add(s, *ops);
+		perform_op(s->stacks, *ops);
+		ops++;
+	}
+	s->run_items[src]--;
+}
+
+void	merge_run(t_merge_state *s)
 {
 	int	combined;
 	int	dir;
@@ -47,31 +68,8 @@ static void	init_merge_run(t_merge_state *s)
 	s->run_items[OTHER_TOP] = -dir * circ_pop_back(s->runs_other);
 	s->run_items[OTHER_BOT] = dir * circ_pop_front(s->runs_other);
 	circ_push_back(s->runs_curr, combined);
-	s->total_run_items = dir * combined;
 	s->run_dir = dir;
-}
-
-void	merge_run(t_merge_state *s)
-{
-	t_merge_source	src;
-	const t_ps_op	*ops;
-
-	init_merge_run(s);
-	while (s->total_run_items--)
-	{
-		if (cmp(s, CURR_BOT, OTHER_TOP) && cmp(s, CURR_BOT, OTHER_BOT))
-			src = CURR_BOT;
-		else if (cmp(s, OTHER_TOP, OTHER_BOT))
-			src = OTHER_TOP;
-		else
-			src = OTHER_BOT;
-		ops = s->pushswap_ops[src];
-		while (*ops != OP_INVALID)
-		{
-			merge_op_queue_add(s, *ops);
-			perform_op(s->stacks, *ops);
-			ops++;
-		}
-		s->run_items[src]--;
-	}
+	combined *= dir;
+	while (combined--)
+		merge_one_item(s);
 }
