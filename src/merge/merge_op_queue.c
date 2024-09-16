@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:17:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 15:59:30 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/16 17:02:52 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,35 @@ static bool	combine(t_merge_state *merge, t_ps_op op)
 	omitting or merging, apply that instead. If the queue would overflow, oldest
 	queued op is written out.
 */
-void	merge_op_queue_add(t_merge_state *merge, t_ps_op op)
+t_ps_status	merge_op_queue_add(t_merge_state *merge, t_ps_op op)
 {
+	t_ps_status	status;
+
 	if (noop(merge, op))
-		return ;
+		return (PS_SUCCESS);
 	if (cancel(merge, op))
-		return ;
+		return (PS_SUCCESS);
 	if (combine(merge, op))
-		return ;
+		return (PS_SUCCESS);
 	if (circ_len(merge->output_queue) == merge->output_queue_size)
-		write_op(merge->output_fd, circ_pop_back(merge->output_queue));
+	{
+		status = write_op(merge->output_fd, circ_pop_back(merge->output_queue));
+		if (status != PS_SUCCESS)
+			return (status);
+	}
 	circ_push_front(merge->output_queue, op);
+	return (PS_SUCCESS);
 }
 
 /*
 	Write out all the operations in the queue, emptying it.
 */
-void	merge_op_queue_flush(t_merge_state *merge)
+t_ps_status	merge_op_queue_flush(t_merge_state *merge)
 {
-	while (circ_len(merge->output_queue))
-		write_op(merge->output_fd, circ_pop_back(merge->output_queue));
+	t_ps_status	status;
+
+	status = PS_SUCCESS;
+	while (circ_len(merge->output_queue) && status == PS_SUCCESS)
+		status = write_op(merge->output_fd, circ_pop_back(merge->output_queue));
+	return (status);
 }

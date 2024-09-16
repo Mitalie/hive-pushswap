@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 16:00:21 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:52:52 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 #include "runs.h"
 #include "circ.h"
 
-static void	prepare_merge(t_merge_state *merge, t_stacks *stacks, t_runs *runs)
+static t_ps_status	prepare_merge(
+	t_merge_state *merge, t_stacks *stacks, t_runs *runs)
 {
-	int	runs_b;
-	int	items_b;
-	int	run;
+	int			runs_b;
+	int			items_b;
+	int			run;
+	t_ps_status	status;
 
 	runs_b = runs->num_runs[B1] + runs->num_runs[B2];
 	items_b = 0;
@@ -34,9 +36,12 @@ static void	prepare_merge(t_merge_state *merge, t_stacks *stacks, t_runs *runs)
 	}
 	while (items_b--)
 	{
-		merge_op_queue_add(merge, OP_PB);
+		status = merge_op_queue_add(merge, OP_PB);
+		if (status != PS_SUCCESS)
+			return (status);
 		perform_op(stacks, OP_PB);
 	}
+	return (PS_SUCCESS);
 }
 
 /*
@@ -109,10 +114,12 @@ t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 			status = PS_ERR_ALLOC_FAILURE;
 		else
 		{
-			prepare_merge(&merge, stacks, &runs);
-			while (runs.total_runs > 1)
-				merge_pass(&merge, stacks, &runs);
-			merge_op_queue_flush(&merge);
+			status = prepare_merge(&merge, stacks, &runs);
+			if (status == PS_SUCCESS)
+				while (runs.total_runs > 1)
+					merge_pass(&merge, stacks, &runs);
+			if (status == PS_SUCCESS)
+				status = merge_op_queue_flush(&merge);
 			free(merge.output_queue);
 		}
 	}

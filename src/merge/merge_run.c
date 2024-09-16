@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 15:58:00 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:50:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ static bool	cmp(t_merge_pass_state *pass, t_merge_run_state *run,
 	return (peek(pass, a) > peek(pass, b));
 }
 
-static void	merge_one_item(t_merge_state *merge, t_merge_pass_state *pass,
-	t_merge_run_state *run)
+static t_ps_status	merge_one_item(
+	t_merge_state *merge, t_merge_pass_state *pass, t_merge_run_state *run)
 {
 	t_merge_source	src;
 	const t_ps_op	*ops;
+	t_ps_status		status;
 
 	if (cmp(pass, run, CURR_BOT, OTHER_TOP)
 		&& cmp(pass, run, CURR_BOT, OTHER_BOT))
@@ -50,18 +51,22 @@ static void	merge_one_item(t_merge_state *merge, t_merge_pass_state *pass,
 	ops = pass->pushswap_ops[src];
 	while (*ops != OP_INVALID)
 	{
-		merge_op_queue_add(merge, *ops);
+		status = merge_op_queue_add(merge, *ops);
+		if (status != PS_SUCCESS)
+			return (status);
 		perform_op(merge->stacks, *ops);
 		ops++;
 	}
 	run->run_items[src]--;
+	return (PS_SUCCESS);
 }
 
-void	merge_run(t_merge_state *merge, t_merge_pass_state *pass)
+t_ps_status	merge_run(t_merge_state *merge, t_merge_pass_state *pass)
 {
 	t_merge_run_state	run;
 	int					combined;
 	int					dir;
+	t_ps_status			status;
 
 	combined = circ_peek_front(pass->runs_curr)
 		- circ_peek_back(pass->runs_other)
@@ -75,6 +80,8 @@ void	merge_run(t_merge_state *merge, t_merge_pass_state *pass)
 	circ_push_back(pass->runs_curr, combined);
 	run.run_dir = dir;
 	combined *= dir;
-	while (combined--)
-		merge_one_item(merge, pass, &run);
+	status = PS_SUCCESS;
+	while (combined-- && status == PS_SUCCESS)
+		status = merge_one_item(merge, pass, &run);
+	return (status);
 }

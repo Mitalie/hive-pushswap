@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:31 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 16:00:25 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:45:21 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "circ.h"
 # include "ops.h"
+# include "status.h"
 
 typedef enum e_merge_source
 {
@@ -61,9 +62,9 @@ typedef struct s_merge_run_state
 	int	run_dir;
 }	t_merge_run_state;
 
-void	merge_run(t_merge_state *merge, t_merge_pass_state *pass);
+t_ps_status	merge_run(t_merge_state *merge, t_merge_pass_state *pass);
 
-void	merge_op_queue_add(t_merge_state *merge, t_ps_op op);
-void	merge_op_queue_flush(t_merge_state *merge);
+t_ps_status	merge_op_queue_add(t_merge_state *merge, t_ps_op op);
+t_ps_status	merge_op_queue_flush(t_merge_state *merge);
 
 #endif
