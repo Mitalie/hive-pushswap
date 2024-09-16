@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 18:56:21 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:00:21 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "runs.h"
 #include "circ.h"
 
-static void	prepare_merge(t_merge_state *s, t_stacks *stacks, t_runs *runs)
+static void	prepare_merge(t_merge_state *merge, t_stacks *stacks, t_runs *runs)
 {
 	int	runs_b;
 	int	items_b;
@@ -34,7 +34,7 @@ static void	prepare_merge(t_merge_state *s, t_stacks *stacks, t_runs *runs)
 	}
 	while (items_b--)
 	{
-		merge_op_queue_add(s, OP_PB);
+		merge_op_queue_add(merge, OP_PB);
 		perform_op(stacks, OP_PB);
 	}
 }
@@ -53,31 +53,32 @@ static const t_ps_op *const	g_ops_to_b[NUM_SOURCES] = {
 	(const t_ps_op[]){OP_RRA, OP_PB, OP_INVALID},
 };
 
-static void
-	select_merge_stacks(t_merge_state *s, t_stacks *stacks, t_runs *runs)
+static void	select_merge_stacks(
+	t_merge_pass_state *pass, t_stacks *stacks, t_runs *runs)
 {
 	if (runs->current_loc == A1 || runs->current_loc == A2)
 	{
-		s->runs_curr = runs->a;
-		s->runs_other = runs->b;
-		s->data_curr = stacks->a;
-		s->data_other = stacks->b;
-		s->pushswap_ops = g_ops_to_a;
+		pass->runs_curr = runs->a;
+		pass->runs_other = runs->b;
+		pass->data_curr = stacks->a;
+		pass->data_other = stacks->b;
+		pass->pushswap_ops = g_ops_to_a;
 	}
 	else
 	{
-		s->runs_curr = runs->b;
-		s->runs_other = runs->a;
-		s->data_curr = stacks->b;
-		s->data_other = stacks->a;
-		s->pushswap_ops = g_ops_to_b;
+		pass->runs_curr = runs->b;
+		pass->runs_other = runs->a;
+		pass->data_curr = stacks->b;
+		pass->data_other = stacks->a;
+		pass->pushswap_ops = g_ops_to_b;
 	}
 }
 
-static void	merge_pass(t_merge_state *s, t_stacks *stacks, t_runs *runs)
+static void	merge_pass(t_merge_state *merge, t_stacks *stacks, t_runs *runs)
 {
-	int				pass_size;
-	int				loc;
+	int					pass_size;
+	int					loc;
+	t_merge_pass_state	pass;
 
 	runs->current_loc = (runs->current_loc + NUM_LOCS - 1) % NUM_LOCS;
 	pass_size = runs->num_runs[(runs->current_loc + NUM_LOCS - 1) % NUM_LOCS];
@@ -86,33 +87,33 @@ static void	merge_pass(t_merge_state *s, t_stacks *stacks, t_runs *runs)
 		runs->num_runs[loc++] -= pass_size;
 	runs->num_runs[runs->current_loc] = pass_size;
 	runs->total_runs -= 2 * pass_size;
-	select_merge_stacks(s, stacks, runs);
+	select_merge_stacks(&pass, stacks, runs);
 	while (pass_size--)
-		merge_run(s);
+		merge_run(merge, &pass);
 }
 
 t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 {
 	t_runs			runs;
 	t_ps_status		status;
-	t_merge_state	s;
+	t_merge_state	merge;
 
 	status = calculate_runs(&runs, num_items);
 	if (status == PS_SUCCESS)
 	{
-		s.stacks = stacks;
-		s.output_fd = output_fd;
-		s.output_queue_size = runs.total_runs;
-		s.output_queue = circ_alloc(s.output_queue_size);
-		if (!s.output_queue)
+		merge.stacks = stacks;
+		merge.output_fd = output_fd;
+		merge.output_queue_size = runs.total_runs;
+		merge.output_queue = circ_alloc(merge.output_queue_size);
+		if (!merge.output_queue)
 			status = PS_ERR_ALLOC_FAILURE;
 		else
 		{
-			prepare_merge(&s, stacks, &runs);
+			prepare_merge(&merge, stacks, &runs);
 			while (runs.total_runs > 1)
-				merge_pass(&s, stacks, &runs);
-			merge_op_queue_flush(&s);
-			free(s.output_queue);
+				merge_pass(&merge, stacks, &runs);
+			merge_op_queue_flush(&merge);
+			free(merge.output_queue);
 		}
 	}
 	free(runs.a);

@@ -6,70 +6,75 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/10 15:54:44 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:58:00 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "merge_internal.h"
 #include <stdbool.h>
 
-static int	peek(t_merge_state *s, t_merge_source src)
+static int	peek(t_merge_pass_state *pass, t_merge_source src)
 {
 	if (src == CURR_BOT)
-		return (circ_peek_front(s->data_curr));
+		return (circ_peek_front(pass->data_curr));
 	if (src == OTHER_TOP)
-		return (circ_peek_back(s->data_other));
-	return (circ_peek_front(s->data_other));
+		return (circ_peek_back(pass->data_other));
+	return (circ_peek_front(pass->data_other));
 }
 
-static bool	cmp(t_merge_state *s, t_merge_source a, t_merge_source b)
+static bool	cmp(t_merge_pass_state *pass, t_merge_run_state *run,
+	t_merge_source a, t_merge_source b)
 {
-	if (!s->run_items[a])
+	if (!run->run_items[a])
 		return (false);
-	if (!s->run_items[b])
+	if (!run->run_items[b])
 		return (true);
-	if (s->run_dir < 0)
-		return (peek(s, a) < peek(s, b));
-	return (peek(s, a) > peek(s, b));
+	if (run->run_dir < 0)
+		return (peek(pass, a) < peek(pass, b));
+	return (peek(pass, a) > peek(pass, b));
 }
 
-static void	merge_one_item(t_merge_state *s)
+static void	merge_one_item(t_merge_state *merge, t_merge_pass_state *pass,
+	t_merge_run_state *run)
 {
 	t_merge_source	src;
 	const t_ps_op	*ops;
 
-	if (cmp(s, CURR_BOT, OTHER_TOP) && cmp(s, CURR_BOT, OTHER_BOT))
+	if (cmp(pass, run, CURR_BOT, OTHER_TOP)
+		&& cmp(pass, run, CURR_BOT, OTHER_BOT))
 		src = CURR_BOT;
-	else if (cmp(s, OTHER_TOP, OTHER_BOT))
+	else if (cmp(pass, run, OTHER_TOP, OTHER_BOT))
 		src = OTHER_TOP;
 	else
 		src = OTHER_BOT;
-	ops = s->pushswap_ops[src];
+	ops = pass->pushswap_ops[src];
 	while (*ops != OP_INVALID)
 	{
-		merge_op_queue_add(s, *ops);
-		perform_op(s->stacks, *ops);
+		merge_op_queue_add(merge, *ops);
+		perform_op(merge->stacks, *ops);
 		ops++;
 	}
-	s->run_items[src]--;
+	run->run_items[src]--;
 }
 
-void	merge_run(t_merge_state *s)
+void	merge_run(t_merge_state *merge, t_merge_pass_state *pass)
 {
-	int	combined;
-	int	dir;
+	t_merge_run_state	run;
+	int					combined;
+	int					dir;
 
-	combined = circ_peek_front(s->runs_curr) - circ_peek_back(s->runs_other)
-		+ circ_peek_front(s->runs_other);
+	combined = circ_peek_front(pass->runs_curr)
+		- circ_peek_back(pass->runs_other)
+		+ circ_peek_front(pass->runs_other);
 	dir = 1;
 	if (combined < 0)
 		dir = -1;
-	s->run_items[CURR_BOT] = dir * circ_pop_front(s->runs_curr);
-	s->run_items[OTHER_TOP] = -dir * circ_pop_back(s->runs_other);
-	s->run_items[OTHER_BOT] = dir * circ_pop_front(s->runs_other);
-	circ_push_back(s->runs_curr, combined);
-	s->run_dir = dir;
+	run.run_items[CURR_BOT] = dir * circ_pop_front(pass->runs_curr);
+	run.run_items[OTHER_TOP] = -dir * circ_pop_back(pass->runs_other);
+	run.run_items[OTHER_BOT] = dir * circ_pop_front(pass->runs_other);
+	circ_push_back(pass->runs_curr, combined);
+	run.run_dir = dir;
 	combined *= dir;
 	while (combined--)
-		merge_one_item(s);
+		merge_one_item(merge, pass, &run);
 }
