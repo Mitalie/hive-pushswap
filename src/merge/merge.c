@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 16:52:52 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/16 17:12:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,25 +104,22 @@ t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 	t_merge_state	merge;
 
 	status = calculate_runs(&runs, num_items);
+	merge.stacks = stacks;
+	merge.output_fd = output_fd;
+	merge.output_queue_size = runs.total_runs;
+	merge.output_queue = 0;
 	if (status == PS_SUCCESS)
-	{
-		merge.stacks = stacks;
-		merge.output_fd = output_fd;
-		merge.output_queue_size = runs.total_runs;
 		merge.output_queue = circ_alloc(merge.output_queue_size);
-		if (!merge.output_queue)
-			status = PS_ERR_ALLOC_FAILURE;
-		else
-		{
-			status = prepare_merge(&merge, stacks, &runs);
-			if (status == PS_SUCCESS)
-				while (runs.total_runs > 1)
-					merge_pass(&merge, stacks, &runs);
-			if (status == PS_SUCCESS)
-				status = merge_op_queue_flush(&merge);
-			free(merge.output_queue);
-		}
-	}
+	if (status == PS_SUCCESS && !merge.output_queue)
+		status = PS_ERR_ALLOC_FAILURE;
+	if (status == PS_SUCCESS)
+		status = prepare_merge(&merge, stacks, &runs);
+	if (status == PS_SUCCESS)
+		while (runs.total_runs > 1)
+			merge_pass(&merge, stacks, &runs);
+	if (status == PS_SUCCESS)
+		status = merge_op_queue_flush(&merge);
+	free(merge.output_queue);
 	free(runs.a);
 	free(runs.b);
 	return (status);
