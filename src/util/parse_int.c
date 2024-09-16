@@ -6,20 +6,20 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:18:55 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/12 14:17:26 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:29:55 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
 #include <limits.h>
 
-static bool	isspace(char c)
+static bool	util_isspace(char c)
 {
 	return (c == '\t' || c == '\n' || c == '\v'
 		|| c == '\f' || c == '\r' || c == ' ');
 }
 
-static bool	isdigit(char c)
+static bool	util_isdigit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
@@ -34,7 +34,7 @@ bool	parse_int(const char *str, int *value_out)
 	int	digit;
 	int	value;
 
-	while (isspace(*str))
+	while (util_isspace(*str))
 		str++;
 	sign = 1;
 	if (*str == '-')
@@ -42,7 +42,7 @@ bool	parse_int(const char *str, int *value_out)
 	if (*str == '-' || *str == '+')
 		str++;
 	value = 0;
-	while (isdigit(*str))
+	while (util_isdigit(*str))
 	{
 		digit = *str++ - '0';
 		if ((sign > 0 && value > (INT_MAX - digit) / 10)
@@ -50,7 +50,7 @@ bool	parse_int(const char *str, int *value_out)
 			return (false);
 		value = value * 10 + sign * digit;
 	}
-	while (isspace(*str))
+	while (util_isspace(*str))
 		str++;
 	if (*str == 0 && value_out)
 		*value_out = value;
