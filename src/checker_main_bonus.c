@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:02:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:30:35 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:35:49 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "ops.h"
 #include "ops_io.h"
 #include <stdbool.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 static t_ps_status	perform_ops_from_stdin(t_stacks *data)
@@ -71,8 +70,7 @@ int	main(int argc, char **argv)
 		else
 			write(STDOUT_FILENO, "KO\n", 3);
 	}
-	free(data.a);
-	free(data.b);
+	release_stacks(&data);
 	if (status != PS_SUCCESS)
 		write(STDERR_FILENO, "Error\n", 6);
 	return (status);

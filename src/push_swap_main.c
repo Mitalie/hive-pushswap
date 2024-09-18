@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:06:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:54:39 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:36:05 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "stacks.h"
 #include "optimal.h"
 #include "merge.h"
-#include <stdlib.h>
 #include <unistd.h>
 
 int	main(int argc, char **argv)
@@ -34,8 +33,7 @@ int	main(int argc, char **argv)
 		else if (num_inputs > 1)
 			status = optimal_sort(&data, num_inputs, STDOUT_FILENO);
 	}
-	free(data.a);
-	free(data.b);
+	release_stacks(&data);
 	if (status != PS_SUCCESS)
 		write(STDERR_FILENO, "Error\n", 6);
 	return (status);

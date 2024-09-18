@@ -6,12 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:21:00 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/18 17:19:45 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:35:08 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 #include "util.h"
+#include <stdlib.h>
 
 /*
 	The assignment specifies that the first argument should be at the top of the
@@ -42,4 +43,10 @@ t_ps_status	input_to_stacks(t_stacks *s, size_t num_items, char **item_strs)
 		item_idx++;
 	}
 	return (PS_SUCCESS);
+}
+
+void	release_stacks(t_stacks *s)
+{
+	free(s->a);
+	free(s->b);
 }
