@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:39:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/04 17:44:45 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:57:27 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define OPS_H
 
 # include "stacks.h"
+
+// The enum values must match the lookup table indices in ops_util.c!
 
 typedef enum e_ps_op
 {
@@ -32,7 +34,7 @@ typedef enum e_ps_op
 	OP_INVALID = -1,
 }	t_ps_op;
 
-// Longest ops are 3 characters
+// Longest op strings are 3 characters
 # define MAX_OP_LEN 3
 
 void		perform_op(t_stacks *stacks, t_ps_op op);
