@@ -6,15 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:37:16 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/02 16:15:22 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:23:46 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
 
-/*
-	forward moves first to last, reverse moves last to first
-*/
 void	int_arr_rot_one(int *arr, int size, bool reverse)
 {
 	int	tmp;

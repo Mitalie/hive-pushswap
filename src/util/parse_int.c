@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:18:55 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 16:29:55 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:22:01 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,6 @@ static bool	util_isdigit(char c)
 	return (c >= '0' && c <= '9');
 }
 
-/*
-	Parse decimal integer from a string, ensuring it doesn't contain additional
-	garbage. If value_out is not NULL, the parsed value is stored there.
-*/
 bool	parse_int(const char *str, int *value_out)
 {
 	int	sign;
