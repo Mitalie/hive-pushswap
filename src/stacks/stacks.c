@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:21:00 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/20 14:59:07 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:19:45 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ t_ps_status	input_to_stacks(t_stacks *s, size_t num_items, char **item_strs)
 	while (item_idx < num_items)
 	{
 		if (!parse_int(item_strs[item_idx], &value))
-			return (PS_ERR_INVALID_INPUT);
+			return (PS_ERR_INPUT_ITEM_INVALID);
 		scan_idx = 0;
 		while (scan_idx < item_idx)
 			if (value == *circ_ptr(s->a, scan_idx++))
-				return (PS_ERR_DUPLICATE_INPUT);
+				return (PS_ERR_INPUT_ITEM_DUPLICATE);
 		circ_push_front(s->a, value);
 		item_idx++;
 	}

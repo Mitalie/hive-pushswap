@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:29:51 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:30:28 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:19:37 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ t_ps_status	read_ops_next(t_read_ops_state *s, bool *end, t_ps_op *op)
 		return (PS_SUCCESS);
 	line = cut_line(s);
 	if (!line)
-		return (PS_ERR_INVALID_OP);
+		return (PS_ERR_INPUT_OP_INVALID);
 	*op = op_from_string(line);
 	if (*op == OP_INVALID)
-		return (PS_ERR_INVALID_OP);
+		return (PS_ERR_INPUT_OP_INVALID);
 	return (PS_SUCCESS);
 }
 
