@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:41:13 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 	t_ps_status		status;
 	t_merge_state	merge;
 
-	status = calculate_runs(&runs, num_items);
+	status = merge_runs_generate(&runs, num_items);
 	merge.stacks = stacks;
 	merge.output_fd = output_fd;
 	merge.output_queue_size = runs.total_runs;
@@ -119,6 +119,6 @@ t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 	if (status == PS_SUCCESS)
 		status = merge_op_queue_flush(&merge);
 	free(merge.output_queue);
-	release_runs(&runs);
+	merge_runs_release(&runs);
 	return (status);
 }

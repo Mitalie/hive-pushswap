@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:13:50 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 15:10:34 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:41:46 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	reset_runs(t_runs *runs)
 
 /*
 	Calculate and allocate required sizes for the run buffers for given number
-	of passes, then reset the other fields for iteration by runs_populate.
+	of passes, then reset the other fields for iteration by merge_runs_populate.
 */
 static t_ps_status	runs_init(t_runs *runs, size_t passes)
 {
@@ -106,7 +106,7 @@ static void	split_pass(t_runs *runs)
 	each run in the process and allowing a callback to investigate the state
 	after each pass.
 */
-t_ps_status	runs_populate(
+t_ps_status	merge_runs_populate(
 	t_runs *runs, size_t passes, t_pass_cb *callback)
 {
 	size_t		pass;

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 15:00:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:41:37 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static t_run_cost	*sort_costs(t_run_cost *costs, size_t n)
 	Generate and sort cost entries for the given run candidates, and calculate
 	the total cost for the requested number of cheapest entries.
 */
-t_ps_status	runs_get_cost(t_runs *runs, int num_items, size_t *cost)
+t_ps_status	merge_runs_get_cost(t_runs *runs, int num_items, size_t *cost)
 {
 	t_run_cost	*costs;
 	t_run_cost	*sorted;
@@ -130,7 +130,7 @@ t_ps_status	runs_get_cost(t_runs *runs, int num_items, size_t *cost)
 	Select cheapest runs from the run candidate buffers and replace directions
 	and costs with directions and run lengths.
 */
-t_ps_status	runs_select_cheapest(t_runs *runs, int num_items)
+t_ps_status	merge_runs_select_cheapest(t_runs *runs, int num_items)
 {
 	t_run_cost	*costs;
 	t_run_cost	*sorted;

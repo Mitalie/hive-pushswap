@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:59:06 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 14:59:32 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:41:46 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ typedef struct t_pass_cb
 	size_t			best_cost;
 }	t_pass_cb;
 
-t_ps_status	runs_get_cost(t_runs *runs, int num_items, size_t *cost);
-t_ps_status	runs_select_cheapest(t_runs *runs, int num_items);
-t_ps_status	runs_populate(
+t_ps_status	merge_runs_get_cost(t_runs *runs, int num_items, size_t *cost);
+t_ps_status	merge_runs_select_cheapest(t_runs *runs, int num_items);
+t_ps_status	merge_runs_populate(
 				t_runs *runs, size_t passes, t_pass_cb *callback);
 
 #endif

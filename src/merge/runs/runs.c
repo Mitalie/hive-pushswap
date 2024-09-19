@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:02:21 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 16:38:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:41:46 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_ps_status	check_cost_callback(
 
 	if (runs->total_runs >= cb->num_items)
 	{
-		status = runs_get_cost(runs, cb->num_items, &cost);
+		status = merge_runs_get_cost(runs, cb->num_items, &cost);
 		if (status != PS_SUCCESS)
 			return (status);
 		if (cost < cb->best_cost)
@@ -75,7 +75,7 @@ static t_ps_status	check_cost_callback(
 */
 #define EXTRA_PASSES 3
 
-t_ps_status	calculate_runs(t_runs *runs, int num_items)
+t_ps_status	merge_runs_generate(t_runs *runs, int num_items)
 {
 	size_t		passes;
 	t_ps_status	status;
@@ -86,17 +86,17 @@ t_ps_status	calculate_runs(t_runs *runs, int num_items)
 	cb.best_pass = 0;
 	cb.best_cost = -1;
 	cb.num_items = num_items;
-	status = runs_populate(runs, passes, &cb);
+	status = merge_runs_populate(runs, passes, &cb);
 	if (status != PS_SUCCESS)
 		return (status);
-	release_runs(runs);
-	status = runs_populate(runs, cb.best_pass, 0);
+	merge_runs_release(runs);
+	status = merge_runs_populate(runs, cb.best_pass, 0);
 	if (status != PS_SUCCESS)
 		return (status);
-	return (runs_select_cheapest(runs, num_items));
+	return (merge_runs_select_cheapest(runs, num_items));
 }
 
-void	release_runs(t_runs *runs)
+void	merge_runs_release(t_runs *runs)
 {
 	free(runs->a);
 	free(runs->b);
