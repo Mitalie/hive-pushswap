@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:11:03 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:35:18 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static bool	state_op_s(t_opt_state_arr *s, bool a, bool b)
 	do_a = (a && s->num_a >= 2);
 	do_b = (b && s->num_b >= 2);
 	if (do_a)
-		int_arr_rot_one(s->items + s->num_b, 2, false);
+		util_int_arr_rot_one(s->items + s->num_b, 2, false);
 	if (do_b)
-		int_arr_rot_one(s->items + s->num_b - 2, 2, false);
+		util_int_arr_rot_one(s->items + s->num_b - 2, 2, false);
 	return (do_a || do_b);
 }
 
@@ -52,9 +52,9 @@ static bool	state_op_r(t_opt_state_arr *s, bool a, bool b)
 	do_a = (a && s->num_a >= 2);
 	do_b = (b && s->num_b >= 2);
 	if (do_a)
-		int_arr_rot_one(s->items + s->num_b, s->num_a, false);
+		util_int_arr_rot_one(s->items + s->num_b, s->num_a, false);
 	if (do_b)
-		int_arr_rot_one(s->items, s->num_b, true);
+		util_int_arr_rot_one(s->items, s->num_b, true);
 	return (do_a || do_b);
 }
 
@@ -66,9 +66,9 @@ static bool	state_op_rr(t_opt_state_arr *s, bool a, bool b)
 	do_a = (a && s->num_a >= 2);
 	do_b = (b && s->num_b >= 2);
 	if (do_a)
-		int_arr_rot_one(s->items + s->num_b, s->num_a, true);
+		util_int_arr_rot_one(s->items + s->num_b, s->num_a, true);
 	if (do_b)
-		int_arr_rot_one(s->items, s->num_b, false);
+		util_int_arr_rot_one(s->items, s->num_b, false);
 	return (do_a || do_b);
 }
 

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:21:00 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:33:50 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:35:13 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_ps_status	stacks_from_input(t_stacks *s, size_t num_items, char **item_strs)
 	item_idx = 0;
 	while (item_idx < num_items)
 	{
-		if (!parse_int(item_strs[item_idx], &value))
+		if (!util_parse_int(item_strs[item_idx], &value))
 			return (PS_ERR_INPUT_ITEM_INVALID);
 		scan_idx = 0;
 		while (scan_idx < item_idx)

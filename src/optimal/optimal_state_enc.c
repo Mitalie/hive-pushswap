@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:03:12 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/04 19:23:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:35:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	optimal_state_dec(t_opt_state_arr *s, int state_num, int num_items)
 	i = num_items;
 	while (--i)
 	{
-		lehmer_digit = state_num / factorial(i);
-		state_num = state_num % factorial(i);
-		int_arr_rot_one(next_item++, lehmer_digit + 1, true);
+		lehmer_digit = state_num / util_factorial(i);
+		state_num = state_num % util_factorial(i);
+		util_int_arr_rot_one(next_item++, lehmer_digit + 1, true);
 	}
 }
 
@@ -76,7 +76,7 @@ int	optimal_state_enc(t_opt_state_arr *s, int num_items)
 			lehmer_digit++;
 		}
 		s->items[i + lehmer_digit] = item;
-		lehmer_fact += lehmer_digit * factorial(num_items - i - 1);
+		lehmer_fact += lehmer_digit * util_factorial(num_items - i - 1);
 	}
 	return (lehmer_fact * (num_items + 1) + s->num_b);
 }

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:17:32 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:35:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_ps_status	optimal_graph_search(t_opt_node *graph,
 	t_circ				*queue;
 	int					i;
 
-	i = factorial(num_items + 1);
+	i = util_factorial(num_items + 1);
 	queue = circ_alloc(i);
 	if (!queue)
 		return (PS_ERR_ALLOC_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:24:35 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:35:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_ps_status	pushswap_optimal(t_stacks *stacks, int num_items, int output_fd)
 	start = stacks_to_state(stacks, num_items);
 	if (start == end)
 		return (PS_SUCCESS);
-	graph = malloc(factorial(num_items + 1) * sizeof(*graph));
+	graph = malloc(util_factorial(num_items + 1) * sizeof(*graph));
 	if (!graph)
 		return (PS_ERR_ALLOC_FAILURE);
 	status = optimal_graph_search(graph, start, end, num_items);

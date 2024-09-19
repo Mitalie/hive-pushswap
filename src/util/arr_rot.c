@@ -6,13 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:37:16 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/18 14:23:46 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:35:18 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
 
-void	int_arr_rot_one(int *arr, int size, bool reverse)
+void	util_int_arr_rot_one(int *arr, int size, bool reverse)
 {
 	int	tmp;
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:54:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/18 14:25:56 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:35:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static const int	g_fact[FACT_MAX + 1] = {
 	479001600,
 };
 
-int	factorial(int n)
+int	util_factorial(int n)
 {
 	if (n < 0 || n > FACT_MAX)
 		return (0);
