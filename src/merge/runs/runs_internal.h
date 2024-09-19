@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:59:06 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/28 14:17:37 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:59:32 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define RUNS_INTERNAL_H
 
 # include "status.h"
-# include "runs.h"
+# include "../merge_internal.h"
 
 typedef struct s_run_cost
 {

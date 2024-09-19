@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/09/19 13:49:12 by amakinen         ###   ########.fr        #
+#    Updated: 2024/09/19 14:51:12 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,9 @@ SRCS_M := $(addprefix $(SRCDIR)/,\
 	optimal/optimal_state_ops.c \
 	util/arr_rot.c \
 	util/factorial.c \
-	runs/runs.c \
-	runs/runs_populate.c \
-	runs/runs_cost.c \
+	merge/runs/runs.c \
+	merge/runs/runs_populate.c \
+	merge/runs/runs_cost.c \
 	merge/merge.c \
 	merge/merge_run.c \
 	merge/merge_op_queue.c \

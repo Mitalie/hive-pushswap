@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:31 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 16:45:21 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:06:05 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,26 @@
 # include "circ.h"
 # include "ops.h"
 # include "status.h"
+
+typedef enum e_loc
+{
+	A1,
+	A2,
+	B1,
+	B2,
+	NUM_LOCS,
+}	t_loc;
+
+typedef struct s_runs
+{
+	t_loc	current_loc;
+	int		num_runs[NUM_LOCS];
+	int		total_runs;
+	t_circ	*a;
+	t_circ	*b;
+}	t_runs;
+
+t_ps_status	calculate_runs(t_runs *runs, int num_items);
 
 typedef enum e_merge_source
 {

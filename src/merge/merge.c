@@ -6,14 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 17:12:24 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:00:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "merge.h"
 #include "merge_internal.h"
 #include <stdlib.h>
-#include "runs.h"
 #include "circ.h"
 
 static t_ps_status	prepare_merge(
