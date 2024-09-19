@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:17:32 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 19:39:41 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:56:38 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	join_paths(t_opt_node *graph, t_opt_state_num from_start,
 
 	Queue space equal to the number of states is much more than necessary, but
 	the actual space required is difficult to determine beforehand. Most of the
-	queue space will never be touched,	so the operating system likely reserves
+	queue space will never be touched, so the operating system likely reserves
 	no physical memory pages for it.
 */
 t_ps_status	optimal_graph_search(t_opt_node *graph,

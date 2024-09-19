@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   optimal_sort.c                                     :+:      :+:    :+:   */
+/*   optimal.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:57:04 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:13:02 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_opt_state_num	stacks_to_state(t_stacks *stacks, int num_items)
 	return (optimal_state_enc(&s, num_items));
 }
 
-t_ps_status	optimal_sort(t_stacks *stacks, int num_items, int output_fd)
+t_ps_status	pushswap_optimal(t_stacks *stacks, int num_items, int output_fd)
 {
 	t_opt_node		*graph;
 	t_ps_status		status;
