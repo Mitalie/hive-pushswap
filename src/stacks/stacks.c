@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:21:00 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/18 17:35:08 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:33:50 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 	stack, so we put each argument under the previous ones with circ_push_front.
 */
 
-t_ps_status	input_to_stacks(t_stacks *s, size_t num_items, char **item_strs)
+t_ps_status	stacks_from_input(t_stacks *s, size_t num_items, char **item_strs)
 {
 	int		value;
 	size_t	item_idx;
@@ -45,7 +45,7 @@ t_ps_status	input_to_stacks(t_stacks *s, size_t num_items, char **item_strs)
 	return (PS_SUCCESS);
 }
 
-void	release_stacks(t_stacks *s)
+void	stacks_release(t_stacks *s)
 {
 	free(s->a);
 	free(s->b);

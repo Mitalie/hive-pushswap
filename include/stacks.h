@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:14:46 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/18 17:39:07 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:33:50 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ typedef struct s_stacks
 	string array. Input items will be placed on stack A, first item on top and
 	last item on bottom. Each string must be a valid int with no extra garbage
 	besides leading or trailing whitespace. The allocated memory must be
-	released with `release_stacks`.
+	released with `stacks_release`.
 */
-t_ps_status	input_to_stacks(t_stacks *s, size_t num_items, char **item_strs);
+t_ps_status	stacks_from_input(t_stacks *s, size_t num_items, char **item_strs);
 
-void		release_stacks(t_stacks *s);
+void		stacks_release(t_stacks *s);
 
 #endif

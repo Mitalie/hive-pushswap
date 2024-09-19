@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:02:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:33:50 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv)
 	t_stacks	data;
 
 	num_inputs = argc - 1;
-	status = input_to_stacks(&data, num_inputs, argv + 1);
+	status = stacks_from_input(&data, num_inputs, argv + 1);
 	if (status == PS_SUCCESS)
 		status = perform_ops_from_stdin(&data);
 	if (status == PS_SUCCESS)
@@ -69,7 +69,7 @@ int	main(int argc, char **argv)
 		else
 			write(STDOUT_FILENO, "KO\n", 3);
 	}
-	release_stacks(&data);
+	stacks_release(&data);
 	if (status != PS_SUCCESS)
 		write(STDERR_FILENO, "Error\n", 6);
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:06:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 14:12:28 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:33:50 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 	num_inputs = argc - 1;
 	if (num_inputs == 0)
 		return (PS_SUCCESS);
-	status = input_to_stacks(&data, num_inputs, argv + 1);
+	status = stacks_from_input(&data, num_inputs, argv + 1);
 	if (status == PS_SUCCESS)
 	{
 		if (num_inputs > OPT_MAX_ITEMS)
@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 		else if (num_inputs > 1)
 			status = pushswap_optimal(&data, num_inputs, STDOUT_FILENO);
 	}
-	release_stacks(&data);
+	stacks_release(&data);
 	if (status != PS_SUCCESS)
 		write(STDERR_FILENO, "Error\n", 6);
 	return (status);
