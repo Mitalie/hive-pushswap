@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/09/19 14:51:12 by amakinen         ###   ########.fr        #
+#    Updated: 2024/09/19 17:18:39 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,12 +41,12 @@ SRCS_M := $(addprefix $(SRCDIR)/,\
 	merge/merge.c \
 	merge/merge_run.c \
 	merge/merge_op_queue.c \
-	ops_io/write_op.c \
+	ops/write_op.c \
 )
 
 SRCS_B := $(addprefix $(SRCDIR)/,\
 	checker_main_bonus.c \
-	ops_io/read_ops.c \
+	ops/read_ops.c \
 )
 
 OBJS_S := $(SRCS_S:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

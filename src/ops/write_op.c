@@ -6,11 +6,11 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 16:31:40 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/09 16:40:00 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:17:44 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ops_io.h"
+#include "ops.h"
 #include <errno.h>
 #include <unistd.h>
 
