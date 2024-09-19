@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:31 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 16:34:00 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:36:46 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,12 @@ typedef struct s_runs
 /*
 	Generate the starting runs for the polyphase merge sort, calculating their
 	directions and costs and selecting the cheapest ones to be used for the
-	items.
+	items. This allocates memory for the runs, which must be released with
+	`release_runs`.
 */
 t_ps_status	calculate_runs(t_runs *runs, int num_items);
+
+void		release_runs(t_runs *runs);
 
 /*
 	The output stack is considered "current" and output always happens on top.

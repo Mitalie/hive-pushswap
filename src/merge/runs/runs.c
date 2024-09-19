@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:02:21 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 15:01:23 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:38:03 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,15 @@ t_ps_status	calculate_runs(t_runs *runs, int num_items)
 	status = runs_populate(runs, passes, &cb);
 	if (status != PS_SUCCESS)
 		return (status);
-	free(runs->a);
-	free(runs->b);
+	release_runs(runs);
 	status = runs_populate(runs, cb.best_pass, 0);
 	if (status != PS_SUCCESS)
 		return (status);
 	return (runs_select_cheapest(runs, num_items));
+}
+
+void	release_runs(t_runs *runs)
+{
+	free(runs->a);
+	free(runs->b);
 }

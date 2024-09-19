@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 15:00:53 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:38:26 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 	if (status == PS_SUCCESS)
 		status = merge_op_queue_flush(&merge);
 	free(merge.output_queue);
-	free(runs.a);
-	free(runs.b);
+	release_runs(&runs);
 	return (status);
 }
