@@ -6,14 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:17:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:17:52 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "merge_internal.h"
 #include <stdbool.h>
 #include "circ.h"
-#include "ops.h"
+#include "op.h"
 
 /*
 	If stack doesn't have at least two items, rotations do nothing and can be
@@ -22,7 +22,7 @@
 	There are other no-op situations, but these are the only ones our merge sort
 	algorithm can produce.
 */
-static bool	noop(t_merge_state *merge, t_ps_op op)
+static bool	noop(t_merge_state *merge, t_op op)
 {
 	if (op == OP_RRA && circ_len(merge->stacks->a) < 2)
 		return (true);
@@ -37,9 +37,9 @@ static bool	noop(t_merge_state *merge, t_ps_op op)
 	There are other cancelling pairs, but these are the only ones our merge sort
 	algorithm can produce.
 */
-static bool	cancel(t_merge_state *merge, t_ps_op op)
+static bool	cancel(t_merge_state *merge, t_op op)
 {
-	t_ps_op	prev;
+	t_op	prev;
 
 	if (!circ_len(merge->output_queue))
 		return (false);
@@ -61,9 +61,9 @@ static bool	cancel(t_merge_state *merge, t_ps_op op)
 	algorithm can produce. This doesn't handle longer combining groups, but we
 	don't produce those either.
 */
-static bool	combine(t_merge_state *merge, t_ps_op op)
+static bool	combine(t_merge_state *merge, t_op op)
 {
-	t_ps_op	prev;
+	t_op	prev;
 
 	if (!circ_len(merge->output_queue))
 		return (false);
@@ -82,7 +82,7 @@ static bool	combine(t_merge_state *merge, t_ps_op op)
 	omitting or merging, apply that instead. If the queue would overflow, oldest
 	queued op is written out.
 */
-t_ps_status	merge_op_queue_add(t_merge_state *merge, t_ps_op op)
+t_ps_status	merge_op_queue_add(t_merge_state *merge, t_op op)
 {
 	t_ps_status	status;
 
@@ -94,7 +94,7 @@ t_ps_status	merge_op_queue_add(t_merge_state *merge, t_ps_op op)
 		return (PS_SUCCESS);
 	if (circ_len(merge->output_queue) == merge->output_queue_size)
 	{
-		status = write_op(merge->output_fd, circ_pop_back(merge->output_queue));
+		status = op_write(merge->output_fd, circ_pop_back(merge->output_queue));
 		if (status != PS_SUCCESS)
 			return (status);
 	}
@@ -111,6 +111,6 @@ t_ps_status	merge_op_queue_flush(t_merge_state *merge)
 
 	status = PS_SUCCESS;
 	while (circ_len(merge->output_queue) && status == PS_SUCCESS)
-		status = write_op(merge->output_fd, circ_pop_back(merge->output_queue));
+		status = op_write(merge->output_fd, circ_pop_back(merge->output_queue));
 	return (status);
 }

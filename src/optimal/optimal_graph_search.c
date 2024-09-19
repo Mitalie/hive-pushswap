@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:17:32 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 13:56:38 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 
 static bool	search_queued_node(t_opt_node *graph, t_circ *queue, int num_items);
 static bool	visit_node(t_opt_node *graph, t_opt_state_num current,
-				t_opt_state_num found, t_ps_op op);
+				t_opt_state_num found, t_op op);
 static bool	finish_search(t_opt_node *graph, t_opt_state_num current,
-				t_opt_state_num found, t_ps_op op);
+				t_opt_state_num found, t_op op);
 static void	join_paths(t_opt_node *graph, t_opt_state_num from_start,
-				t_opt_state_num from_end, t_ps_op op);
+				t_opt_state_num from_end, t_op op);
 
 /*
 	Bidirectional breadth-first search: starting with the given start and end
@@ -68,7 +68,7 @@ static bool	search_queued_node(t_opt_node *graph, t_circ *queue, int num_items)
 	t_opt_state_arr	current;
 	t_opt_state_arr	next;
 	t_opt_state_num	next_enc;
-	t_ps_op			op;
+	t_op			op;
 
 	current_enc = circ_pop_front(queue);
 	optimal_state_dec(&current, current_enc, num_items);
@@ -94,7 +94,7 @@ static bool	search_queued_node(t_opt_node *graph, t_circ *queue, int num_items)
 	visited.
 */
 static bool	visit_node(t_opt_node *graph,
-	t_opt_state_num current, t_opt_state_num found, t_ps_op op)
+	t_opt_state_num current, t_opt_state_num found, t_op op)
 {
 	t_opt_node_type	curr_type;
 	t_opt_node		*found_node;
@@ -120,7 +120,7 @@ static bool	visit_node(t_opt_node *graph,
 	called with unvisited nodes.
 */
 static bool	finish_search(t_opt_node *graph,
-	t_opt_state_num current, t_opt_state_num found, t_ps_op op)
+	t_opt_state_num current, t_opt_state_num found, t_op op)
 {
 	bool			current_end;
 	bool			found_end;
@@ -147,10 +147,10 @@ static bool	finish_search(t_opt_node *graph,
 	again making sure the ops lead towards end.
 */
 static void	join_paths(t_opt_node *graph,
-	t_opt_state_num from_start, t_opt_state_num from_end, t_ps_op op)
+	t_opt_state_num from_start, t_opt_state_num from_end, t_op op)
 {
 	t_opt_state_num	current;
-	t_ps_op			nextop;
+	t_op			nextop;
 
 	current = from_end;
 	while (graph[current].type != NODE_END)

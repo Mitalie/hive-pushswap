@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_ops.c                                         :+:      :+:    :+:   */
+/*   op_read.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:29:51 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:17:48 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:28:16 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ops.h"
+#include "op.h"
 #include <errno.h>
 #include <unistd.h>
 
@@ -19,7 +19,7 @@
 	The minimum ensures any valid line at the start of the buffer is fully read,
 	while avoiding excessive buffer shifts and small reads.
 */
-static bool	fill_buffer(t_read_ops_state *s, size_t min_length)
+static bool	fill_buffer(t_op_read_state *s, size_t min_length)
 {
 	size_t	i;
 	ssize_t	ret;
@@ -53,7 +53,7 @@ static bool	fill_buffer(t_read_ops_state *s, size_t min_length)
 	no newline character in the buffer, the line is either too long or lacks a
 	terminating newline, and a null pointer is returned.
 */
-static char	*cut_line(t_read_ops_state *s)
+static char	*cut_line(t_op_read_state *s)
 {
 	char	*line;
 	size_t	i;
@@ -74,11 +74,11 @@ static char	*cut_line(t_read_ops_state *s)
 	return (0);
 }
 
-t_ps_status	read_ops_next(t_read_ops_state *s, bool *end, t_ps_op *op)
+t_ps_status	op_read_next(t_op_read_state *s, bool *end, t_op *op)
 {
 	char	*line;
 
-	if (!fill_buffer(s, MAX_OP_LEN + 1))
+	if (!fill_buffer(s, OP_MAX_LEN + 1))
 		return (PS_ERR_READ_FAILURE);
 	*end = (s->len == 0);
 	if (*end)
@@ -92,7 +92,7 @@ t_ps_status	read_ops_next(t_read_ops_state *s, bool *end, t_ps_op *op)
 	return (PS_SUCCESS);
 }
 
-void	read_ops_init(t_read_ops_state *s, int fd)
+void	op_read_init(t_op_read_state *s, int fd)
 {
 	s->fd = fd;
 	s->len = 0;

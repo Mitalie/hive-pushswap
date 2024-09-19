@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:17:36 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:24:35 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "optimal_internal.h"
 #include "circ.h"
 #include "util.h"
-#include "ops.h"
+#include "op.h"
 #include <stdlib.h>
 
 static t_opt_state_num	stacks_to_state(t_stacks *stacks, int num_items)
@@ -52,7 +52,7 @@ t_ps_status	pushswap_optimal(t_stacks *stacks, int num_items, int output_fd)
 	{
 		while (start != end)
 		{
-			write_op(output_fd, graph[start].op);
+			op_write(output_fd, graph[start].op);
 			start = graph[start].reached_from;
 		}
 	}

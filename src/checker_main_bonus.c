@@ -6,32 +6,32 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:02:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:18:12 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "status.h"
 #include "stacks.h"
-#include "ops.h"
+#include "op.h"
 #include <stdbool.h>
 #include <unistd.h>
 
 static t_ps_status	perform_ops_from_stdin(t_stacks *data)
 {
-	t_read_ops_state	s;
-	t_ps_status			status;
-	t_ps_op				op;
-	bool				end;
+	t_op_read_state	s;
+	t_ps_status		status;
+	t_op			op;
+	bool			end;
 
-	read_ops_init(&s, STDIN_FILENO);
+	op_read_init(&s, STDIN_FILENO);
 	while (true)
 	{
-		status = read_ops_next(&s, &end, &op);
+		status = op_read_next(&s, &end, &op);
 		if (status != PS_SUCCESS)
 			return (status);
 		if (end)
 			return (PS_SUCCESS);
-		perform_op(data, op);
+		op_execute(data, op);
 	}
 }
 

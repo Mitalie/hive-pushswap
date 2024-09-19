@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:11:03 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/02 16:15:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static bool	state_op_rr(t_opt_state_arr *s, bool a, bool b)
 	Perform an operation on the state. Returns true if the state was changed,
 	false if the op changes nothing in current state.
 */
-bool	optimal_state_op(t_opt_state_arr *s, t_ps_op op)
+bool	optimal_state_op(t_opt_state_arr *s, t_op op)
 {
 	if (op == OP_SA)
 		return (state_op_s(s, true, false));

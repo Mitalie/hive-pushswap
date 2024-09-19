@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:31 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 16:36:46 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MERGE_INTERNAL_H
 
 # include "circ.h"
-# include "ops.h"
+# include "op.h"
 # include "status.h"
 
 /*
@@ -142,11 +142,11 @@ typedef struct s_merge_state
 */
 typedef struct s_merge_pass_state
 {
-	t_circ					*runs_curr;
-	t_circ					*runs_other;
-	t_circ					*data_curr;
-	t_circ					*data_other;
-	const t_ps_op *const	*pushswap_ops;
+	t_circ				*runs_curr;
+	t_circ				*runs_other;
+	t_circ				*data_curr;
+	t_circ				*data_other;
+	const t_op *const	*pushswap_ops;
 }	t_merge_pass_state;
 
 /*
@@ -161,7 +161,7 @@ typedef struct s_merge_run_state
 
 t_ps_status	merge_run(t_merge_state *merge, t_merge_pass_state *pass);
 
-t_ps_status	merge_op_queue_add(t_merge_state *merge, t_ps_op op);
+t_ps_status	merge_op_queue_add(t_merge_state *merge, t_op op);
 t_ps_status	merge_op_queue_flush(t_merge_state *merge);
 
 #endif

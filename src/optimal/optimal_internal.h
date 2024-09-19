@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:04:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/06 18:39:50 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define OPTIMAL_INTERNAL_H
 
 # include "optimal.h"
-# include "ops.h"
+# include "op.h"
 # include <stdbool.h>
 
 /*
@@ -79,11 +79,11 @@ typedef enum e_opt_node_type
 typedef struct s_opt_node
 {
 	t_opt_node_type	type;
-	t_ps_op			op;
+	t_op			op;
 	t_opt_state_num	reached_from;
 }	t_opt_node;
 
-bool			optimal_state_op(t_opt_state_arr *s, t_ps_op op);
+bool			optimal_state_op(t_opt_state_arr *s, t_op op);
 
 t_opt_state_num	optimal_state_enc(t_opt_state_arr *s, int num_items);
 void			optimal_state_dec(t_opt_state_arr *s,

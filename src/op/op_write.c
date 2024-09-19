@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   write_op.c                                         :+:      :+:    :+:   */
+/*   op_write.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 16:31:40 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:17:44 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:28:16 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ops.h"
+#include "op.h"
 #include <errno.h>
 #include <unistd.h>
 
@@ -31,10 +31,10 @@ static bool	do_write(int fd, char *buf, size_t len)
 	return (true);
 }
 
-t_ps_status	write_op(int fd, t_ps_op op)
+t_ps_status	op_write(int fd, t_op op)
 {
 	const char	*op_str;
-	char		buf[MAX_OP_LEN + 1];
+	char		buf[OP_MAX_LEN + 1];
 	size_t		len;
 
 	op_str = op_to_string(op);

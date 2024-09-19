@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/09/19 17:18:39 by amakinen         ###   ########.fr        #
+#    Updated: 2024/09/19 17:23:59 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ SRCDIR := src
 SRCS_S := $(addprefix $(SRCDIR)/,\
 	circ/circ_basic.c \
 	circ/circ_pushpop.c \
-	ops/ops.c \
-	ops/ops_util.c \
+	op/op_execute.c \
+	op/op_util.c \
 	util/parse_int.c \
 	stacks/stacks.c \
 )
@@ -41,12 +41,12 @@ SRCS_M := $(addprefix $(SRCDIR)/,\
 	merge/merge.c \
 	merge/merge_run.c \
 	merge/merge_op_queue.c \
-	ops/write_op.c \
+	op/op_write.c \
 )
 
 SRCS_B := $(addprefix $(SRCDIR)/,\
 	checker_main_bonus.c \
-	ops/read_ops.c \
+	op/op_read.c \
 )
 
 OBJS_S := $(SRCS_S:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ops.c                                              :+:      :+:    :+:   */
+/*   op_execute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:43:36 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/21 15:26:12 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:29:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ops.h"
+#include "op.h"
 #include <stdbool.h>
 
 static void	op_s(t_stacks *s, bool a, bool b)
@@ -58,7 +58,7 @@ static void	op_rr(t_stacks *s, bool a, bool b)
 		circ_push_back(s->b, circ_pop_front(s->b));
 }
 
-void	perform_op(t_stacks *s, t_ps_op op)
+void	op_execute(t_stacks *s, t_op op)
 {
 	if (op == OP_SA)
 		op_s(s, true, false);

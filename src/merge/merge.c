@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 16:38:26 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_ps_status	prepare_merge(
 		status = merge_op_queue_add(merge, OP_PB);
 		if (status != PS_SUCCESS)
 			return (status);
-		perform_op(stacks, OP_PB);
+		op_execute(stacks, OP_PB);
 	}
 	return (PS_SUCCESS);
 }
@@ -46,15 +46,15 @@ static t_ps_status	prepare_merge(
 /*
 	OP_INVALID serves as end-of-array marker
 */
-static const t_ps_op *const	g_ops_to_a[NUM_SOURCES] = {
-	(const t_ps_op[]){OP_RRA, OP_INVALID},
-	(const t_ps_op[]){OP_PA, OP_INVALID},
-	(const t_ps_op[]){OP_RRB, OP_PA, OP_INVALID},
+static const t_op *const	g_ops_to_a[NUM_SOURCES] = {
+	(const t_op[]){OP_RRA, OP_INVALID},
+	(const t_op[]){OP_PA, OP_INVALID},
+	(const t_op[]){OP_RRB, OP_PA, OP_INVALID},
 };
-static const t_ps_op *const	g_ops_to_b[NUM_SOURCES] = {
-	(const t_ps_op[]){OP_RRB, OP_INVALID},
-	(const t_ps_op[]){OP_PB, OP_INVALID},
-	(const t_ps_op[]){OP_RRA, OP_PB, OP_INVALID},
+static const t_op *const	g_ops_to_b[NUM_SOURCES] = {
+	(const t_op[]){OP_RRB, OP_INVALID},
+	(const t_op[]){OP_PB, OP_INVALID},
+	(const t_op[]){OP_RRA, OP_PB, OP_INVALID},
 };
 
 static void	select_merge_stacks(

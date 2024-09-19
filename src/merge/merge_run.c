@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/16 16:50:24 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:27:02 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_ps_status	merge_one_item(
 	t_merge_state *merge, t_merge_pass_state *pass, t_merge_run_state *run)
 {
 	t_merge_source	src;
-	const t_ps_op	*ops;
+	const t_op		*ops;
 	t_ps_status		status;
 
 	if (cmp(pass, run, CURR_BOT, OTHER_TOP)
@@ -54,7 +54,7 @@ static t_ps_status	merge_one_item(
 		status = merge_op_queue_add(merge, *ops);
 		if (status != PS_SUCCESS)
 			return (status);
-		perform_op(merge->stacks, *ops);
+		op_execute(merge->stacks, *ops);
 		ops++;
 	}
 	run->run_items[src]--;

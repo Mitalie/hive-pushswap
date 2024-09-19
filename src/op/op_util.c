@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ops_util.c                                         :+:      :+:    :+:   */
+/*   op_util.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:28:18 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/18 17:57:19 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:26:57 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ops.h"
+#include "op.h"
 #include <stdbool.h>
 
-// The lookup table indices must match the t_ps_op enum values in ops.h!
+// The lookup table indices must match the t_op enum values in op.h!
 
-static const char		*g_op_strings[NUM_OPS] = {
+static const char	*g_op_strings[NUM_OPS] = {
 	"sa",
 	"sb",
 	"ss",
@@ -29,7 +29,7 @@ static const char		*g_op_strings[NUM_OPS] = {
 	"rrr",
 };
 
-static const t_ps_op	g_op_reverse[NUM_OPS] = {
+static const t_op	g_op_reverse[NUM_OPS] = {
 	OP_SA,
 	OP_SB,
 	OP_SS,
@@ -43,7 +43,7 @@ static const t_ps_op	g_op_reverse[NUM_OPS] = {
 	OP_RR,
 };
 
-const char	*op_to_string(t_ps_op op)
+const char	*op_to_string(t_op op)
 {
 	if (op >= 0 && op < NUM_OPS)
 		return (g_op_strings[op]);
@@ -58,9 +58,9 @@ static bool	str_equal(const char *a, const char *b)
 	return (true);
 }
 
-t_ps_op	op_from_string(const char *str)
+t_op	op_from_string(const char *str)
 {
-	t_ps_op	op;
+	t_op	op;
 
 	op = 0;
 	while (op < NUM_OPS)
@@ -72,7 +72,7 @@ t_ps_op	op_from_string(const char *str)
 	return (OP_INVALID);
 }
 
-t_ps_op	op_reverse(t_ps_op op)
+t_op	op_reverse(t_op op)
 {
 	if (op >= 0 && op < NUM_OPS)
 		return (g_op_reverse[op]);
