@@ -6,15 +6,17 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:14:46 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:33:50 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:32:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACKS_H
 # define STACKS_H
 
-# include "circ.h"
 # include "status.h"
+# include <stddef.h>
+
+typedef struct s_circ	t_circ;
 
 /*
 	A struct to store the A and B stacks described in the push_swap assignment.

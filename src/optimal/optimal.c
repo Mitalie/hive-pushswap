@@ -6,15 +6,17 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:35:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:32:34 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "optimal.h"
-#include "optimal_internal.h"
+
 #include "circ.h"
-#include "util.h"
 #include "op.h"
+#include "optimal_internal.h"
+#include "stacks.h"
+#include "util.h"
 #include <stdlib.h>
 
 static t_opt_state_num	stacks_to_state(t_stacks *stacks, int num_items)

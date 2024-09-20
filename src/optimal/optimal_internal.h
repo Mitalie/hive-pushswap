@@ -6,15 +6,16 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:04:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:10:16 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OPTIMAL_INTERNAL_H
 # define OPTIMAL_INTERNAL_H
 
-# include "optimal.h"
 # include "op.h"
+# include "optimal.h"
+# include "status.h"
 # include <stdbool.h>
 
 /*

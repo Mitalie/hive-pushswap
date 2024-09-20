@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:11:03 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:35:18 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:15:29 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "optimal_internal.h"
+
 #include "util.h"
 
 static bool	state_op_s(t_opt_state_arr *s, bool a, bool b)

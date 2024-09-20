@@ -6,17 +6,18 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:39:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:28:16 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:33:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OP_H
 # define OP_H
 
+# include "status.h"
 # include <stdbool.h>
 # include <stddef.h>
-# include "stacks.h"
-# include "status.h"
+
+typedef struct s_stacks	t_stacks;
 
 // The enum values must match the lookup table indices in op_util.c!
 

@@ -6,14 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:44:10 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/07 18:54:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:40:55 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CIRC_INTERNAL_H
 # define CIRC_INTERNAL_H
 
-# include "circ.h"
+# include <stddef.h>
 
 /*
 	start points at the first slot, which is non-empty unless count == 0

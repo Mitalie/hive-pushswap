@@ -6,11 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:13:50 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:41:46 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:44:38 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "runs_internal.h"
+
+#include "circ.h"
 
 static void	reset_runs(t_runs *runs)
 {

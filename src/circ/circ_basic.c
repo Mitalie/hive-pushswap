@@ -6,9 +6,11 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:33:37 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/21 15:17:43 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:22:04 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "circ.h"
 
 #include "circ_internal.h"
 #include <assert.h>

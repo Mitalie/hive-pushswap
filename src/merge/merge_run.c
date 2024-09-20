@@ -6,11 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:32:43 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:27:02 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:12:25 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "merge_internal.h"
+
+#include "circ.h"
+#include "op.h"
 #include <stdbool.h>
 
 static int	peek(t_merge_pass_state *pass, t_merge_source src)

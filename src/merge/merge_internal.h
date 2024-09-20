@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:31 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:41:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:36:22 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include "circ.h"
 # include "op.h"
 # include "status.h"
+# include <stddef.h>
+
+typedef struct s_stacks	t_stacks;
 
 /*
 	This module solves the push_swap assignment with polyphase merge sort.

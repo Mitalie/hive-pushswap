@@ -6,14 +6,17 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:41:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:24:52 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "merge.h"
-#include "merge_internal.h"
-#include <stdlib.h>
+
 #include "circ.h"
+#include "merge_internal.h"
+#include "op.h"
+#include "stacks.h"
+#include <stdlib.h>
 
 static t_ps_status	prepare_merge(
 	t_merge_state *merge, t_stacks *stacks, t_runs *runs)

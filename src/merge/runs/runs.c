@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:02:21 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:41:46 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:21:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "runs_internal.h"
+
 #include <stdlib.h>
 
 /*

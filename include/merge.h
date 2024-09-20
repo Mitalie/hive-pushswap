@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:41:35 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 16:34:02 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:34:03 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define MERGE_H
 
 # include "status.h"
-# include "stacks.h"
+
+typedef struct s_stacks	t_stacks;
 
 /*
 	Solve the push_swap assignment large number of items using a merge sort

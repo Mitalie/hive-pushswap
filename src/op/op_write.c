@@ -6,12 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 16:31:40 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:28:16 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:42:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
+
 #include <errno.h>
+#include <stdbool.h>
 #include <unistd.h>
 
 static bool	do_write(int fd, char *buf, size_t len)

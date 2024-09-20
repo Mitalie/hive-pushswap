@@ -6,12 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:56:42 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:41:37 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:48:04 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "runs_internal.h"
+
+#include "circ.h"
+#include <stdlib.h>
 
 /*
 	Allocate space for enough cost entries and initialize them based on the run

@@ -6,11 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:21:00 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:35:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:14:18 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
+
+#include "circ.h"
 #include "util.h"
 #include <stdlib.h>
 

@@ -6,11 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:43:36 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:29:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:29:20 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
+
+#include "circ.h"
+#include "stacks.h"
 #include <stdbool.h>
 
 static void	op_s(t_stacks *s, bool a, bool b)

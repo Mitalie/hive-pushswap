@@ -6,14 +6,17 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:17:32 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:35:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:22:49 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "optimal_internal.h"
-#include <stdlib.h>
+
 #include "circ.h"
+#include "op.h"
 #include "util.h"
+#include <stdbool.h>
+#include <stdlib.h>
 
 static bool	search_queued_node(t_opt_node *graph, t_circ *queue, int num_items);
 static bool	visit_node(t_opt_node *graph, t_opt_state_num current,

@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:28:18 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:26:57 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:39:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
+
 #include <stdbool.h>
 
 // The lookup table indices must match the t_op enum values in op.h!

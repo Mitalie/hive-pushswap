@@ -6,14 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:06:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:33:50 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:14:42 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "status.h"
-#include "stacks.h"
-#include "optimal.h"
 #include "merge.h"
+#include "optimal.h"
+#include "stacks.h"
+#include "status.h"
 #include <unistd.h>
 
 int	main(int argc, char **argv)

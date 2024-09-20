@@ -6,14 +6,16 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:17:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:26:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:37:09 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "merge_internal.h"
-#include <stdbool.h>
+
 #include "circ.h"
 #include "op.h"
+#include "stacks.h"
+#include <stdbool.h>
 
 /*
 	If stack doesn't have at least two items, rotations do nothing and can be

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:02:28 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 13:49:23 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 17:31:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define OPTIMAL_H
 
 # include "status.h"
-# include "stacks.h"
+
+typedef struct s_stacks	t_stacks;
 
 /*
 	Solve the push_swap assignment for a small number of items using an optimal

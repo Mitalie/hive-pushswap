@@ -6,15 +6,15 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:59:06 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:41:46 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:18:30 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RUNS_INTERNAL_H
 # define RUNS_INTERNAL_H
 
-# include "status.h"
 # include "../merge_internal.h"
+# include "status.h"
 
 typedef struct s_run_cost
 {

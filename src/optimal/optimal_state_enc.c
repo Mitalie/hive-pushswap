@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:03:12 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/19 17:35:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:17:08 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "optimal_internal.h"
+
 #include "util.h"
 
 /*
@@ -58,10 +59,10 @@ void	optimal_state_dec(t_opt_state_arr *s, int state_num, int num_items)
 */
 int	optimal_state_enc(t_opt_state_arr *s, int num_items)
 {
-	unsigned char	item;
-	int				i;
-	int				lehmer_digit;
-	int				lehmer_fact;
+	int	item;
+	int	i;
+	int	lehmer_digit;
+	int	lehmer_fact;
 
 	i = num_items - 1;
 	lehmer_fact = 0;
