@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/09/19 17:23:59 by amakinen         ###   ########.fr        #
+#    Updated: 2024/09/23 15:50:48 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ SRCS_M := $(addprefix $(SRCDIR)/,\
 	optimal/optimal.c \
 	optimal/optimal_graph_search.c \
 	optimal/optimal_state_enc.c \
-	optimal/optimal_state_ops.c \
+	optimal/optimal_state_op.c \
 	util/arr_rot.c \
 	util/factorial.c \
 	merge/runs/runs.c \
