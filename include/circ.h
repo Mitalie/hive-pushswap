@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:46:59 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/18 16:53:47 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:49:51 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ typedef struct s_circ	t_circ;
 t_circ	*circ_alloc(size_t size);
 
 /*
-	Random access to entries in a `t_circ`. Index 0 is the front and highest
-	index is the back of the array. The returned pointer can be used for both
-	read and write, but pointer arithmetic is not safe because any index might
-	be the first or the last position in the internal array.
+	Random access to entries in a `t_circ`. Index 0 is the element in the front
+	and the index (length - 1) is the element at the back of the array. The
+	returned pointer can be used for both read and write, but pointer arithmetic
+	is not safe because caller doesn't know how the indices relate to the bounds
+	of the internal buffer.
 */
 int		*circ_ptr(t_circ *c, size_t idx);
 

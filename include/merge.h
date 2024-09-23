@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:41:35 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/20 17:34:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:58:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 typedef struct s_stacks	t_stacks;
 
 /*
-	Solve the push_swap assignment large number of items using a merge sort
-	algorithm.
+	Solve the push_swap assignment for a large number of items using a merge
+	sort algorithm.
 
 	Merge sort merges two or more sorted runs (sequences) into a longer sorted
 	run in O(n) operations. It requires O(log n) passes to go from n runs of
