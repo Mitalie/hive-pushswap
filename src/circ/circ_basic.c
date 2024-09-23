@@ -6,17 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:33:37 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/20 16:22:04 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:58:26 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "circ.h"
 
 #include "circ_internal.h"
-#include <assert.h>
 #include <stdlib.h>
-
-/* TODO: remove asserts before submission */
 
 t_circ	*circ_alloc(size_t size)
 {
@@ -40,18 +37,15 @@ size_t	circ_len(t_circ *c)
 
 int	*circ_ptr(t_circ *c, size_t idx)
 {
-	assert(idx < c->count);
 	return (&c->arr[(c->start + idx) % c->size]);
 }
 
 int	circ_peek_back(t_circ *c)
 {
-	assert(c->count > 0);
 	return (c->arr[(c->end - 1 + c->size) % c->size]);
 }
 
 int	circ_peek_front(t_circ *c)
 {
-	assert(c->count > 0);
 	return (c->arr[c->start]);
 }
