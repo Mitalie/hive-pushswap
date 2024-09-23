@@ -6,13 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:02:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/25 15:46:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:56:00 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "circ.h"
 #include "io.h"
-#include "op.h"
+#include "op_bonus.h"
 #include "status.h"
 #include "stacks.h"
 #include <stdbool.h>
