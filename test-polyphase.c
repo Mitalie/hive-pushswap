@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 15:40:04 by amakinen          #+#    #+#             */
-/*   Updated: 2024/08/06 16:44:47 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:11:34 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,8 @@ static void	balance_stacks_ppm(t_stacks *data, t_stacks *seg, size_t n_items)
 	*/
 }
 
+static int	g_extra_passes = 0;
+
 static void	segment_rec_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state, size_t n_items)
 {
 	//printstacks(seg, "runs before split");
@@ -295,13 +297,11 @@ static void	segment_rec_ppm(t_stacks *data, t_stacks *seg, t_ppm_state *state, s
 		segment_rec_ppm(data, seg, state, n_items);
 	else
 	{
-		split_level_ppm(seg, state);
-		split_level_ppm(seg, state);
-		split_level_ppm(seg, state);
+		for (int i = 0; i < g_extra_passes; i++)
+			split_level_ppm(seg, state);
 		balance_stacks_ppm(data, seg, n_items);
-		merge_level_ppm(data, seg, state);
-		merge_level_ppm(data, seg, state);
-		merge_level_ppm(data, seg, state);
+		for (int i = 0; i < g_extra_passes; i++)
+			merge_level_ppm(data, seg, state);
 	}
 	//printstacks(seg, "runs before merge");
 	//printstacks(data, "data before merge");
@@ -327,13 +327,15 @@ static void	segment(t_stacks *data, int n_items)
 
 #define N 500
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_stacks	s;
 	int			arr[N];
 	int			j;
 	int			t;
 
+	if (argc >= 2)
+		g_extra_passes = atoi(argv[1]);
 	circ_init(&s.a, N);
 	circ_init(&s.b, N);
 	for (int i = 0; i < N; i++)
