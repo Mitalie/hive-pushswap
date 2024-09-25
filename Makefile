@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/09/23 15:50:48 by amakinen         ###   ########.fr        #
+#    Updated: 2024/09/25 15:11:12 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,9 +60,11 @@ $(BONUS): $(OBJS_S) $(OBJS_B)
 # Generic utility targets
 .DEFAULT_GOAL := all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
 
 all: $(NAME)
+
+bonus: $(BONUS)
 
 clean:
 	rm -rf $(OBJDIR)
@@ -71,8 +73,6 @@ fclean: clean
 	rm -f $(BINS)
 
 re: fclean all
-
-bonus: $(BONUS)
 
 # Default compiler flags that apply to all targets
 def_CFLAGS := -Wall -Wextra -Werror
