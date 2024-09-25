@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:05:38 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/20 17:32:34 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/25 13:36:29 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,10 @@ t_ps_status	pushswap_optimal(t_stacks *stacks, int num_items, int output_fd)
 	if (!graph)
 		return (PS_ERR_ALLOC_FAILURE);
 	status = optimal_graph_search(graph, start, end, num_items);
-	if (status == PS_SUCCESS)
+	while (status == PS_SUCCESS && start != end)
 	{
-		while (start != end)
-		{
-			op_write(output_fd, graph[start].op);
-			start = graph[start].reached_from;
-		}
+		status = op_write(output_fd, graph[start].op);
+		start = graph[start].reached_from;
 	}
 	free(graph);
 	return (status);

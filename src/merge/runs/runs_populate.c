@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:13:50 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/20 15:44:38 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/25 13:49:22 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,9 @@ t_ps_status	merge_runs_populate(
 	size_t		pass;
 	t_ps_status	status;
 
-	runs_init(runs, passes);
+	status = runs_init(runs, passes);
+	if (status != PS_SUCCESS)
+		return (status);
 	circ_push_back(runs->a, 0);
 	pass = 0;
 	while (pass++ < passes)

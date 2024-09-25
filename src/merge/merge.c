@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 15:44:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/20 17:24:52 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/25 13:45:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,12 @@ static void	select_merge_stacks(
 	}
 }
 
-static void	merge_pass(t_merge_state *merge, t_stacks *stacks, t_runs *runs)
+static t_ps_status	merge_pass(
+	t_merge_state *merge, t_stacks *stacks, t_runs *runs)
 {
 	int					pass_size;
 	int					loc;
+	t_ps_status			status;
 	t_merge_pass_state	pass;
 
 	runs->current_loc = (runs->current_loc + NUM_LOCS - 1) % NUM_LOCS;
@@ -95,8 +97,10 @@ static void	merge_pass(t_merge_state *merge, t_stacks *stacks, t_runs *runs)
 	runs->num_runs[runs->current_loc] = pass_size;
 	runs->total_runs -= 2 * pass_size;
 	select_merge_stacks(&pass, stacks, runs);
-	while (pass_size--)
-		merge_run(merge, &pass);
+	status = PS_SUCCESS;
+	while (status == PS_SUCCESS && pass_size--)
+		status = merge_run(merge, &pass);
+	return (status);
 }
 
 t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
@@ -116,9 +120,8 @@ t_ps_status	pushswap_merge(t_stacks *stacks, int num_items, int output_fd)
 		status = PS_ERR_ALLOC_FAILURE;
 	if (status == PS_SUCCESS)
 		status = prepare_merge(&merge, stacks, &runs);
-	if (status == PS_SUCCESS)
-		while (runs.total_runs > 1)
-			merge_pass(&merge, stacks, &runs);
+	while (status == PS_SUCCESS && runs.total_runs > 1)
+		status = merge_pass(&merge, stacks, &runs);
 	if (status == PS_SUCCESS)
 		status = merge_op_queue_flush(&merge);
 	free(merge.output_queue);
