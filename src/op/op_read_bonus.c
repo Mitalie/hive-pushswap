@@ -6,13 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:29:51 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/23 16:53:57 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:07:57 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op_bonus.h"
 
-#include <errno.h>
 #include <unistd.h>
 
 /*
@@ -37,8 +36,6 @@ static bool	fill_buffer(t_op_read_state *s, size_t min_length)
 	while (s->len < min_length)
 	{
 		ret = read(s->fd, s->buf + s->len, sizeof(s->buf) - s->len);
-		if (ret < 0 && errno == EINTR)
-			continue ;
 		if (ret < 0)
 			return (false);
 		if (ret == 0)
