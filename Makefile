@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/07 15:34:04 by amakinen          #+#    #+#              #
-#    Updated: 2024/09/25 15:11:12 by amakinen         ###   ########.fr        #
+#    Updated: 2024/09/25 15:46:26 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCDIR := src
 SRCS_S := $(addprefix $(SRCDIR)/,\
 	circ/circ_basic.c \
 	circ/circ_pushpop.c \
+	io/io_write.c \
 	op/op_execute.c \
 	op/op_util.c \
 	util/parse_int.c \

@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:02:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/20 16:16:48 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:46:03 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "circ.h"
+#include "io.h"
 #include "op.h"
 #include "status.h"
 #include "stacks.h"
@@ -66,9 +67,9 @@ int	main(int argc, char **argv)
 	if (status == PS_SUCCESS)
 	{
 		if (check_stacks_sorted(&data))
-			write(STDOUT_FILENO, "OK\n", 3);
+			status = io_write(STDOUT_FILENO, "OK\n", 3);
 		else
-			write(STDOUT_FILENO, "KO\n", 3);
+			status = io_write(STDOUT_FILENO, "KO\n", 3);
 	}
 	stacks_release(&data);
 	if (status != PS_SUCCESS)
