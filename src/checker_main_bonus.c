@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:02:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/09/25 15:56:00 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:56:34 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	main(int argc, char **argv)
 	t_stacks	data;
 
 	num_inputs = argc - 1;
+	if (num_inputs == 0)
+		return (PS_SUCCESS);
 	status = stacks_from_input(&data, num_inputs, argv + 1);
 	if (status == PS_SUCCESS)
 		status = perform_ops_from_stdin(&data);
